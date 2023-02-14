@@ -1,4 +1,44 @@
-baseURL = 'http://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = 'ananke'
+baseURL = 'https://qinyu.github.io'
+languageCode = 'zh-cn'
+title = "qinyu's site"
+theme = 'anatole'
+
+[params]
+title = "覃宇"
+author = "qinyu"
+description = "Thoughtworker\n移动应用架构师\n技术教练"
+profilePicture = "images/profile.jpg"
+
+[[params.socialIcons]]
+icon = "fab fa-github"
+title = "GitHub"
+url = "https://github.com/qinyu/"
+
+[[params.socialIcons]]
+icon = "fas fa-envelope"
+title = "e-mail"
+url = "mailto:qinyusuain@gmail.com"
+
+[[menus.main]]
+name = "主页"
+weight = 100
+identifier = "home"
+url = "/"
+
+[[menus.main]]
+name = "文章"
+weight = 200
+identifier = "posts"
+url = "/post/"
+
+[[menus.main]]
+name = "作品"
+weight = 300
+identifier = "books"
+url = "/books/"
+
+[[menus.main]]
+name = "关于"
+weight = 400
+identifier = "about"
+url = "/about/"
