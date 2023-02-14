@@ -3,6 +3,12 @@ languageCode = 'zh-cn'
 title = "qinyu's site"
 theme = 'anatole'
 
+[[menus.main]]
+name = "关于"
+weight = 100
+identifier = "about"
+url = "/about/"
+
 [params]
 title = "覃宇"
 author = "qinyu"
@@ -45,8 +51,4 @@ identifier = "courses"
 url = "/courses/"
 parent = "accomplishments"
 
-[[menus.main]]
-name = "关于"
-weight = 400
-identifier = "about"
-url = "/about/"
+
