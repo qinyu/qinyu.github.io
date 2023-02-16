@@ -1,0 +1,14 @@
+title: 覃宇
+author: 覃宇
+description: |
+  Thoughtworker
+  移动应用架构师
+  技术教练
+profilePicture: images/profile.jpg
+socialIcons:
+  - icon: fab fa-github
+    title: GitHub
+    url: https://github.com/qinyu/
+  - icon: fas fa-envelope
+    title: e-mail
+    url: 'mailto:mail@example.com'

@@ -1,0 +1,26 @@
+main:
+  - name: 主页
+    weight: 100
+    identifier: home
+    url: /
+  - name: 文章
+    weight: 200
+    identifier: posts
+    url: /post/
+  - name: 作品
+    weight: 300
+    identifier: works
+  - name: 翻译写作
+    weight: 310
+    identifier: books
+    url: /books/
+    parent: works
+  - name: 线上课程
+    weight: 320
+    identifier: courses
+    url: /courses/
+    parent: works
+  - name: 关于
+    weight: 400
+    identifier: about
+    url: /about/

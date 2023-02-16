@@ -1,0 +1,12 @@
+baseURL: "https://qinyu.github.io"
+languageCode: zh-cn
+title: qinyu's site
+theme: anatole
+taxonomies:
+  category: categories
+  series: series
+  tag: tags
+mainSections:
+  - post
+favicon: favicons/
+
