@@ -1,6 +1,6 @@
 baseURL: "https://qinyu.github.io"
 languageCode: zh-cn
-title: qinyu's site
+title: Qin Yu is writing
 theme: anatole
 taxonomies:
   category: categories

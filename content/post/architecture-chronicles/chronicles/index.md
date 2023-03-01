@@ -1,6 +1,6 @@
 ---
-title: 软件架构编年史 
-description: 软件架构编年史 
+title: 软件架构编年史（译）
+description: 软件架构编年史（1）开篇 
 date: 2018-08-27
 tags:
   - 架构 

@@ -1,6 +1,6 @@
 ---
-title: 软件架构预述
-description: 软件架构预述
+title: 软件架构预述（译）
+description: 软件架构编年史（2）软件架构预述
 date: '2018-09-12'
 tags:
   - 架构
@@ -141,7 +141,6 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 开发者采用了多种不同的抽象和未来潜在变化的应对措施，来积极地避免其他六种坏味道。良好的软件设计是轻量灵活的，理解起来更容易，最重要的是修改更容易，因此不必预判所有未来的潜在变化。
 
 [原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
-
 
 [^1]: 2000 – Roy Fielding – [Architectural Styles and the Design of Network-based Software Architectures](http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdfhttp://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf) 
 [^2]: 2000 – Robert C. Martin – [Design Principles and Design Patterns](http://www.cvc.uab.es/shared/teach/a21291/temes/object_oriented_design/materials_adicionals/principles_and_patterns.pdf) 
