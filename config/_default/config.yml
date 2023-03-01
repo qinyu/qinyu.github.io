@@ -9,4 +9,5 @@ taxonomies:
 mainSections:
   - post
 favicon: favicons/
+defaultContentLanguage: zh-cn
 

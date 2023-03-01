@@ -1,5 +1,6 @@
 title: 覃宇
 author: 覃宇
+contentratio: 0.7
 description: |
   Thoughtworker
   移动应用架构师
@@ -11,4 +12,4 @@ socialIcons:
     url: https://github.com/qinyu/
   - icon: fas fa-envelope
     title: e-mail
-    url: 'mailto:mail@example.com'
+    url: 'mailto:qinyusuain@gmail.com'
