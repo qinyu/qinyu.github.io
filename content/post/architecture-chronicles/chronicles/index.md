@@ -9,6 +9,7 @@ tags:
 author: 覃宇 
 series:
   - 软件架构编年史
+draft: true
 ---
 
 <!--more-->
@@ -41,13 +42,15 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
 
 # 软件架构编年史系列
 
+[出事儿]({{< ref "../../architecture-chronicles/premises" >}})
+
 1. [软件架构编年史(译)](https://www.jianshu.com/p/b477b2cc6cfa)  //[原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)
 2. [软件架构预述(译)](https://www.jianshu.com/p/df295f92fb52) //[原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)
 3. [编程语言的演化(译)](https://www.jianshu.com/p/2c4b7f86e5d4) //[原文](https://herbertograca.com/2017/07/10/programming-language-evolution/)  
 4. [架构风格 vs. 架构模式 vs. 设计模式(译)](https://www.jianshu.com/p/d8dce27f279f) //[原文](https://herbertograca.com/2017/07/28/architectural-styles-vs-architectural-patterns-vs-design-patterns/)  
 5. [单体架构(译)](https://www.jianshu.com/p/28c3439c11d3) //[原文](https://herbertograca.com/2017/07/31/monolithic-architecture/)  
 6. [分层架构(译)](https://www.jianshu.com/p/e9fdc85d573c) //[原文](https://herbertograca.com/2017/08/03/layered-architecture/)  
-7. [MVC 及其变种(译)](https://www.jianshu.com/p/21079ff15a1c) //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/)  
+7. [MVC及其变种(译)](https://www.jianshu.com/p/21079ff15a1c) //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/)  
     * [1979 – Model-View-Controller(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-controller)
     * [1987/2000 – PAC / Hierarchical Model-View-Controller(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#hierarchical-model-view-controller)
     * [1996 – Model-View-Presenter(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter)
@@ -56,19 +59,19 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
     * [???? – Model-View-Presenter-ViewModel(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter-view_model)
     * [2008 – Resource-Method-Representation(译)](https://www.jianshu.com/p/87405a5afb60) //[原文](https://herbertograca.com/2018/08/31/resource-method-representation)
     * [2014 – Action-Domain-Responder(译)](https://www.jianshu.com/p/2eaa134a9fb8) //[原文](https://herbertograca.com/2018/09/03/action-domain-responder)
-8. [EBI 架构(译)](https://www.jianshu.com/p/395814410cf5) //[原文](https://herbertograca.com/2017/08/24/ebi-architecture/)
+8. [EBI架构(译)](https://www.jianshu.com/p/395814410cf5) //[原文](https://herbertograca.com/2017/08/24/ebi-architecture/)
 9. [包与命名空间(译)](https://www.jianshu.com/p/ebaa2e11d25e) //[原文](https://herbertograca.com/2017/08/31/packaging-code/)  
 10. [领域驱动设计(译)](https://www.jianshu.com/p/812636d55677) //[原文](https://herbertograca.com/2017/09/07/domain-driven-design/)
 11. [端口和适配器架构(六边形架构)(译)](https://www.jianshu.com/p/f39f4537857e) //[原文](https://herbertograca.com/2017/09/14/ports-adapters-architecture/)  
 12. [洋葱架构(译)](https://www.jianshu.com/p/d87d5389c92a) //[原文](https://herbertograca.com/2017/09/21/onion-architecture/)  
 13. [整洁架构(译)](https://www.jianshu.com/p/b565f0c00c0c) //[原文](https://herbertograca.com/2017/09/28/clean-architecture-standing-on-the-shoulders-of-giants/)  
 14. [事件驱动的架构(译)](https://www.jianshu.com/p/12dc9a4b3e35) //[原文](https://herbertograca.com/2017/10/05/event-driven-architecture/)  
-15. [从 CQS 到 CQRS(译)](https://www.jianshu.com/p/ab3843093903) //[原文](https://herbertograca.com/2017/10/19/from-cqs-to-cqrs/)  
+15. [从CQS到CQRS(译)](https://www.jianshu.com/p/ab3843093903) //[原文](https://herbertograca.com/2017/10/19/from-cqs-to-cqrs/)  
 16. [面向服务的架构(SOA)(译)](https://www.jianshu.com/p/0c1354b3341f) //[原文](https://herbertograca.com/2017/11/09/service-oriented-architecture-soa/)  
-17. [清晰架构(01)：融合 DDD、洋葱架构、整洁架构、CQRS...(译)](https://www.jianshu.com/p/d3e8b9ac097b) //[原文](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)  
+17. [清晰架构(01)：融合DDD、洋葱架构、整洁架构、CQRS...(译)](https://www.jianshu.com/p/d3e8b9ac097b) //[原文](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)  
 18. [清晰架构(02)：超越同心圆分层 (译)](https://www.jianshu.com/p/fcf5bb27a60b) //[原文](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)  
-19.  [清晰架构(03)：在代码中展现架构和领域 (译)](https://www.jianshu.com/p/dd992f3fe370) //[原文](https://herbertograca.com/2019/06/05/reflecting-architecture-and-domain-in-code/)
-20.  [清晰架构(04)：用文档描述架构 (译)](https://www.jianshu.com/p/5f1d9500b8df) //[原文](https://herbertograca.com/2019/08/12/documenting-software-architecture/)
+19. [清晰架构(03)：在代码中展现架构和领域 (译)](https://www.jianshu.com/p/dd992f3fe370) //[原文](https://herbertograca.com/2019/06/05/reflecting-architecture-and-domain-in-code/)
+20. [清晰架构(04)：用文档描述架构 (译)](https://www.jianshu.com/p/5f1d9500b8df) //[原文](https://herbertograca.com/2019/08/12/documenting-software-architecture/)
 21. 一个项目的演进：从 MVP 到 P  
 22. 4 + 1 架构视图模型
 23. 架构的质量属性
@@ -92,10 +95,10 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
   * ~1972 – C
   * [1979](http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf) – **MVC 模式(Model-View-Controller)**
 - 20 世纪 80 年代
-  * **面向对象编程** (但其思想在 [20 世纪 60 年代](http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en)晚期已经第一次提出)
+  * **面向对象编程** (但其思想在 [20世纪60年代](http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en)晚期已经第一次提出)
   * **分层**: **两层**，第一层是用户界面，第二层是业务逻辑和数据存储
   * ~1980 – C++
-  * **CORBA** – 通用物件请求代理架构(尽管[1991年](https://en.wikipedia.org/wiki/Common_Object_Request_Broker_Architecture#Versions_history)才推出第一个稳定版，但最早使用可以追溯到 [20 世纪 80 年代](https://en.wikipedia.org/wiki/TIBCO_Software))
+  * **CORBA** – 通用物件请求代理架构(尽管[1991年](https://en.wikipedia.org/wiki/Common_Object_Request_Broker_Architecture#Versions_history)才推出第一个稳定版，但最早使用可以追溯到 [20世纪80年代](https://en.wikipedia.org/wiki/TIBCO_Software))
   * ~1986 – Erlang
   * ~1987 – Perl
   * [1987](https://www.lri.fr/~mbl/ENS/FONDIHM/2013/papers/Coutaz-Interact87.pdf) – PAC 即 **HMVC 模式(Hierarchical Model-View-Controller)**
@@ -125,7 +128,5 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
   * [2010](https://www.amazon.co.uk/Lean-Architecture-Agile-Software-Development/dp/0470684208) – **DCI 架构**(Data-Context-Interaction)
   * [2012](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) – **整洁架构**
   * [2014](http://www.codingthearchitecture.com/2014/08/24/c4_model_poster.html) – C4 模型
-
-***译者注：C4模型的介绍可以参考我的同事[仝键](https://www.jianshu.com/u/d1f81629cc1e)的介绍文章“[可视化架构设计——C4 介绍](https://www.jianshu.com/p/1e496225b6b6)”。***
 
 ![原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

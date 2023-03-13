@@ -9,9 +9,8 @@ tags:
 author: 覃宇 
 series:
   - 软件架构编年史
+draft: true
 ---
-
-*文章还需要整理*
 
 <!--more-->
 
