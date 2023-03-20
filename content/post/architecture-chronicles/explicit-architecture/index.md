@@ -24,7 +24,7 @@ draft: true
 
 # 系统的基本构建块
 
-我们从 [EBI 架构](https://herbertograca.com/2017/08/24/ebi-architecture/)以及[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)([译](https://www.jianshu.com/p/f39f4537857e))的回顾开始。它们都有清晰的代码划分，哪些代码在应用内部，哪些代码在外部，而哪些代码用来连接它们。
+我们从 [EBI 架构](https://herbertograca.com/2017/08/24/ebi-architecture/)以及[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)的回顾开始。它们都有清晰的代码划分，哪些代码在应用内部，哪些代码在外部，而哪些代码用来连接它们。
 
 除此之外，[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)还明确地识别出了一个系统中的三个基本代码构建块：
 
@@ -268,11 +268,8 @@ draft: true
 
 就到这里，这是我对一切的理解。这就是我脑海中对这一切的梳理。
 
-在下篇文章中我将更深入地展开这些话题: [超越同心圆分层](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)([译](https://www.jianshu.com/p/fcf5bb27a60b))。
+在下篇文章中我将更深入地展开这些话题: [超越同心圆分层](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)。
 
 然而，我们如何将这些全部展现在代码库中呢？这是再下一篇文章的主题，我如何将架构和领域反映在代码之中。
 
 最后，感谢我的同事[Francesco Mastrogiacomo](https://www.linkedin.com/in/francescomastrogiacomo/)，帮助我制作了漂亮的[信息图](https://drive.google.com/open?id=1E_hx5B4czRVFVhGJbrbPDlb_JFxJC8fYB86OMzZuAhg)。
-
-*译者：我将这份信息图翻译成了中文版*
-![](https://upload-images.jianshu.io/upload_images/4099-d1846f9b3a0aae8d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
