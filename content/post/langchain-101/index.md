@@ -171,7 +171,7 @@ print(summarize_blog(url, lang))
 # 启发
 
 关于 LangChain:
-1. 利用 LangChain 可以非常高效地集成大语言模型和各种服务，拓展 AI 的能力。
+1. 利用 LangChain 可以非常高效地集成大语言模型和各种服务，拓展现有工具的 AI 能力。
 2. LangChain 可以快速封装成 APP 或者 API（使用 Flask 或者 FastAPI），集成到其它工具中降低使用门槛。
 3. 为了数据安全，LangChain 还需要可以接入私有部署的大语言模型（例如 https://github.com/imClumsyPanda/langchain-ChatGLM）
 3. 为了数据安全，使用 LangChain 包装的 AI 服务可以私有部署，还需要类似 Streamlit 这样可以托管服务的基础设施（类似 Serverless）
