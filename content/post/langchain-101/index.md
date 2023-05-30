@@ -8,6 +8,8 @@ tags:
   - 效率 
 author: 覃宇 
 draft: false
+series:
+  - LangChain
 ---
 
 _太长不读版总结（by AI）：_
