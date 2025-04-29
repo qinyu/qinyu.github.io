@@ -42,7 +42,7 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
 
 # 软件架构编年史系列
 
-[出事儿]({{< ref "../../architecture-chronicles/premises" >}})
+[出事儿]({{< ref "post/architecture-chronicles/premises" >}})
 
 1. [软件架构编年史(译)](https://www.jianshu.com/p/b477b2cc6cfa)  //[原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)
 2. [软件架构预述(译)](https://www.jianshu.com/p/df295f92fb52) //[原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)
@@ -54,7 +54,7 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
     * [1979 – Model-View-Controller(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-controller)
     * [1987/2000 – PAC / Hierarchical Model-View-Controller(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#hierarchical-model-view-controller)
     * [1996 – Model-View-Presenter(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter)
-    * [1998 –”Model 1″ & “Model 2” (译)](https://www.jianshu.com/p/bd2967d9391f) //[原文](https://herbertograca.com/2018/08/29/model-1-model-2)
+    * [1998 –"Model 1" & "Model 2" (译)](https://www.jianshu.com/p/bd2967d9391f) //[原文](https://herbertograca.com/2018/08/29/model-1-model-2)
     * [2005 – Model-View-ViewModel(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-view_model)
     * [???? – Model-View-Presenter-ViewModel(译)](https://www.jianshu.com/p/21079ff15a1c)  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter-view_model)
     * [2008 – Resource-Method-Representation(译)](https://www.jianshu.com/p/87405a5afb60) //[原文](https://herbertograca.com/2018/08/31/resource-method-representation)

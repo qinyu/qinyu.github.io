@@ -7,6 +7,7 @@ description: |
   移动应用架构师
   技术教练
 profilePicture: images/profile.jpg
+googleAnalytics: false
 socialIcons:
   - icon: fab fa-github
     title: GitHub

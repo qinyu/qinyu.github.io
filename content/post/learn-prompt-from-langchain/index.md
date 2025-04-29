@@ -25,7 +25,7 @@ _太长不读版总结（by Notion AI）：_
 
 > *LangChain 是一个软件开发框架，旨在简化使用大型语言模型（LLM）创建应用程序的过程。作为一种语言模型集成框架，LangChain 的用例类似于语言模型，包括文档分析和摘要、聊天机器人和代码分析。由 Harrison Chase 开发，LangChain 预计将于 2022 年 10 月发布，使用 Python 和 JavaScript 编写，采用 MIT 许可证。--来自AI对维基百科的总结。*
 
-先来介绍一下对长文总结例子做的调整（填了一部分 [LangChain 小试]({{< ref "../langchain-101" >}}) 和 [AI 自由经济账中的坑]({{< ref "../cost-of-ai-free-personal" >}})）
+先来介绍一下对长文总结例子做的调整（填了一部分 [LangChain 小试]({{< ref "post/langchain-101" >}}) 和 [AI 自由经济账中的坑]({{< ref "post/cost-of-ai-free-personal" >}})）
 
 1. 修改了拆分长文的分隔符，用句末标点代替了默认的空白字符。这样拆分的段落更符合语义（仍有改进空间）
 2. 调整了提示模板，增加了是否需要简洁总结的参数

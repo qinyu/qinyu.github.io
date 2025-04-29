@@ -19,7 +19,7 @@ _太长不读版总结（by AI）：_
 
 # 引子
 
-有朋友发现上一篇 Wardley Maps 译文（[迈出第一步]({{< ref "../wardley-maps/ch6" >}})）缺少了 Notion AI 做的总结。
+有朋友发现上一篇 Wardley Maps 译文（[迈出第一步]({{< ref "post/wardley-maps/ch6" >}})）缺少了 Notion AI 做的总结。
 
 {{< figure src="no_notion_ai.jpeg" class="small" >}}
 
