@@ -3,7 +3,7 @@ author: 覃宇
 contentratio: 0.7
 favicon: "favicons/"
 description: |
-  Thoughtworker
+  前Thoughtworker
   移动应用架构师
   技术教练
 profilePicture: images/profile.jpg
@@ -12,6 +12,9 @@ socialIcons:
   - icon: fab fa-github
     title: GitHub
     url: https://github.com/qinyu/
+  - icon: fab fa-weixin
+    title: 微信公众号：覃宇码字的地方
+    url: /wechat/
   - icon: fas fa-envelope
     title: e-mail
     url: 'mailto:qinyusuain@gmail.com'
