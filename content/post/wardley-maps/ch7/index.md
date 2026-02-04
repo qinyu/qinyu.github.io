@@ -23,51 +23,51 @@ Chapter 7
 
 2007年我失业在家无所事事，先做了几天DIY，然后开始思考未来。眼见着银行账号的余额越来越少，我却束手无策。我提不起劲，经营公司、画大饼、上当受骗让我付出了代价。虽然我还没有做好迎接新角色的准备，但也不能坐以待毙。于是我进行了一些有偿演讲，做了一些咨询工作，写了几篇文章，又代写了几篇，还进行了一些研究。这些动作至少帮我解决了燃眉之急。
 
-我确信地图这个概念有些优势，但我还有两个主要问题需要解决。第一，我没能用地图创造出光明的未来。第二，我没有真正的证据支持。我收集的数据变现出了组件变化的迹象，但演变坐标轴只不过我发现并在2004年Euro Foo上讲过的一种模式。地图这个概念也许完全错了？也许这就是我失败的原因？也许这也是没什么人会谈到这个概念的原因？我觉得家里书架上的书还是太少了，回答不了这些问题，于是我扎进了大英图书馆。为了寻找答案，我收集、整理和搜索了大量文献。至少，我让自己一直有事做，正好利用这段时间让自己平复下来。
+我确信地图这个概念有些优势，但我还有两个主要问题需要解决。第一，我没能用地图创造出光明的未来。第二，我没有真正的证据支持。我收集的数据显现出了组件变化的迹象，但演变坐标轴只不过是我2004年在Euro Foo上讲过的一种模式。地图这个概念也许完全错了？也许这就是我失败的原因？也许这也是没什么人会谈到这个概念的原因？我觉得家里书架上的书还是太少了，回答不了这些问题，于是我扎进了大英图书馆。为了寻找答案，我收集、整理和搜索了大量文献。至少，这让自己一直有事做，正好利用这段时间让自己平复下来。
 
 As I read more into the subject of strategy then I noticed that disquiet over the field was palpable. Phil Rosenzweig, in the Halo Effect (2007) pointed to the cause being a marriage of convenience: “Managers are busy people, under enormous pressure to deliver higher revenues, greater profits and ever larger returns for shareholders. They naturally search for ready-made answers, for tidy plug-and-play solutions that might give them a leg up on their rivals. And the people who write business books — consultants and business school professors and strategy gurus — are happy to oblige.”
-战略主题的文献读得越多，我就越焦虑。罗森维（Phil Rosenzweig）在《光环效应》 (2007) 中指出了这场各取所需的联姻背后的原因：“管理者是忙碌的人，承受着为股东带来更高收入、更高利润和更大回报的巨大压力。他们自然而然地寻找现成的答案，寻找整洁的即插即用解决方案，这些解决方案可能会让他们在竞争对手中脱颖而出。写商业书籍的人——顾问、商学院教授和战略大师——很乐意帮忙。”
+战略主题的文献读得越多，我就越焦虑。罗森维（Phil Rosenzweig）在《光环效应》(2007) 中指出了这场各取所需的联姻背后的原因：“管理者都是忙碌的人，承受着为股东创造更高收入、更高利润和更大回报的巨大压力。他们自然而然地寻找现成的答案，寻找整洁的即插即用解决方案，希望借此在竞争对手中脱颖而出。写商业书籍的人——顾问、商学院教授和战略大师——很乐意帮忙。”
 
-我不想这样，我想把秘籍公开，为所有人提供自我提升的工具。我想摆脱这种虚假的联姻。2007年时，我仍然相信秘籍是存在的，有可能被商学院保护得严严实实。我想是不是要去读MBA，但高昂的学费让我知难而退，于是我从读过MBA的朋友那里借来了笔记和书籍。然而，我大失所望。除了财务、营销和运营“战略”的基本概念之外，找不到任何环境或背景的讨论。难道秘籍是在战略咨询公司那里？
+我不想这样，我想把秘籍公开，为所有人提供自我提升的工具。我想摆脱这种虚假的联姻。2007年时，我仍然相信秘籍是存在的，有可能被商学院保护得严严实实。我想是不是要去读个MBA，但高昂的学费让我知难而退，于是我从读过MBA的朋友那里借来了笔记和书籍。然而，我大失所望。除了财务、营销和运营"战略"的基本概念之外，找不到任何关于环境或背景的讨论。难道秘籍是在战略咨询公司那里？
 
 I applied for a job with one of the more prestigious consultancy firms and I was invited to a competitive interview process with dozens of other candidates. We would be put through our paces in a number of rounds in a Darwinian battle, a survival of the fittest. In my first round I was asked a question — “A news media company is looking at divesting itself of its print and distribution business. What things should it consider?”
-我向一家更有声望的咨询公司申请了一份工作，并被邀请与其他数十名候选人一起参加竞争激烈的面试过程。在一场适者生存的达尔文式战斗中，我们将经历多轮考验。在我的第一轮面试中，我被问到一个问题——“一家新闻媒体公司正在考虑剥离其印刷和发行业务。它应该考虑哪些事情？”
+我向一家更有声望的咨询公司申请了职位，并被邀请与其他数十名候选人一起参加竞争激烈的面试。在一场适者生存的达尔文式战斗中，我们将经历多轮考验。在第一轮面试中，面试官问我——"一家新闻媒体公司正在考虑剥离其印刷和发行业务。它应该考虑哪些事情？"
 
 I immediately starting mapping out the landscape, pointing to opportunities and impacts from loss of control through disposal of such physical capital to provision of distribution as a public utility to redirecting print capabilities into printed electronics — “those large scale printers have the potential to be tomorrow’s Intel I declared!” There was a wealth of opportunity but before making a choice then we needed to understand the landscape more. I started to dig, asking questions about the user, their needs and what did we understand about the landscape. I met a wall of silence followed by the line that “it’s not relevant”. The company had already decided to take this action. It was part of its strategy. My role was to give some input into how to achieve this. I asked what was this strategy based upon and an argument ensued. Needless to say, I didn’t make it past round one and was the very first to leave the competition. Mapping had failed on its second outing. So I carried on researching.
-我立即开始绘制景观图，指出从通过处置此类实物资本到作为公用事业提供分销再到将打印能力重新定向到印刷电子产品中的机会和影响——“那些大型打印机有可能成为明天的英特尔我宣布！有很多机会，但在做出选择之前，我们需要更多地了解风景。我开始挖掘，询问有关用户、他们的需求以及我们对景观的了解的问题。我遇到了一堵沉默的墙，后面是 “这无关紧要” 这句话。该公司已经决定采取这一行动。这是其战略的一部分。我的职责是就如何实现这一目标提供一些意见。我问这个策略是基于什么，随后发生了争论。不用说，我没有通过第一轮，是第一个离开比赛的人。测绘在其第二次郊游中失败了。所以我继续研究。
+我立即开始绘制地图，指出从处置实物资本丧失控制权，到将分销作为公共服务，再到将打印能力转向印刷电子产品的各种机会和影响——"那些大型打印机有可能成为明天的英特尔！"我宣布。机会很多，但在做出选择之前，我们需要更深入地了解环境。我开始追问，询问用户是谁、他们有什么需求、我们对环境了解多少。然而我撞上了一堵沉默的墙，接着听到一句"这不相关"。公司已经决定采取这一行动，这是其战略的一部分。我的职责是为如何实现这一目标提供意见。我问这个战略基于什么，随后发生了争论。不用说，我没通过第一轮，是第一个被淘汰的人。地图在第二次实践中失败了。于是我继续研究。
 
 It was at this time that I was also becoming quite well known in certain technology circles as a speaker on open source, web 2.0 and cloud computing. I kept being invited to more and more conferences and to present and discuss on technology changes within companies. I was flattered but quickly discovered that I needed to keep things simple. I was told the mapping concepts were just “too confusing” and so I restricted myself to talking about the impacts in more general terms. However, here I hit a snag. General concepts such as the world moving towards more utility provision of IT were often brushed aside for lacking any understanding of “real business” and the maps I needed to demonstrate why this would happen were considered “too confusing”. I felt increasingly trapped in a Paul Valéry paradox of “Everything simple is false. Everything which is complex is unusable”. I found myself sitting in rooms listening to conversations of the form: -
-正是在这个时候，我作为开源、Web 2.0 和云计算方面的演讲者在某些技术圈子里也变得相当有名。我不断受邀参加越来越多的会议，并介绍和讨论公司内部的技术变革。我受宠若惊，但很快发现我需要让事情保持简单。有人告诉我，映射概念 “太混乱了”，所以我限制自己以更笼统的方式谈论影响。但是，在这里我遇到了障碍。诸如世界正朝着更多 IT 公用事业提供方向发展的一般概念经常因为缺乏对“真实业务” 的理解而被搁置一旁，而我需要展示为什么会发生这种情况的地图被认为“太混乱了”。我越来越觉得自己陷入了保罗 · 瓦莱里的悖论“一切简单都是错误的。一切复杂的东西都是无用的”。我发现自己坐在房间里听着以下形式的对话：-
+正是在这个时候，我作为开源、Web 2.0 和云计算方面的演讲者，在某些技术圈子里也变得相当有名。我不断受邀参加越来越多的会议，介绍和讨论公司内部的技术变革。我受宠若惊，但很快发现需要把事情讲得简单些。有人告诉我，地图概念"太混乱了"，于是我只好以更笼统的方式谈论影响。但在这里我遇到了障碍。诸如世界正朝着IT公用事业方向发展的一般概念，经常因为缺乏对"真实业务"的理解而被搁置一旁，而我需要用地图来展示为什么会发生这种情况，却被认为"太混乱了"。我越来越觉得自己陷入了保罗·瓦莱里的悖论——"一切简单的东西都是假的。一切复杂的东西都是无用的"。我发现自己坐在会议室里，听着下面这样的对话：-
 
 CTO: “All the new servers are installed; systems are running fine”.
-CTO：“所有的新服务器都安装好了；系统运行良好”。
+CTO："所有的新服务器都安装好了，系统运行正常。"
 
 CIO: “Excellent. Apparently the latest thing is cloud, hence I’ve asked Simon to come along. According to this business magazine then numerous successful companies are considering future pilots that might use it. We should look into it and whether it’s worth considering as part of our long term strategy.”
-首席信息官：“非常好。显然最新的东西是云，因此我请西蒙一起来。根据这本商业杂志，许多成功的公司正在考虑未来可能使用它的飞行员。我们应该研究它，看看它是否值得作为我们长期战略的一部分来考虑。”
+CIO："很好。显然最新的热点是云计算，所以我请Simon过来。据这本商业杂志说，许多成功公司都在考虑未来试点使用它。我们应该研究一下，看看是否值得纳入我们的长期战略。"
 
 CTO: “We’ve already examined the subject. Cloud just means virtualisation of the data centre. The latest research I have says that virtualisation has entered the plateau of performance and provides an extremely efficient mechanism of infrastructure provision over our existing data centre technology. Our technology partners have virtualisation based products in this space that we should consider buying.”
-CTO：“我们已经研究过这个问题。云只是意味着数据中心的虚拟化。我的最新研究表明，虚拟化已进入性能稳定期，并为我们现有的数据中心技术提供了一种极其有效的基础设施供应机制。我们的技术合作伙伴在这个领域拥有基于虚拟化的产品，我们应该考虑购买。”
+CTO："我们已经研究过这个问题。云只是数据中心的虚拟化。我的最新研究表明，虚拟化已进入性能稳定期，相比我们现有的数据中心技术，它提供了一种极其高效的基础设施供应机制。我们的技术合作伙伴在这个领域有基于虚拟化的产品，我们应该考虑采购。"
 
 CIO: “Excellent work. Well let’s look at getting this up and running. There’s some business interest and I’d like to tell the CEO we’ve been using cloud if it comes up in conversation. We don’t want to be left behind in this technology war. Any thoughts Simon?”
-首席信息官：“出色的工作。好吧，让我们看看如何启动并运行它。有一些商业利益，如果谈话中提到云，我想告诉首席执行官我们一直在使用云。我们不想在这场技术战争中落后。西蒙有什么想法吗？
+CIO："干得好。那我们来看看怎么启动运行吧。这有商业利益，如果谈话中提到云，我想告诉CEO我们在用云。我们不想在这场技术战中落后。Simon有什么想法吗？"
 
 It sounded so simple but it was so wrong, my heart always sank. To explain why, I’m going to perform a mental translation that I started to do by converting IT speak into military speak. For some reason, I just find it becomes easier for people to understand.
-听起来很简单，但大错特错，我的心总是往下沉。为了解释原因，我将开始通过将 IT 语言转换为军事语言来进行心理翻译。出于某种原因，我发现人们更容易理解它。
+听起来很简单，但大错特错，我的心总是往下沉。为了解释原因，我开始在脑海中把IT语言翻译成军事语言。出于某种原因，我发现这样人们更容易理解。
 
 Captain: “All the new cannons arrived. We installed them and fired them this morning.”
-船长：“所有的新大炮都到了。我们今天早上安装并解雇了他们。”
+上尉："所有新的大炮都到了。我们今天早上安装并试射过了。"
 
 Colonel: “Excellent. Apparently the latest thing is bombing hills, hence I’ve asked Simon to come along. According to General’s weekly then numerous successful military leaders are considering future campaigns that might use it. We should look into it and whether it’s worth considering as part of our long term strategy.”
-上校：“很好。显然最新的事情是轰炸山丘，因此我请西蒙一起来。据《将军周刊》报道，当时许多成功的军事领导人正在考虑可能使用它的未来战役。我们应该研究它，看看它是否值得作为我们长期战略的一部分来考虑。”
+上校："很好。显然最新的热点是轰炸山丘，所以我请Simon过来。据《将军周刊》说，许多成功的军事领导人都在考虑未来可能采用它的战役。我们应该研究一下，看看是否值得纳入我们的长期战略。"
 
 Captain: “We’ve already examined the subject. Bombing hills just means using mortars. The latest research I have says that mortars have entered the plateau of performance and provide an extremely efficient mechanism of killing compared to our existing technology. Our technology partners have mortar based products in this space that we should consider buying.”
-机长：“我们已经研究过这个问题了。轰炸山丘只是意味着使用迫击炮。我的最新研究表明，与我们现有的技术相比，迫击炮已经进入了性能稳定期，并提供了一种极其有效的杀伤机制。我们的技术合作伙伴在这个领域拥有基于迫击炮的产品，我们应该考虑购买。”
+上尉："我们已经研究过这个问题。轰炸山丘就是使用迫击炮。我的最新研究表明，迫击炮已进入性能稳定期，相比我们现有的技术，它提供了一种极其高效的杀伤机制。我们的技术合作伙伴在这个领域有基于迫击炮的产品，我们应该考虑采购。"
 
 Colonel: “Excellent work. Well let’s look at getting this up and running. There’s some military interest and I’d like to tell the general we’ve been bombing hills if it comes up in conversation. We don’t want to be left behind in this technology war. Any thoughts Simon?”
-上校：“干得好。好吧，让我们看看如何启动并运行它。有一些军事利益，如果在谈话中出现，我想告诉将军我们一直在轰炸山丘。我们不想在这场技术战争中落后。西蒙有什么想法吗？
+上校："干得好。那我们来看看怎么启动运行吧。这有军事利益，如果谈话中提到，我想告诉将军我们在轰炸山丘。我们不想在这场技术战中落后。Simon有什么想法吗？"
 
 There seemed to be an overwhelming predilection towards copying others, technology faddism and buying pieces of kit rather than dealing with the problems at hand. There was no discussion of the users, the landscape or how it was changing. When I would raise how cloud was simply an evolution of an existing act from product to more industrialised utility models and as such it was more of change of business model rather than buying some tech … well, it was almost like I had spoken heresy in gobbledygook.
-似乎有一种压倒性的偏好，即模仿他人、技术狂热和购买套件，而不是处理手头的问题。没有讨论用户、景观或它是如何变化的。当我提出云是如何简单地将现有行为从产品演变为更工业化的实用模型时，因此它更多的是商业模式的改变而不是购买一些技术…… 好吧，这几乎就像我在官方文章中所说的异端邪说.
+似乎有一种压倒性的倾向：模仿他人、追逐技术潮流、购买成套设备，而不是解决手头的问题。没有人讨论用户、环境或它正在如何变化。当我提出云只是将现有行为从产品演化为更加工业化的公用事业模型时，因此这更多是商业模式的改变而非单纯购买技术……好吧，这几乎就像我在说官方信条的异端邪说。
 
 Business and IT both seemed to be operating in an environment that they did not understand and often with an assumption that buying more high tech wins the day. But this is flawed. Low tech can be used to overcome a high tech opponent that has poor situational awareness. The U.S. Seventh Cavalry, with access to gatling guns and “hi-tech” weaponry suffered a severe defeat at the Battle of the Little Bighorn against bows, arrows and stone clubs. Occasionally I would let my guard down and deep dive into the topic thereby hitting the other side of Valéry’s paradox. Nearly every time I did this, I was dismissed by the simple question “what evidence do you have that evolution works in this way?”
 业务和 IT 似乎都在一个他们不了解的环境中运作，并且常常假设购买更多的高科技产品会获胜。但这是有缺陷的。低科技可以用来战胜态势感知能力差的高科技对手。美国第七骑兵队拥有加特林机枪和 “高科技” 武器，在小大角河战役中因弓箭和石棍而惨败。偶尔我会放松警惕，深入探讨这个话题，从而触及瓦莱里悖论的另一面。几乎每次我这样做时，我都会被一个简单的问题打消：“你有什么证据表明进化是以这种方式进行的？”
@@ -76,7 +76,7 @@ Unbeknownst to me, I had just been given a new purpose by others. I had my own c
 我不知道的是，别人刚刚给了我一个新的目标。我有自己的运动，向商业世界解释地形智能，并提供 “对战略的共同世界的非常识”。它不像“Pre-shaved Yaks” 那么吸引人，但它成为我在 2007 年第一次尝试写一本关于地图的书但失败的标题。
 
 I needed to demonstrate or disprove the concept of evolution in technology and mapping itself. I had no clue on how to do this but that didn’t stop me becoming a bit obsessed. My beard grew longer and I’m pretty sure I was mumbling mapping in my sleep. The reason why my purpose became all-consuming was it had two other things that mattered. First, it had a defined scope that was tangible and could be understood i.e. I was looking at the validity of this mapping technique. Second, it also had a moral imperative, I was rebelling against the hordes of management consultants that enslaved us with 2x2s in this marriage of convenience! It felt good. I had: -
-我需要证明或反驳技术和地图本身的进化概念。我不知道该怎么做，但这并没有阻止我变得有点着迷。我的胡子变长了，我很确定我在睡梦中喃喃自语。我的目标变得非常重要的原因是它还有另外两件事很重要。首先，它有一个明确的、有形的、可以理解的范围，即我正在研究这种映射技术的有效性。其次，它也有道德上的要求，我正在反抗成群结队的管理顾问，他们在这场权宜婚姻中用 2x2 奴役了我们！感觉很好。我有：-
+我需要证明或反驳技术和地图本身的进化概念。我不知道该怎么做，但这并没有阻止我变得有些痴迷。我的胡子越来越长，我几乎确定自己在睡梦中都在喃喃自语地图。我的目标之所以变得如此重要，是因为它还有另外两件重要的事。首先，它有一个明确的、有形的、可以理解的范围——我在研究这种地图技术的有效性。其次，它还有道德上的紧迫性——我在反抗成群结队的管理顾问，他们在这场权宜婚姻中用2x2矩阵奴役了我们！感觉很好。我有：-
 
 Purpose: Explain topographical intelligence to the world of business.
 目的：向商业世界解释地形智能。
@@ -88,7 +88,7 @@ Imperative: Rebel against the hordes of management consultants that enslave us b
 势在必行：反抗成群结队的管理顾问，他们通过让普通人学习来奴役我们。
 
 Being mindful of this purpose, I could now start thinking about the potential users of mapping and try to define what their needs might be. The users would need some way of exploiting mapping, some way of learning how to map given the complexity of the topic and also some sort of confirmation or validation that mapping was based upon something sensible. There was a chain of needs from purpose to user need (the very anchor of mapping) which I’ve drawn in figure 67.
-考虑到这个目的，我现在可以开始考虑地图的潜在用户并尝试定义他们的需求。用户将需要某种利用映射的方法，某种学习如何在给定主题的复杂性的情况下进行映射的方法，以及某种确认或验证映射是基于某些合理的东西的方法。我在图 67 中绘制了从目的到用户需求（映射的真正锚点）的需求链。
+怀着这个目标，我现在可以开始思考地图的潜在用户，并尝试定义他们的需求。用户需要某种利用地图的方法，需要在主题如此复杂的情况下学习如何绘制地图的方法，还需要某种确认或验证——证明地图是基于某些合理的东西。我在图67中绘制了从目标到用户需求（这正是地图的锚点）的需求链。
 
 Figure 67 — Purpose 图 67 — 目的
 
