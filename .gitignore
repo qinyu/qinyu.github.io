@@ -13,3 +13,11 @@ hugo.linux
 /.hugo_build.lock
 
 .DS_Store
+
+# Local AI / agent caches
+.understand-anything/
+.claude/settings.local.json
+content/temp/
+
+# Local unused clone; site stays on Anatole
+themes/blowfish/
