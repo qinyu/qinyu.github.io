@@ -10,3 +10,5 @@ taxonomies:
 mainSections:
   - post
 defaultContentLanguage: zh-cn
+ignoreFiles:
+  - content/temp/
