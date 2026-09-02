@@ -1,0 +1,120 @@
+/* Site overlay on Anatole. Do not edit themes/anatole. */
+
+.theme--light .body {
+  color: #1a1917;
+  background-color: #f7f7f5;
+}
+
+.theme--light .header,
+.theme--light .nav__list,
+.theme--light .post {
+  background-color: #f7f7f5;
+}
+
+.theme--light a {
+  color: #1a1917;
+}
+
+.theme--light a:hover {
+  color: #2f5f8a;
+}
+
+.theme--light .post__content a {
+  color: #2f5f8a;
+}
+
+.theme--light .post__content a:hover {
+  color: #1d3f5c;
+}
+
+.theme--light .post__content,
+.theme--light .post__content p,
+.theme--light .sidebar__introduction-description,
+.theme--light .sidebar__introduction-description p {
+  color: #1a1917;
+}
+
+.sidebar__introduction-title {
+  text-transform: none;
+  letter-spacing: -0.03em;
+}
+
+.sidebar__introduction-title a {
+  font-size: 2.6rem;
+  font-weight: 700;
+}
+
+.theme--light .sidebar__introduction-title a {
+  color: #141311;
+}
+
+.sidebar__introduction-profileimage {
+  width: 168px;
+  height: 168px;
+  border-radius: 1.25rem;
+  object-fit: cover;
+}
+
+.sidebar__introduction-description {
+  margin-top: 0.75em;
+  font-size: 1.5rem;
+  line-height: 1.65;
+}
+
+.nav__list-item {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.theme--light .nav__link--active {
+  border-bottom-color: #141311;
+}
+
+.post {
+  margin: 2.4rem 2rem;
+}
+
+.post__content h1,
+.post__content h2,
+.post__content h3 {
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.theme--light .post__content h1 a,
+.theme--light .post__content h2 a,
+.theme--light .post__content h3 a {
+  color: #141311;
+}
+
+.theme--light .post__footer,
+.theme--light .post__footer-date,
+.theme--light .post__meta,
+.theme--light .post__meta-text,
+.theme--light .tag {
+  color: #3f3c38;
+}
+
+.theme--dark .body {
+  color: #f3f1ec;
+}
+
+.theme--dark .post__content,
+.theme--dark .post__content p,
+.theme--dark .post__content h1 a,
+.theme--dark .post__content h2 a,
+.theme--dark .post__content h3 a,
+.theme--dark .sidebar__introduction-title a,
+.theme--dark .sidebar__introduction-description,
+.theme--dark .sidebar__introduction-description p {
+  color: #f3f1ec;
+}
+
+.theme--dark .post__footer,
+.theme--dark .post__footer-date,
+.theme--dark .post__meta,
+.theme--dark .tag {
+  color: #d4d0c8;
+}

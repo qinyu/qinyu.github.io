@@ -31,7 +31,7 @@ hugo --minify
 - 规范域名是 `https://www.qinyu.info`。`config/_default/config.yml` 里的 `baseURL` 仍是 `https://qinyu.github.io`，GitHub Pages 会 301 过去。不要「修正」`baseURL`，除非用户明确要求。
 - 推到 `main` 会触发 `.github/workflows/gh-pages.yml`，构建并发布到线上。用户没说 push，就停在本地。
 - 文章写在 `content/post/<kebab-topic>/index.md`，图片和文章放在同一目录。站点级页面在 `content/` 根下（`about.md`、`books.md`、`courses.md`、`wechat.md`）。
-- `themes/anatole` 是 git submodule。改内容和 `config/`；用户没要求更新主题，就不要动主题目录，也不要换主题。Anatole 的 RSS 用站点里的 `layouts/_default/rss.xml` 覆盖（Hugo 0.158+ 去掉了 `.Site.Author`）。
+- `themes/anatole` 是 git submodule。改内容和 `config/`；用户没要求更新主题，就不要动主题目录，也不要换主题。视觉只改 `assets/css/custom.css`（由 `params.yml` 的 `customCss` 加载）。Anatole 的 RSS 用站点里的 `layouts/_default/rss.xml` 覆盖（Hugo 0.158+ 去掉了 `.Site.Author`）。
 - `content/temp/` 已被 gitignore，也在 `config.yml` 的 `ignoreFiles` 里排除，是抓取/草稿暂存，不是站点内容。
 - 生产构建忽略 `draft: true`。没说「发布」，就保持草稿。架构编年史三篇和 Wardley Maps 第 7 章目前都是草稿。
 
