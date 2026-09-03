@@ -7,11 +7,16 @@ description: |
   移动应用架构师
   技术教练
 profilePicture: images/profile.jpg
+customCss:
+  - css/custom.css
 googleAnalytics: false
 socialIcons:
   - icon: fab fa-github
     title: GitHub
     url: https://github.com/qinyu/
+  - icon: fab fa-x-twitter
+    title: X
+    url: https://x.com/qinyu
   - icon: fab fa-weixin
     title: 微信公众号：覃宇码字的地方
     url: /wechat/
