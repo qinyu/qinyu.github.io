@@ -24,9 +24,9 @@ draft: true
 
 # 系统的基本构建块
 
-我们从 [EBI 架构](https://herbertograca.com/2017/08/24/ebi-architecture/)以及[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)的回顾开始。它们都有清晰的代码划分，哪些代码在应用内部，哪些代码在外部，而哪些代码用来连接它们。
+我们从 [EBI 架构](https://herbertograca.com/2017/08/24/ebi-architecture/)以及[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})的回顾开始。它们都有清晰的代码划分，哪些代码在应用内部，哪些代码在外部，而哪些代码用来连接它们。
 
-除此之外，[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)还明确地识别出了一个系统中的三个基本代码构建块：
+除此之外，[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})还明确地识别出了一个系统中的三个基本代码构建块：
 
 - 运行**用户界面**所需的构建块，无论是哪种用户界面；
 - 系统的**业务逻辑**，或者**应用核心**，用户界面要使用这个构建块达成目的；
@@ -50,7 +50,7 @@ draft: true
 
 ## 将传达机制和工具连接到应用核心
 
-连接工具和应用核心的代码单元被称为适配器([端口和适配器架构](https://www.jianshu.com/p/f39f4537857e))。适配器有效地实现了让业务逻辑和特定工具之间可以相互通信的代码。
+连接工具和应用核心的代码单元被称为适配器([端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}}))。适配器有效地实现了让业务逻辑和特定工具之间可以相互通信的代码。
 
 **告知我们**的应用应该做什么的适配器被称为**主适配器**或**主动适配器**，而那些由我们的应用**告知它**该做什么的适配器被称为**从适配器**或者**被动适配器**。
 
@@ -96,17 +96,17 @@ draft: true
 
 # 组织应用核心的结构
 
-[洋葱架构](https://www.jianshu.com/p/d87d5389c92a)采用了 DDD 的分层，将它们融合进了端口和适配器架构。这种分层想要为位于[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)“六边形”内的业务逻辑带来一种结构组织，和[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)一样，依赖的方向也是由外向内。
+[洋葱架构]({{< ref "post/architecture-chronicles/onion-architecture" >}})采用了 DDD 的分层，将它们融合进了端口和适配器架构。这种分层想要为位于[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})“六边形”内的业务逻辑带来一种结构组织，和[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})一样，依赖的方向也是由外向内。
 
 ## 应用层
 
 在应用中，由一个或多个用户界面触发的应用核心中的过程就是用例。例如，在一个 CMS 系统中，我们可以提供普通用户使用的应用 UI、CMS 管理员使用的独立的 UI、命令行 UI 以及 Web API。这些 UI(应用)可以触发的用例可能是专门为它设计的，也可以是多个 UI 复用的。
 
-用例定义在应用层中，这是 DDD 提供的第一个被[洋葱架构](https://www.jianshu.com/p/d87d5389c92a)使用的层。
+用例定义在应用层中，这是 DDD 提供的第一个被[洋葱架构]({{< ref "post/architecture-chronicles/onion-architecture" >}})使用的层。
 
 ![](https://upload-images.jianshu.io/upload_images/4099-ce229fb06edca57a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-这个层包括了作为一等公民的应用服务(以及它们的接口)，也包括了[端口和适配器架构](https://www.jianshu.com/p/f39f4537857e)中的接口，例如 ORM 接口、搜索引擎接口、消息接口等等。如果我们使用了命令总线和/或查询总线，命令和查询分别对应的处理程序也属于这一层。
+这个层包括了作为一等公民的应用服务(以及它们的接口)，也包括了[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})中的接口，例如 ORM 接口、搜索引擎接口、消息接口等等。如果我们使用了命令总线和/或查询总线，命令和查询分别对应的处理程序也属于这一层。
 
 应用服务和/或命令处理程序包含了展现一个用例，一个业务过程的逻辑。通常，它们的作用是：
 
@@ -183,7 +183,7 @@ draft: true
 
 但是我们可以让 A 使用事件派发器，派发一个领域事件，这个事件将会投递给任何监听它的组件，例如 B，然后 B 的事件监听器会触发期望的操作。这意味着组件 A 将依赖事件派发器，但和 B 解耦了。
 
-然而，如果事件本身“活在” A 中，这将意味着 B 知道了 A 的存在，就和 A 存在耦合。要去掉这个依赖，我们可以创建一个包含应用核心功能的库，由所有组件共享，这就是[共享内核](http://ddd.fed.wiki.org/view/welcome-visitors/view/domain-driven-design/view/shared-kernel)。这意味着两个组件都依赖共享内核，而它们之间却没有耦合。共享内核包含了应用事件和领域事件这样的功能，而且还包含规格对象，以及其它任何有理由共享的东西。记住共享内核的范围应该尽可能的小，因为它的任何变化都会影响所有应用组件。而且，如果我们的系统是语言异构的，比如使用不同语言编写的微服务生态，共享内核需要做到与语言无关的，这样它才能被所有组件理解，无论它们是用哪种语言编写的。例如，共享内核应该包含像 JSON 这样无关语言的事件描述(例如，名称、属性，也许还有方法，尽管它们对规格对象来说更有意义)而不是事件类，这样所有组件/微服务都可以解析它，还可以自动生成各自的具体实现。请在我的下一篇文章中了解更多内容：[超越同心圆分层](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)([译](https://www.jianshu.com/p/fcf5bb27a60b))
+然而，如果事件本身“活在” A 中，这将意味着 B 知道了 A 的存在，就和 A 存在耦合。要去掉这个依赖，我们可以创建一个包含应用核心功能的库，由所有组件共享，这就是[共享内核](http://ddd.fed.wiki.org/view/welcome-visitors/view/domain-driven-design/view/shared-kernel)。这意味着两个组件都依赖共享内核，而它们之间却没有耦合。共享内核包含了应用事件和领域事件这样的功能，而且还包含规格对象，以及其它任何有理由共享的东西。记住共享内核的范围应该尽可能的小，因为它的任何变化都会影响所有应用组件。而且，如果我们的系统是语言异构的，比如使用不同语言编写的微服务生态，共享内核需要做到与语言无关的，这样它才能被所有组件理解，无论它们是用哪种语言编写的。例如，共享内核应该包含像 JSON 这样无关语言的事件描述(例如，名称、属性，也许还有方法，尽管它们对规格对象来说更有意义)而不是事件类，这样所有组件/微服务都可以解析它，还可以自动生成各自的具体实现。请在我的下一篇文章中了解更多内容：[超越同心圆分层](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)([译]({{< ref "post/architecture-chronicles/explicit-architecture-02" >}}))
 
 ![](https://upload-images.jianshu.io/upload_images/4099-d060e0ed551479df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
