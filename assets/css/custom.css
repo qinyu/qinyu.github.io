@@ -1,5 +1,13 @@
 /* Site overlay on Anatole. Do not edit themes/anatole. */
 
+/* Light-mode post body: Anatole default #464646 is too gray on a light
+   background. Neutral 800 keeps contrast without restyling the theme.
+   Dark mode keeps Anatole's #eee on #152028. */
+.theme--light .post__content,
+.theme--light .post__content blockquote {
+  color: #262626;
+}
+
 .post__content img {
   margin-left: 0;
   margin-right: auto;
