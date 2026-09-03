@@ -1,7 +1,0 @@
-{{- $hit := false -}}
-{{- range (.Params.series | default slice) -}}
-  {{- if or (eq . "软件架构编年史") (eq . "Wardley Maps Book") -}}
-    {{- $hit = true -}}
-  {{- end -}}
-{{- end -}}
-{{- return $hit -}}

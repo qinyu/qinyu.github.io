@@ -7,14 +7,6 @@ main:
     weight: 200
     identifier: posts
     url: /post/
-  - name: 架构编年史
-    weight: 210
-    identifier: architecture-chronicles
-    url: /architecture-chronicles/
-  - name: Wardley Maps
-    weight: 220
-    identifier: wardley-maps
-    url: /wardley-maps/
   - name: 作品
     weight: 300
     identifier: works
