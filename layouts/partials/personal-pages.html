@@ -1,0 +1,8 @@
+{{- /* Pages that belong on the personal timeline (home, /post/, main RSS). */ -}}
+{{- $out := slice -}}
+{{- range . -}}
+  {{- if not (partial "is-translation-series.html" .) -}}
+    {{- $out = $out | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

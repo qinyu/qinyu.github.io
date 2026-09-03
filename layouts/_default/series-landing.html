@@ -1,0 +1,28 @@
+{{ define "main" }}
+  <div
+    class="post {{ with .Site.Params.doNotLoadAnimations }}
+      .
+    {{ else }}
+      animated fadeInDown
+    {{ end }}"
+  >
+    <div class="post__content">
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
+      <ol class="series-landing__list">
+        {{ range .Params.chapters }}
+          <li>
+            {{ partial "series-chapter-item.html" . }}
+            {{ with .children }}
+              <ul>
+                {{ range . }}
+                  <li>{{ partial "series-chapter-item.html" . }}</li>
+                {{ end }}
+              </ul>
+            {{ end }}
+          </li>
+        {{ end }}
+      </ol>
+    </div>
+  </div>
+{{ end }}

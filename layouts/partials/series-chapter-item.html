@@ -1,0 +1,10 @@
+{{- $label := .title -}}
+{{- $page := false -}}
+{{- with .path -}}
+  {{- $page = site.GetPage . -}}
+{{- end -}}
+{{- if and $page (not $page.Draft) -}}
+  <a href="{{ $page.RelPermalink }}">{{ $label }}</a>
+{{- else -}}
+  {{ $label }}
+{{- end -}}
