@@ -32,11 +32,11 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
 
 然而我一直有一个困惑，这些观点发展出其它许多观点，又继续发展出更多的观点...这就好比“传话游戏”，论文、文章或者书籍原本要表达的思想最后终会被扭曲。　
 
-于是我开始在互联网上淘宝，寻找表达这些概念的原始论文、文章和书籍，我觉得它们是我工作中最重要的概念，我自己也时常思考它们。
+于是我开始在互联网上搜寻，寻找表达这些概念的原始论文、文章和书籍，我觉得它们是我工作中最重要的概念，我自己也时常思考它们。
 
 在我尝试以某种考古方式理解这些概念如何形成的过程中，我的思考就形成了这一系列文章。
 
-撰写这些文章强迫我大量阅读和思考这些主题，这帮我理解现代软件开发中使用的技术。我希望这些文章内帮到更多后来的开发者。
+撰写这些文章强迫我大量阅读和思考这些主题，这帮我理解现代软件开发中使用的技术。我希望这些文章能帮到更多后来的开发者。
 
 然而，如果你读到任何不理解或者有异议的内容，请让我知晓。我对这些主题的讨论持完全开放的态度，希望可以从他人那里学习，当我被证明犯错时我会改变我的观点。
 
@@ -44,8 +44,8 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
 
 [出事儿]({{< ref "post/architecture-chronicles/premises" >}})
 
-1. [软件架构编年史(译)](https://www.jianshu.com/p/b477b2cc6cfa)  //[原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)
-2. [软件架构预述(译)](https://www.jianshu.com/p/df295f92fb52) //[原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)
+1. [软件架构编年史（译）]({{< ref "post/architecture-chronicles/chronicles" >}})  //[原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)
+2. [软件架构预述（译）]({{< ref "post/architecture-chronicles/premises" >}}) //[原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)
 3. [编程语言的演化(译)](https://www.jianshu.com/p/2c4b7f86e5d4) //[原文](https://herbertograca.com/2017/07/10/programming-language-evolution/)  
 4. [架构风格 vs. 架构模式 vs. 设计模式(译)](https://www.jianshu.com/p/d8dce27f279f) //[原文](https://herbertograca.com/2017/07/28/architectural-styles-vs-architectural-patterns-vs-design-patterns/)  
 5. [单体架构(译)](https://www.jianshu.com/p/28c3439c11d3) //[原文](https://herbertograca.com/2017/07/31/monolithic-architecture/)  
@@ -68,7 +68,7 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
 14. [事件驱动的架构(译)](https://www.jianshu.com/p/12dc9a4b3e35) //[原文](https://herbertograca.com/2017/10/05/event-driven-architecture/)  
 15. [从CQS到CQRS(译)](https://www.jianshu.com/p/ab3843093903) //[原文](https://herbertograca.com/2017/10/19/from-cqs-to-cqrs/)  
 16. [面向服务的架构(SOA)(译)](https://www.jianshu.com/p/0c1354b3341f) //[原文](https://herbertograca.com/2017/11/09/service-oriented-architecture-soa/)  
-17. [清晰架构(01)：融合DDD、洋葱架构、整洁架构、CQRS...(译)](https://www.jianshu.com/p/d3e8b9ac097b) //[原文](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)  
+17. [清晰架构(01)：融合DDD、洋葱架构、整洁架构、CQRS...（译）]({{< ref "post/architecture-chronicles/explicit-architecture" >}}) //[原文](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)  
 18. [清晰架构(02)：超越同心圆分层 (译)](https://www.jianshu.com/p/fcf5bb27a60b) //[原文](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)  
 19. [清晰架构(03)：在代码中展现架构和领域 (译)](https://www.jianshu.com/p/dd992f3fe370) //[原文](https://herbertograca.com/2019/06/05/reflecting-architecture-and-domain-in-code/)
 20. [清晰架构(04)：用文档描述架构 (译)](https://www.jianshu.com/p/5f1d9500b8df) //[原文](https://herbertograca.com/2019/08/12/documenting-software-architecture/)
@@ -129,4 +129,4 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
   * [2012](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) – **整洁架构**
   * [2014](http://www.codingthearchitecture.com/2014/08/24/c4_model_poster.html) – C4 模型
 
-![原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
+[原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
