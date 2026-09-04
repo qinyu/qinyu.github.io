@@ -1,5 +1,5 @@
 ---
-title: 软件架构预述 (译)
+title: 软件架构预述（译）
 description: 软件架构编年史（2）软件架构预述
 date: '2018-09-12'
 tags:
@@ -14,19 +14,19 @@ draft: true
 
 <!--more-->
 
-_这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译](https://www.jianshu.com/p/b477b2cc6cfa))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。_
+_这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。_
 
 在这篇文章中，我将总结一些关于软件架构的最基本的概念，了解它们才能更好地理解后续的文章。
 
 # 没有银弹
 
-无论你如何理解我在[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译](https://www.jianshu.com/p/b477b2cc6cfa))中谈到的内容，首先要理解的是**没有银弹**，没有“*普适性*”的解决方案。尽可能地了解不同的方法，理解每一种方法的优劣，和它们解决的特定技术问题。
+无论你如何理解我在[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))中谈到的内容，首先要理解的是**没有银弹**，没有“*普适性*”的解决方案。尽可能地了解不同的方法，理解每一种方法的优劣，和它们解决的特定技术问题。
 
 然后，当接受新的挑战时，先从理解业务和最终用户的需求开始。在搞清楚这些需求之后，你才能思考应该采用哪些架构风格和模式来更好地解决这些问题。
 
 最后，自己做出选择，是实现一种已知的解决方案，还是创造适合自己的特定问题的独特设计。
 
-> 有些架构风格号称是所有形式的软件的“银弹”。然而，优秀的设计这应该选择最符合解决特定问题需要的风格。——Roy Fielding, 2000[^1]
+> 有些架构风格号称是所有形式的软件的“银弹”。然而，优秀的设计师应该选择最符合解决特定问题需要的风格。——Roy Fielding, 2000[^1]
 
 # 术语
 
@@ -62,7 +62,7 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 
 ## 模块(Module)
 
-我使用[Software Architecture in Practice](https://www.amazon.com/Software-Architecture-Practice-SEI-Engineering-ebook/dp/B009GMUL84)[^7]给出的定义，模块就是一个**功能性包**，它体现了应用中的**一种技术能力**。它是解耦的并且能够被其他的实现替换。我的理解是，模块即存在与较低的粒度级别，比如，“**安全模块**”或者“**ORM**”，也可以存在于像**客户端**和**服务器**这样的应用块。模块提供的是功能性内聚。
+我使用[Software Architecture in Practice](https://www.amazon.com/Software-Architecture-Practice-SEI-Engineering-ebook/dp/B009GMUL84)[^7]给出的定义，模块就是一个**功能性包**，它体现了应用中的**一种技术能力**。它是解耦的并且能够被其他的实现替换。我的理解是，模块既存在于较低的粒度级别，比如，“**安全模块**”或者“**ORM**”，也可以存在于像**客户端**和**服务器**这样的应用块。模块提供的是功能性内聚。
 
 ## 组件(Component)
 
@@ -76,7 +76,7 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 
 ## 系统(System)
 
-我认为系统是一组以某种方式在一起工作，为各种企业必需品提供功能，形成一个企业范围内的系统，即企业应用。这些应用可能构建在相同或不同的组件上。在之前网络商店的例子中，系统就是作为一个整体的网络商店，包括两个基于同样业务组件构建的两个应用(店面和管理)，还有其他像支付供应商或货运供应商这样的第三方应用。
+我认为系统是一组以某种方式在一起工作，为各种企业必需品提供功能，形成一个企业范围内的系统，即企业应用。这些应用可能构建在相同或不同的组件上。在之前网络商店的例子中，系统就是作为一个整体的网络商店，包括基于同样业务组件构建的两个应用(店面和管理)，还有其他像支付供应商或货运供应商这样的第三方应用。
 
 ## 架构(Architecture)
 
@@ -103,7 +103,7 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 
 他是由行会讨论和决定的架构的**发起人和守护者**。他是部门/团队中经验最丰富的开发者之一，恰好承担着分析高层次问题和解决方案的额外职责。在做出架构决策时，他还拥有“质量票”（He also benefits from a “quality vote” when making an architectural decision.）。
 
-可是，有一点值得注意，所有开发者某种程度上都是架构师，因为他们都要了解架构，他们都会议某种形式参与架构，他们都适当地承担着维护架构的职责。　
+可是，有一点值得注意，所有开发者某种程度上都是架构师，因为他们都要了解架构，他们都会以某种形式参与架构，他们都适当地承担着维护架构的职责。　
 
 ## 象牙塔架构师(Ivory Tower Architect)
 
@@ -127,7 +127,7 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 
 在一个粘滞的系统中，要做对困难重重，要做错却轻而易举。这意味着通过正常开发实现变更不如用非常手段来得容易。
 
-如果执行单元测试和/或编译需要耗费很长时间，开发很可能导跳过这些过程，不跑任何自动化测试就实现非常规的修改，这就是**系统范围的粘滞**。　
+如果执行单元测试和/或编译需要耗费很长时间，开发很可能导致跳过这些过程，不跑任何自动化测试就实现非常规的修改，这就是**系统范围的粘滞**。　
 
 ## 不必要的重复(Needless repetition)
 
@@ -135,7 +135,7 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 
 ## 晦涩(Opacity)
 
-代码写得混乱，难以理解，我们需要深人方法实现的细节才能搞清楚代码要干什么。
+代码写得混乱，难以理解，我们需要深入方法实现的细节才能搞清楚代码要干什么。
 
 ## 不必要的复杂(Needless complexity)
 
@@ -143,7 +143,7 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 
 [原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
 
-[^1]: 2000 – Roy Fielding – [Architectural Styles and the Design of Network-based Software Architectures](http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdfhttp://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf) 
+[^1]: 2000 – Roy Fielding – [Architectural Styles and the Design of Network-based Software Architectures](http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf) 
 [^2]: 2000 – Robert C. Martin – [Design Principles and Design Patterns](http://www.cvc.uab.es/shared/teach/a21291/temes/object_oriented_design/materials_adicionals/principles_and_patterns.pdf) 
 [^3]: 2006 – Booch, in [[5 pg.2]](https://herbertograca.com/2017/07/05/software-architecture-premises/#05) 
 [^4]: 2007 – [IEEE1471](https://en.wikipedia.org/wiki/IEEE_1471) in [[5 pg.2]](https://herbertograca.com/2017/07/05/software-architecture-premises/#05) 
