@@ -20,19 +20,17 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    Landscape sizes the 16:9 plate by HEIGHT (auto 120vh) and pins
-    it left — not cover-on-a-centered-120%-box, which cropped the
-    limb and zoomed into the face. Image height 120vh keeps top
-    and bottom bounce inside the photo; width follows 16:9 so the
-    lit disk reads smaller and more of the right-hand cosmos stays
-    in frame. On viewports wider than 120vh×16/9 the plate does
-    not span the screen; black void opens on the right.
-    Portrait: 120% by height, cover, left-anchored.
-    Scroll zoom stays 1.00–1.024. Never rest at exact cover.
-    Do not size the poster as 120% of an lvh-bloated site-bg.
+    The plate fills the photo’s full height — any size over 100vh
+    crops the top/bottom limbs. Rest at 86vh so the complete disk
+    (including the lower half-circle) stays in view; ~7vh void
+    above/below absorbs bounce instead of a 120% crop that still
+    clipped the limb. Width follows 16:9; pin left so cosmos
+    opens on the right and the planet reads smaller than a
+    height-cover zoom. Portrait uses the same 86vh contain, left-
+    anchored, 9:16 box. Scroll zoom stays 1.00–1.024.
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
-  --bg-size: auto 120vh;
+  --bg-size: auto 86vh;
   --bg-pos: left center;
   --bg-scale: 1;
 }
@@ -65,10 +63,8 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  /* Viewport-sized fallback (not document-tall cover) so overscroll
-     still shows the 20% height buffer instead of a void band.
-     Height-based: auto 120vh avoids the 4:3 iPad vertical shortfall. */
-  background-size: auto 120vh;
+  /* Same complete-plate fallback as the poster (86vh, left). */
+  background-size: auto 86vh;
   background-position: left center;
   min-height: 100%;
   min-height: 100dvh;
@@ -100,21 +96,20 @@ html,
 }
 
 /*
-  Landscape rest: 16:9 plate at auto 120vh, pinned left.
-  Width is 120vh×16/9 (min 120%) so cover cannot inflate the
-  disk past that height. Limb stays on the left; cosmos opens
-  to the right — and past the plate on wide viewports.
-  Scroll scale is 1.00–1.024 (kept from #34; not pre-#32 1.08).
+  Landscape: contain the full 16:9 plate at 86vh, pinned left.
+  Do not use cover / min-height 120% — those crop the lower limb
+  and 6vh scroll travel cannot reveal it. Void around the plate
+  covers bounce. Scroll scale 1.00–1.024.
 */
 .site-bg__poster {
   position: absolute;
   left: 0;
   top: 50%;
-  width: calc(120vh * 16 / 9);
-  min-width: 120%;
+  width: calc(86vh * 16 / 9);
+  min-width: 0;
   max-width: none;
-  height: auto;
-  min-height: 120%;
+  height: 86vh;
+  min-height: 0;
   aspect-ratio: 16 / 9;
   pointer-events: none;
   background-color: var(--void);
@@ -130,28 +125,26 @@ html,
 }
 
 /*
-  Portrait rest: 20% zoom-out by HEIGHT (layer ≈ 120vh). Pin the
-  plate to the LEFT — do not center-crop. left:50% + translate(-50%)
-  on a 9:16 box wider than the viewport shaved the left of the
-  disk and jammed the planet against the right edge.
+  Portrait: same complete-plate contain (86vh), 9:16 box, left
+  pin. cover + 120% height clipped the disk the same way.
 */
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
-    --bg-size: cover;
+    --bg-size: auto 86vh;
   }
 
   html,
   .html {
-    background-size: auto 120vh;
+    background-size: auto 86vh;
     background-position: left center;
   }
 
   .site-bg__poster {
-    width: auto;
-    min-width: 100%;
+    width: calc(86vh * 9 / 16);
+    min-width: 0;
     max-width: none;
-    height: 120%;
+    height: 86vh;
     aspect-ratio: 9 / 16;
     left: 0;
     top: 50%;
