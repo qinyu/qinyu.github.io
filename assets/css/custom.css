@@ -247,12 +247,17 @@ html,
     box-shadow: none;
   }
 
-  .sidebar {
+  .sidebar,
+  html .sidebar,
+  html.theme--dark .sidebar,
+  html.theme--light .sidebar {
     position: fixed;
     top: 0;
     height: 100%;
     height: 100dvh;
+    border: none;
     border-right: none;
+    border-left: none;
     margin-right: 0;
     animation: none;
     transform: none;
@@ -286,7 +291,10 @@ html,
     line-height: inherit;
   }
 
-  .header {
+  .header,
+  html .header,
+  html.theme--dark .header,
+  html.theme--light .header {
     position: sticky;
     top: 0;
     z-index: 10;
