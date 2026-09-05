@@ -8,7 +8,9 @@
   // after that zoom. Do not peak at 1.15 on a 115% layer.
   const maxTravel = 0.06;
   const ease = 0.16;
+  const arriveEase = 0.08;
   const storageKey = "site-bg-parallax";
+  const scrollKey = "site-bg-scroll";
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
   const baseScale = 1;
@@ -24,7 +26,10 @@
   let touching = false;
   // After an in-site nav: keep the outgoing visual, ease to the new page's Y.
   let arriving = false;
+  let arriveScroll = 0;
   let holdFirstFrame = false;
+  let userTookScroll = false;
+  let navScrollY = 0;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -50,6 +55,18 @@
     } catch (_) {
       /* private mode */
     }
+  };
+
+  const persistScroll = (y) => {
+    try {
+      sessionStorage.setItem(scrollKey, String(y));
+    } catch (_) {
+      /* private mode */
+    }
+  };
+
+  const applyScrollCarry = () => {
+    root.style.setProperty("--nav-scroll-y", `${navScrollY.toFixed(2)}px`);
   };
 
   try {
@@ -80,18 +97,26 @@
     arriving = sessionStorage.getItem(handoffKey) === "1";
     if (arriving) {
       sessionStorage.removeItem(handoffKey);
+      const savedScroll = sessionStorage.getItem(scrollKey);
+      if (savedScroll != null) {
+        const parsedScroll = parseFloat(savedScroll);
+        if (!Number.isNaN(parsedScroll)) {
+          navScrollY = Math.max(0, parsedScroll);
+        }
+      }
     }
   } catch (_) {
     /* private mode */
   }
 
-  // Full page loads reset scrollY to 0 while the stored offset may still be mid-travel.
-  if (!arriving && Math.abs(current) > 0.5 && readScrollY() < 2) {
-    arriving = true;
-  }
-
   if (arriving) {
     root.classList.add("is-nav-carry");
+    const maxScroll = Math.max(0, root.scrollHeight - (window.innerHeight || 0));
+    if (maxScroll > 0) {
+      navScrollY = clamp(navScrollY, 0, maxScroll);
+    }
+    arriveScroll = navScrollY;
+    applyScrollCarry();
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
@@ -145,6 +170,10 @@
       return;
     }
     arriving = false;
+    arriveScroll = 0;
+    navScrollY = 0;
+    applyScrollCarry();
+    root.classList.remove("is-nav-carry");
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "auto";
     }
@@ -156,7 +185,9 @@
     currentScale = baseScale;
     targetScale = baseScale;
     holdFirstFrame = false;
+    navScrollY = 0;
     apply();
+    applyScrollCarry();
     running = false;
     finishArrive();
   };
@@ -174,10 +205,19 @@
       return;
     }
     target = computeTarget();
+    const step = arriving ? arriveEase : ease;
+    if (arriving && !userTookScroll && arriveScroll > 0.5) {
+      arriveScroll += (0 - arriveScroll) * step;
+      if (arriveScroll < 0.5) {
+        arriveScroll = 0;
+      }
+      navScrollY = arriveScroll;
+      applyScrollCarry();
+    }
     targetScale = computeScale();
     const delta = target - current;
     const deltaScale = targetScale - currentScale;
-    if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008) {
+    if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
       current = target;
       currentScale = targetScale;
       apply();
@@ -185,8 +225,8 @@
       finishArrive();
       return;
     }
-    current += delta * ease;
-    currentScale += deltaScale * ease;
+    current += delta * step;
+    currentScale += deltaScale * step;
     apply();
     running = true;
     window.requestAnimationFrame(tick);
@@ -203,8 +243,16 @@
     }
   };
 
+  const cancelScrollSettle = () => {
+    userTookScroll = true;
+    arriveScroll = 0;
+    navScrollY = 0;
+    applyScrollCarry();
+    root.classList.remove("is-nav-carry");
+  };
   const markHandoff = () => {
     persistParallax();
+    persistScroll(readScrollY());
     try {
       sessionStorage.setItem(handoffKey, "1");
     } catch (_) {
@@ -221,7 +269,9 @@
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
         return;
       }
-      const link = event.target.closest ? event.target.closest("a[href]") : null;
+      const rawTarget = event.target;
+      const from = rawTarget && rawTarget.nodeType === 1 ? rawTarget : rawTarget && rawTarget.parentElement;
+      const link = from && typeof from.closest === "function" ? from.closest("a[href]") : null;
       if (!link) {
         return;
       }
@@ -249,7 +299,14 @@
     true,
   );
 
-  window.addEventListener("pagehide", persistParallax);
+  window.addEventListener("pagehide", () => {
+    persistParallax();
+    // Unload often reports scrollY=0; do not clobber a handoff offset.
+    const y = readScrollY();
+    if (y > 0.5) {
+      persistScroll(y);
+    }
+  });
 
   window.addEventListener(
     "touchstart",
@@ -292,11 +349,48 @@
   window.addEventListener("touchcancel", endTouch, { passive: true });
 
   window.addEventListener("scroll", kick, { passive: true });
+  window.addEventListener(
+    "wheel",
+    () => {
+      if (arriving) {
+        cancelScrollSettle();
+      }
+      kick();
+    },
+    { passive: true },
+  );
+  window.addEventListener(
+    "keydown",
+    (event) => {
+      if (
+        arriving &&
+        (event.key === "PageDown" ||
+          event.key === "PageUp" ||
+          event.key === "ArrowDown" ||
+          event.key === "ArrowUp" ||
+          event.key === "Home" ||
+          event.key === "End" ||
+          event.key === " " ||
+          event.key === "Spacebar")
+      ) {
+        cancelScrollSettle();
+      }
+      kick();
+    },
+    true,
+  );
   window.addEventListener("resize", kick, { passive: true });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       arriving = false;
       holdFirstFrame = false;
+      arriveScroll = 0;
+      navScrollY = 0;
+      applyScrollCarry();
+      root.classList.remove("is-nav-carry");
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "auto";
+      }
     }
     kick();
   });
