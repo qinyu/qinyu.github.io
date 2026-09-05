@@ -1,7 +1,8 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // Layer bleed is ~28% top + bottom (landscape ~36%); travel ≤10vh either way.
+  // Vertical: ~28% bleed (landscape ~36%); travel ≤10vh either way.
+  // Horizontal ±5%: scale 1.00 at scroll extremes, 1.10 at mid-page.
   const maxTravel = 0.1;
   const ease = 0.16;
   const storageKey = "dune-bg-parallax";
@@ -18,11 +19,9 @@
   let touchStartY = 0;
   let touchPull = 0;
   let touching = false;
-  // After an in-site nav: keep the outgoing visual, ease to rest. Never snap.
+  // After an in-site nav: keep the outgoing visual, ease to the new page's Y.
   let arriving = false;
-  let arriveScroll = 0;
   let holdFirstFrame = false;
-  let userTookScroll = false;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -89,7 +88,6 @@
 
   if (arriving) {
     root.classList.add("is-nav-carry");
-    arriveScroll = readScrollY();
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
@@ -106,9 +104,6 @@
     if (reduce.matches) {
       return 0;
     }
-    if (arriving) {
-      return 0;
-    }
     const y = readScrollY();
     const vh = window.innerHeight || 1;
     const maxPx = vh * maxTravel;
@@ -123,9 +118,6 @@
   const computeScale = () => {
     if (reduce.matches) {
       return edgeScale;
-    }
-    if (arriving) {
-      return scaleFromProgress(pageProgress());
     }
     const y = readScrollY();
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
@@ -149,7 +141,6 @@
       return;
     }
     arriving = false;
-    arriveScroll = 0;
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "auto";
     }
@@ -163,9 +154,6 @@
     holdFirstFrame = false;
     apply();
     running = false;
-    if (arriving && readScrollY() !== 0) {
-      window.scrollTo(0, 0);
-    }
     finishArrive();
   };
 
@@ -183,20 +171,9 @@
     }
     target = computeTarget();
     targetScale = computeScale();
-    if (arriving && !userTookScroll && arriveScroll > 0.5) {
-      arriveScroll += (0 - arriveScroll) * ease;
-      if (arriveScroll < 0.5) {
-        arriveScroll = 0;
-      }
-      window.scrollTo(0, arriveScroll);
-    }
     const delta = target - current;
     const deltaScale = targetScale - currentScale;
-    if (
-      Math.abs(delta) < 0.08 &&
-      Math.abs(deltaScale) < 0.0008 &&
-      (!arriving || arriveScroll < 0.5 || userTookScroll)
-    ) {
+    if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008) {
       current = target;
       currentScale = targetScale;
       apply();
@@ -220,11 +197,6 @@
       running = true;
       window.requestAnimationFrame(tick);
     }
-  };
-
-  const cancelScrollSettle = () => {
-    userTookScroll = true;
-    arriveScroll = 0;
   };
 
   const markHandoff = () => {
@@ -278,7 +250,6 @@
   window.addEventListener(
     "touchstart",
     (event) => {
-      cancelScrollSettle();
       const touch = event.touches[0];
       if (!touch) {
         return;
@@ -316,32 +287,12 @@
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
 
-  window.addEventListener("wheel", cancelScrollSettle, { passive: true });
-  window.addEventListener(
-    "keydown",
-    (event) => {
-      if (
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown" ||
-        event.key === "PageUp" ||
-        event.key === "PageDown" ||
-        event.key === "Home" ||
-        event.key === "End" ||
-        event.key === " "
-      ) {
-        cancelScrollSettle();
-      }
-    },
-    { passive: true },
-  );
-
   window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener("resize", kick, { passive: true });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       arriving = false;
       holdFirstFrame = false;
-      arriveScroll = 0;
     }
     kick();
   });
@@ -358,7 +309,7 @@
   if (reduce.matches) {
     snapRest();
   } else {
-    // Paint the carried offset first, then ease to rest. Never snap to 0 then animate.
+    // Paint the carried frame first, then ease to this page's Y. Never snap.
     holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - edgeScale) > 0.0008;
     apply();
     kick();
