@@ -1,6 +1,6 @@
 baseURL: "https://qinyu.github.io"
 languageCode: zh-cn
-title: 覃宇｜Qin Yu is writing
+title: Qin Yu is writing
 theme: 
   - anatole
 taxonomies:
@@ -12,9 +12,3 @@ mainSections:
 defaultContentLanguage: zh-cn
 ignoreFiles:
   - content/temp/
-markup:
-  highlight:
-    style: solarized-dark
-    noClasses: false
-    codeFences: true
-    guessSyntax: true
