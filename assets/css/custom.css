@@ -168,6 +168,7 @@ html,
   }
 
   .sidebar {
+    position: fixed;
     border-right: 1px solid rgba(var(--sand-rgb), 0.22);
     margin-right: 0;
     animation: none;

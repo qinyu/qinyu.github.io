@@ -53,5 +53,7 @@
     {{- if (eq .Site.Params.simpleAnalytics.enable true) -}}
       {{- partial "analytics/simpleanalytics.html" . -}}
     {{- end -}}
+    {{- $parallax := resources.Get "js/parallax.js" | minify | fingerprint -}}
+    <script src="{{ $parallax.RelPermalink }}" integrity="{{ $parallax.Data.Integrity }}" crossorigin="anonymous"></script>
   </body>
 </html>

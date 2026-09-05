@@ -4,6 +4,7 @@
   // Layer bleed is 20% top + 20% bottom; travel ≤10vh either way.
   const maxTravel = 0.1;
   const ease = 0.16;
+  const arriveEase = 0.1;
   const storageKey = "dune-bg-parallax";
   const handoffKey = "dune-bg-handoff";
 
@@ -93,8 +94,9 @@
 
   const tick = () => {
     target = computeTarget();
+    const step = arriving ? arriveEase : ease;
     if (arriving && arriveScroll > 0.5) {
-      arriveScroll += (0 - arriveScroll) * ease;
+      arriveScroll += (0 - arriveScroll) * step;
       if (arriveScroll < 0.5) {
         arriveScroll = 0;
       }
@@ -108,7 +110,7 @@
       finishArrive();
       return;
     }
-    current += delta * ease;
+    current += delta * step;
     apply();
     running = true;
     window.requestAnimationFrame(tick);
@@ -240,5 +242,20 @@
   }
 
   apply();
-  kick();
+
+  // Do not ease in <head> before first paint — that finishes at rest and looks like a snap.
+  const start = () => {
+    if (arriving) {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(kick);
+      });
+      return;
+    }
+    kick();
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
 })();
