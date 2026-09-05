@@ -1,7 +1,7 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // Layer bleed is 20% top + 20% bottom; travel ≤10vh either way.
+  // Layer bleed is ~28% top + bottom (landscape ~36%); travel ≤10vh either way.
   const maxTravel = 0.1;
   const ease = 0.16;
   const storageKey = "dune-bg-parallax";

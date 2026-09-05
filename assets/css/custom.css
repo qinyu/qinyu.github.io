@@ -15,22 +15,16 @@
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
-    Source poster is 1229×1600 (walker ≈34% x, 84.45% y).
-    Size is cover-width: 100% of source width → 100% of the layer width.
+    Poster A: tall dune, lit sand + walker on the LEFT.
+    Cover-width: 100% of source width → 100% of the layer width.
     Never use `cover` (that crops left/right on tall viewports).
-    Portrait default hangs the *complete* poster below the stacked nav —
-    pinning the walker to 36vh was shifting the art up and clipping the
-    top-left crest, which reads as a left/right crop.
-    Landscape overrides --bg-pos-y to pin the walker under the sidebar avatar.
+    Center the frame — do not pin the walker under the avatar.
+    Layer bleed is ~28% top + bottom so ≤10% parallax travel never
+    shows void (larger than the old ~20%).
   */
   --bg-image: url("/images/bg/dune-poster.jpg");
   --bg-size: 100% auto;
-  --poster-ratio: 1.30187144; /* 1600 / 1229 */
-  --figure-y: 0.84445;
-  --bg-box-top: -20vh;
-  --portrait-img-top: 8vh;
-  --bg-pos-y: calc(var(--portrait-img-top) - var(--bg-box-top));
-  --bg-pos: 50% var(--bg-pos-y);
+  --bg-pos: center center;
 }
 
 html,
@@ -90,15 +84,15 @@ html,
 
 /*
   Full source width (100% auto — no left/right crop) in both orientations.
-  Height is +20% / 140% so a ≤10% vertical parallax travel never shows void.
+  Height is +28% / 156% so a ≤10% vertical parallax travel never shows void.
 */
 .site-bg__poster {
   position: absolute;
   left: 0;
   right: 0;
   width: 100%;
-  top: -20%;
-  height: 140%;
+  top: -28%;
+  height: 156%;
   pointer-events: none;
   background-color: var(--void);
   background-image: var(--bg-image);
@@ -111,26 +105,17 @@ html,
 }
 
 /*
-  Landscape only: extra poster + layer bleed so Chrome's collapsing URL bar
-  cannot flash void. Portrait stays at 20% / 140%. Travel is still ≤10vh.
+  Landscape: extra poster + layer bleed so Chrome's collapsing URL bar
+  cannot flash void. Travel is still ≤10vh; framing stays centered.
 */
 @media (orientation: landscape) {
-  :root {
-    --bg-box-top: -32vh;
-    --bg-figure-view: 47vh;
-    --bg-figure-in-box: calc(var(--bg-figure-view) - var(--bg-box-top));
-    --bg-pos-y: calc(
-      var(--bg-figure-in-box) - var(--figure-y) * var(--poster-ratio) * 100vw
-    );
-  }
-
   .site-bg {
     inset: -16vh 0;
   }
 
   .site-bg__poster {
-    top: -32%;
-    height: 164%;
+    top: -36%;
+    height: 172%;
   }
 }
 
@@ -138,7 +123,7 @@ html,
   display: block;
   position: fixed;
   /* Inset only — do not lock height to 100dvh (leaves a void gap on overscroll). */
-  inset: -20vh 0;
+  inset: -28vh 0;
   width: 100%;
   height: auto;
   min-height: 0;
@@ -856,7 +841,7 @@ html.is-nav-carry .animated {
   .site-bg__veil {
     display: block;
     position: fixed;
-    inset: -20vh 0;
+    inset: -28vh 0;
     width: 100%;
     height: auto;
     min-height: 0;
