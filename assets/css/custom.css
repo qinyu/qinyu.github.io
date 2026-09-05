@@ -444,17 +444,26 @@ html.theme--dark .post__content a:hover {
   color: var(--sand);
 }
 
+/* Theme .post / animation stacking must not clip the book glow. */
+.post,
+.post.animated,
+.post__content,
+.wrapper,
+.wrapper__main {
+  overflow: visible;
+}
+
 .bookshelf,
 .series-grid {
   display: grid;
   margin: 0;
-  padding: 2rem 0 1.2rem;
+  padding: 3.2rem 0 1.6rem;
   overflow: visible;
 }
 
 .bookshelf {
   grid-template-columns: repeat(5, 1fr);
-  gap: 2.4rem 1.2rem;
+  gap: 3rem 1.2rem;
 }
 
 .series-grid {
@@ -465,15 +474,18 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item,
 .series-grid__item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 0.7rem 0.45rem 0.85rem;
+  padding: 1.8rem 0.45rem 1.1rem;
   border: 0;
   background: none;
   transform: none;
+  isolation: auto;
+  contain: none;
   overflow: visible;
 }
 
@@ -520,19 +532,23 @@ html.theme--dark .post__content a:hover {
 }
 
 .bookshelf__cover {
-  isolation: isolate;
+  isolation: auto;
+  contain: none;
+  z-index: 1;
   aspect-ratio: 1 / 1;
+  padding: 14%;
   overflow: visible;
 }
 
-.bookshelf__cover::before {
+/* Glow is on the card, oversized, no filter — so it cannot be square-clipped. */
+.bookshelf__item::before {
   content: "";
   position: absolute;
   z-index: 0;
   left: 50%;
-  top: 50%;
-  width: 138%;
-  height: 138%;
+  top: 34%;
+  width: 168%;
+  height: 118%;
   pointer-events: none;
   background: radial-gradient(
     ellipse at 50% 50%,
@@ -542,10 +558,10 @@ html.theme--dark .post__content a:hover {
     rgba(var(--sand-rgb), 0.06) 72%,
     rgba(var(--sand-rgb), 0) 82%
   );
-  filter: blur(8px);
   transform: translate(-50%, -50%);
   transform-origin: center center;
-  transition: transform 0.22s ease;
+  opacity: 0.95;
+  transition: opacity 0.22s ease;
 }
 
 .series-grid__cover {
@@ -586,11 +602,11 @@ html.theme--dark .post__content a:hover {
   transform: scale(1.07);
 }
 
-.bookshelf__item:hover .bookshelf__cover::before,
-.bookshelf__item:focus .bookshelf__cover::before,
-.bookshelf__item:focus-visible .bookshelf__cover::before,
-.bookshelf__item:active .bookshelf__cover::before {
-  transform: translate(-50%, -50%) scale(1.07);
+.bookshelf__item:hover::before,
+.bookshelf__item:focus::before,
+.bookshelf__item:focus-visible::before,
+.bookshelf__item:active::before {
+  opacity: 1;
 }
 
 .bookshelf__title,
@@ -625,7 +641,7 @@ html.theme--dark .post__content a:hover {
     transform: none;
   }
 
-  .bookshelf__cover::before,
+  .bookshelf__item::before,
   .post__content .bookshelf__cover img,
   .post__content .series-grid__cover img {
     transition: none;
