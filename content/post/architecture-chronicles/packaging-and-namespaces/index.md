@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2017/08/31/packaging-code/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 一个系统的架构是它的高层级的视图，是系统的大局观，是粗线条的系统设计。架构的决策就是系统结构上的决策，这些决策影响着全部代码，决定了系统中其它部分的基础。
 
@@ -146,7 +146,7 @@ draft: false
 
 尖叫架构是 Robert C. Martin 的想法，它基本上表明了这样一个观点，架构应该清楚地告诉我们系统是做什么的：即它的主要领域。那么源代码文件夹里出现的第一级目录自然就应该和领域概念有关，即最顶层的限界上下文(例如，患者、医生、预约等)。它们应该和系统使用的工具(例如，Doctrine、MySQL、Symfony、Redis 等)无关，和系统的功能块(例如，资源库、制图、控制器等)无关，和传达机制无关(HTTP、控制台等)。
 
-> 你的架构应该呈现给人的应该是系统，而不是系统使用的框架。如果你构建的是一个医疗保健系统，那么新程序员看到源代码仓库后的第一映像应该是：“哦，这是一个医疗保健系统”。—— Robert C. Martin 2011, [Screaming Architecture](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)
+> 你的架构应该呈现给人的应该是系统，而不是系统使用的框架。如果你构建的是一个医疗保健系统，那么新程序员看到源代码仓库后的第一印象应该是：“哦，这是一个医疗保健系统”。—— Robert C. Martin 2011, [Screaming Architecture](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)
 
 这实际上是一种更简单地理解他十五年前发表的包划分原则的方法，这些原则之前我已经阐述过了。这种分包的风格又叫做“按特性分包”。
 

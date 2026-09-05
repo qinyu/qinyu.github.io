@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2017/07/28/architectural-styles-vs-architectural-patterns-vs-design-patterns/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 在上一篇文章中，我回顾了编程语言的发展史，它告诉我们：编程语言始终都在向着更好的**模块化**和**封装性**演进。
 
@@ -55,7 +55,7 @@ draft: false
 
 # 设计模式
 
-设计模式作用的范围和架构模式不同，它们更局限一些，它们对影响的是代码中某个肯定的部分，对代码的组织影响不多。例如：
+设计模式作用的范围和架构模式不同，它们更局限一些，它们影响的是代码中某个特定的部分，对代码的组织影响不多。例如：
 
 - 在运行时只知道需要实例化的类型的情况下，如何实例化一个对象(是不是用工厂类？)；
 - 对象如何根据它的状态表现不同的行为(是不是用状态机或者策略模式？)。

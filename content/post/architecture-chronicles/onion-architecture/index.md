@@ -16,11 +16,11 @@ draft: false
 
 原文：<https://herbertograca.com/2017/09/21/onion-architecture/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 [2008 年 Jeffrey Palermo 提出了洋葱架构](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/)。在我看来，它在端口和适配器架构的基础上贯彻了将领域放在应用中心，将传达机制(UI)和系统使用的基础设施(ORM、搜索引擎、第三方 API...)放在外围的思路。但是它前进了一步，在其中加入了内部层次。
 　
-我们从通常拥有四个层次(表现层、应用层、领域层、持久化层)的分层架构发展到了端口和适配器架构，它只是含蓄地提到了两个同心圆层次：
+我们从通常拥有四个层次(展现层、应用层、领域层、持久化层)的分层架构发展到了端口和适配器架构，它只是含蓄地提到了两个同心圆层次：
 
 1. 代表传达机制和基础设施的外层；
 2. 代表业务逻辑的内层。
@@ -55,7 +55,7 @@ draft: false
 
 # 总结
 
-洋葱架构在端口和适配器架构的基础之上增加了一些的应用业务逻辑的内部组织，这些组织基于领域驱动设计的概念划分的。
+洋葱架构在端口和适配器架构的基础之上增加了一些应用业务逻辑的内部组织，这些组织是基于领域驱动设计的概念划分的。
 
 这又是一次职责分离的更深入的演化，带来了高内聚低耦合，反过来也带来了更好的可测试性和可维护性。
 

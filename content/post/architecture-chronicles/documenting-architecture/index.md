@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2019/08/12/documenting-software-architecture/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 我们学习了如何编码，我们构建了一些很酷的应用，然后我们学习了架构以及它们如何保证应用可以维护多年...
 
@@ -54,7 +54,7 @@ draft: false
   - [包图](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-package-diagram/)
   - [个人资料图](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-profile-diagram/)
 
-这里我不会介绍每种类型的细节，一篇文章不可能讲清楚，而且这些图的类型的介绍文档实在是太多了。要想深入了解每种类型，你可以点击上面这些连接，它们会跳转到 [Visual Paradigm guides](https://www.visual-paradigm.com/guide/) 的对应介绍，或者可以读一下[这篇博客](https://tallyfy.com/uml-diagram/)。（译注，可以在这里找到各种 UML 图的中文介绍，<http://tool.uml.com.cn/ToolsEA/UserGuide/model_domains/whatisuml.html>）
+这里我不会介绍每种类型的细节，一篇文章不可能讲清楚，而且这些图的类型的介绍文档实在是太多了。要想深入了解每种类型，你可以点击上面这些链接，它们会跳转到 [Visual Paradigm guides](https://www.visual-paradigm.com/guide/) 的对应介绍，或者可以读一下[这篇博客](https://tallyfy.com/uml-diagram/)。（译注，可以在这里找到各种 UML 图的中文介绍，<http://tool.uml.com.cn/ToolsEA/UserGuide/model_domains/whatisuml.html>）
 
 总而言之，UML 很酷很有意思，表达力很强，我们可以简单地描绘我们的思路，并和同事讨论。
 
@@ -74,7 +74,7 @@ draft: false
 
 *来源: https://knowhow.visual-paradigm.com*
 
-所以，我们可以并且应该使用 UML，但是应该只在某些情况下使用，如：描述模式，应用每一小部分的细节，或者没有太多细节的粗粒度应用试图（用的不是类图）。（译注，除了使用一些重量级软件来绘制 UML 图之外，可以使用[PlantUml](https://plantuml.com/zh/) 来绘制。PlantUml 是一个开源工具，使用代码来描述 UML 图，通过工具来生成真正的图形。）
+所以，我们可以并且应该使用 UML，但是应该只在某些情况下使用，如：描述模式，应用每一小部分的细节，或者没有太多细节的粗粒度应用视图（用的不是类图）。（译注，除了使用一些重量级软件来绘制 UML 图之外，可以使用[PlantUml](https://plantuml.com/zh/) 来绘制。PlantUml 是一个开源工具，使用代码来描述 UML 图，通过工具来生成真正的图形。）
 
 但是问题没有彻底解决，我们怎样记录一个完整的应用？！
 
@@ -190,7 +190,7 @@ C4 模型是 Simon Brown 发明的，是我目前看到的关于软件架构文�
 
 对这种图来说，我觉得有三种不同类别对不同的依赖类别进行断言。
 
-下面的这些例子都是用我的[个人项目(explicit-architec-php)](https://github.com/hgraca/explicit-architecture-php)通过 [deptrac](https://github.com/sensiolabs-de/deptrac)生成的，这是我的一个实验项目。你可以在仓库根目录下中找到生成配置。
+下面的这些例子都是用我的[个人项目(explicit-architec-php)](https://github.com/hgraca/explicit-architecture-php)通过 [deptrac](https://github.com/sensiolabs-de/deptrac)生成的，这是我的一个实验项目。你可以在仓库根目录下找到生成配置。
 
 不过有一点请注意，我自己添加了一些颜色，让这些图例在这篇文章里更容易读懂。不同的颜色代表了应用的不同层级，和我之前文章中配图的层级一致：
 
@@ -202,7 +202,7 @@ C4 模型是 Simon Brown 发明的，是我目前看到的关于软件架构文�
 
 这种图的目的是可视化，并且确保每个层级的代码只能依赖内部或下面的层级。
 
-因此，我们可以看到下面的图例重，例如，最外面层级之一的基础设施层可以依赖其他任何层。反过来，最中心的领域层，只能依赖下面的层层，即 SharedKernel-Domain（它也是领域的一部分）和 PhpExtension（其代码被当成语言自身的一部分使用）。
+因此，我们可以看到下面的图例中，例如，最外面层级之一的基础设施层可以依赖其他任何层。反过来，最中心的领域层，只能依赖下面的层，即 SharedKernel-Domain（它也是领域的一部分）和 PhpExtension（其代码被当成语言自身的一部分使用）。
 
 {{< figure src="deptrac_layers-2.png" class="medium" >}}
 
@@ -293,7 +293,7 @@ C4 模型是 Simon Brown 发明的，是我目前看到的关于软件架构文�
 - 任何用例只要删除帖子都会触发降低作者等级的事件。
 
 有了地图上的这些信息，我们就可以导航了。任何技术人员或非技术人员都可以清楚地看到，任何应用用例触发时会发生什么。这可以帮助我澄清我们的代码，和对应用行为的想法。
-(译注，如果熟悉[事件风暴](https://zhuanlan.zhihu.com/p/95001438)，我们可以发现，上述这些组件图和依赖非常想我们在事件风暴过程中不断梳理出一些领域概念，包括事件、命令、聚合、API，慢慢浮现出来的限界上下文地图/服务地图。这个工具可以帮我们将事件风暴的结成果进行电子化)。
+(译注，如果熟悉[事件风暴](https://zhuanlan.zhihu.com/p/95001438)，我们可以发现，上述这些组件图和依赖非常像我们在事件风暴过程中不断梳理出一些领域概念，包括事件、命令、聚合、API，慢慢浮现出来的限界上下文地图/服务地图。这个工具可以帮我们将事件风暴的成果进行电子化)。
 
 然而，这种图用在大型应用中时仍然或存在与前面提到的关系图相同的问题：
 

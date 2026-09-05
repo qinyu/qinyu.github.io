@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2018/09/03/action-domain-responder/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 MVC 诞生于 1979 年，它诞生于使用 CLI 用户界面的桌面应用上下文中，它暗示如果用户外部因素导致数据库变化，那么 UI 就应该自动地变化。同样的模式也可以完美地应用在稍后出现的 GUI 桌面应用上。
 
@@ -58,16 +58,16 @@ ADR 模式由 Paul M. Jones 于 2014 年提出，其思想和 RMR 一致，就�
 
 Responder 基于对领域响应的解析和理解来构造 HTTP 响应，而领域响应又依赖操作方法的用例。这意味着每个操作方法都需要一个特定的 Responder。如果我们将所有资源方法放到同一个控制器中，我们就需要实例化全部 Responder 并注入到控制器中，而我们在一次 HTTP 请求中只会使用一个 Responder，这显然不是最优的方案。解决方法是每个控制器只有一个方法，这种控制器和它唯一的操作方法就是 ADR 所说的 Action。
 
-既然 Action 只有一个方法，方法名就可以使用通用的 `run`、`execute`、或是 PHP 中的 `__invoke`，让这个类变成可以调用的。然而，由于其思想是将 MVC 模式应用到 HTTP REST API 上下文，Action（控制器）名称会被映射为 HTTP 请求方法，因此我们将得到名为 `Get`、`Post`、`Put`、`Delete`...的 Action，清楚地表明了每个 HTTP 请求类型调用的控制器。作为一种组织形式，一个资源的所有 Action 应该被一起放以该资源命名的文件夹下。
+既然 Action 只有一个方法，方法名就可以使用通用的 `run`、`execute`、或是 PHP 中的 `__invoke`，让这个类变成可以调用的。然而，由于其思想是将 MVC 模式应用到 HTTP REST API 上下文，Action（控制器）名称会被映射为 HTTP 请求方法，因此我们将得到名为 `Get`、`Post`、`Put`、`Delete`...的 Action，清楚地表明了每个 HTTP 请求类型调用的控制器。作为一种组织形式，一个资源的所有 Action 应该被一起放在以该资源命名的文件夹下。
 
 ## 与 ADR 混为一谈
 
 Anthony Ferrara 对比了 ADR 和 [RMR](https://herbertograca.com/2018/08/31/resource-method-representation/) ，认为“*[它们是同样的模式，只是细节有所调整](https://blog.ircmaxell.com/2014/11/alternatives-to-mvc.html#ADR-Action-Domain-Responder)*”。
 
-我不同意这个观点。实际上我认为 Anthony Ferrara 对它的理解是错误的（他很聪明，只知识渊博，但人总有犯错的时候）：
+我不同意这个观点。实际上我认为 Anthony Ferrara 对它的理解是错误的（他很聪明，只是知识渊博，但人总有犯错的时候）：
 
 1. “*Resource==Domain*”
-   RMR 中的 *Resource* 并非 Domain，而是领域对象，是领域实体，但 ADR 中的 *Domain* 与全部领域对象有关，所有的实际和它们的关系作为一个整体；
+   RMR 中的 *Resource* 并非 Domain，而是领域对象，是领域实体，但 ADR 中的 *Domain* 与全部领域对象有关，所有实体和它们的关系作为一个整体；
 2. “*Representation==Responder*”
    RMR 中的 *Representation* 是发回给客户端的响应，但 ADR 中的 *Responder* 是一个对象，它的职责是基于给定内容和给定模板构造响应。
 3. “*它和 RMR 一样与 HTTP 耦合在一起，很难创建非 HTTP 界面*”
