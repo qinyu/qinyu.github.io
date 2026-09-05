@@ -447,9 +447,7 @@ html.theme--dark .post__content a:hover {
 /* Theme .post / animation stacking must not clip the book glow. */
 .post,
 .post.animated,
-.post__content,
-.wrapper,
-.wrapper__main {
+.post__content {
   overflow: visible;
 }
 
