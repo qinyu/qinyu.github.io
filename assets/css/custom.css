@@ -418,11 +418,20 @@ html.theme--dark .post__content a:hover {
   color: var(--sand);
 }
 
+/* Theme .post / animation stacking must not clip the book glow. */
+.post,
+.post.animated,
+.post__content,
+.wrapper,
+.wrapper__main {
+  overflow: visible;
+}
+
 .bookshelf,
 .series-grid {
   display: grid;
   margin: 0;
-  padding: 2rem 0 1.2rem;
+  padding: 2.6rem 0 1.4rem;
   overflow: visible;
 }
 
@@ -439,15 +448,18 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item,
 .series-grid__item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 0.7rem 0.45rem 0.85rem;
+  padding: 1.15rem 0.55rem 0.95rem;
   border: 0;
   background: none;
   transform: none;
+  isolation: auto;
+  contain: none;
   overflow: visible;
 }
 
@@ -494,32 +506,36 @@ html.theme--dark .post__content a:hover {
 }
 
 .bookshelf__cover {
-  isolation: isolate;
+  isolation: auto;
+  contain: none;
+  z-index: 1;
   aspect-ratio: 1 / 1;
+  padding: 14%;
   overflow: visible;
 }
 
-.bookshelf__cover::before {
+/* Glow lives on the card, not the 1:1 cover box, so blur/overflow cannot square-clip it. */
+.bookshelf__item::before {
   content: "";
   position: absolute;
   z-index: 0;
   left: 50%;
-  top: 50%;
-  width: 138%;
-  height: 138%;
+  top: 36%;
+  width: 128%;
+  height: 72%;
   pointer-events: none;
   background: radial-gradient(
     ellipse at 50% 50%,
-    rgba(196, 165, 116, 0.82) 0%,
-    rgba(196, 165, 116, 0.52) 30%,
-    rgba(196, 165, 116, 0.24) 54%,
-    rgba(196, 165, 116, 0.06) 72%,
-    rgba(196, 165, 116, 0) 82%
+    rgba(196, 165, 116, 0.58) 0%,
+    rgba(196, 165, 116, 0.32) 34%,
+    rgba(196, 165, 116, 0.12) 56%,
+    rgba(196, 165, 116, 0.03) 72%,
+    rgba(196, 165, 116, 0) 86%
   );
-  filter: blur(8px);
   transform: translate(-50%, -50%);
   transform-origin: center center;
-  transition: transform 0.22s ease;
+  opacity: 0.92;
+  transition: opacity 0.22s ease;
 }
 
 .series-grid__cover {
@@ -540,8 +556,8 @@ html.theme--dark .post__content a:hover {
   pointer-events: none;
   transform: none;
   transform-origin: center center;
-  transition: transform 0.22s ease;
-  filter: drop-shadow(0 0 14px rgba(196, 165, 116, 0.35));
+  transition: transform 0.22s ease, filter 0.22s ease;
+  filter: drop-shadow(0 0 12px rgba(196, 165, 116, 0.28));
 }
 
 .post__content .series-grid__cover img {
@@ -560,11 +576,18 @@ html.theme--dark .post__content a:hover {
   transform: scale(1.07);
 }
 
-.bookshelf__item:hover .bookshelf__cover::before,
-.bookshelf__item:focus .bookshelf__cover::before,
-.bookshelf__item:focus-visible .bookshelf__cover::before,
-.bookshelf__item:active .bookshelf__cover::before {
-  transform: translate(-50%, -50%) scale(1.07);
+.bookshelf__item:hover::before,
+.bookshelf__item:focus::before,
+.bookshelf__item:focus-visible::before,
+.bookshelf__item:active::before {
+  opacity: 1;
+}
+
+.bookshelf__item:hover .bookshelf__cover img,
+.bookshelf__item:focus .bookshelf__cover img,
+.bookshelf__item:focus-visible .bookshelf__cover img,
+.bookshelf__item:active .bookshelf__cover img {
+  filter: drop-shadow(0 0 16px rgba(196, 165, 116, 0.42));
 }
 
 .bookshelf__title,
@@ -599,7 +622,7 @@ html.theme--dark .post__content a:hover {
     transform: none;
   }
 
-  .bookshelf__cover::before,
+  .bookshelf__item::before,
   .post__content .bookshelf__cover img,
   .post__content .series-grid__cover img {
     transition: none;
