@@ -4,30 +4,31 @@
   --ink: #e8e4dc;
   --void: #000000;
   --panel: #000000;
-  /* Mid-lit sand from dune-bg-composed.jpg: hue ~18–22°, sat tempered for UI. */
-  --sand: #c77a54;
-  --sand-deep: #b26847;
-  --sand-bright: #d6926b;
-  --sand-rgb: 199, 122, 84;
+  /* Mid-lit ochre from the Mars plates (palette A), not sunset terracotta. */
+  --sand: #c4945a;
+  --sand-deep: #a27642;
+  --sand-bright: #daac70;
+  --sand-rgb: 196, 148, 90;
   --muted: #8a8478;
   --muted-dim: #5c574f;
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
-    Poster A: tall dune, lit sand + walker on the LEFT.
-    Source mapped 100% auto onto the layer (never `cover` — that
-    crops left/right on tall viewports). Frame is centered; do not
-    pin the walker under the avatar.
-    Horizontal ±5% is scroll-linked scale (see .site-bg__poster):
-    mid-page 1.10 = 5% overflow each side, clipped; top/bottom 1.00
-    = exact viewport width (those side strips become visible).
-    Vertical bleed ~28% top + bottom so ≤10% translate never shows
-    void (same idea as 20%+ bleed vs ≤10% travel).
+    NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
+    15% zoom-out is an overflow buffer for rubber-band / overscroll —
+    not a zoom budget to fully consume. Landscape: layer width ≈ 115%
+    of the viewport (zoom-out by width), height grows as needed to
+    still cover. Portrait: layer height ≈ 115% of the viewport
+    (zoom-out by height), width grows as needed to cover; pin the
+    image left so the limb stays visible (do not center-crop it away).
+    Scroll zoom-in uses only part of that 15% (JS --bg-scale 1.00–1.08).
+    Leftover overflow absorbs bounce; translate travel stays inside
+    the remainder. Never rest at exact cover (100% layer / scale 1).
   */
-  --bg-image: url("/images/bg/dune-poster.jpg");
-  --bg-size: 100% auto;
-  --bg-pos: center center;
+  --bg-image: url("/images/bg/mars-half-landscape.jpg");
+  --bg-size: cover;
+  --bg-pos: left center;
   --bg-scale: 1;
 }
 
@@ -40,7 +41,7 @@ html,
 
 /*
   Dedicated layers (not html::before/::after):
-  - .site-bg / .site-bg__poster: full-bleed dune; only the poster child micro-moves
+  - .site-bg / .site-bg__poster: full-bleed Mars; only the poster child micro-moves
   - .site-bg__veil: position:fixed; bleeds past the viewport; never translated
   iOS Safari treats html/body pseudos as scroll-tied; transforming html::before
   also made the veil jitter. Keep transform off html/body and off the veil.
@@ -59,8 +60,10 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  background-size: var(--bg-size);
-  background-position: var(--bg-pos);
+  /* Viewport-sized fallback (not document-tall cover) so overscroll
+     still shows the 15% width buffer instead of a void band. */
+  background-size: 115vw auto;
+  background-position: left top;
   min-height: 100%;
   min-height: 100dvh;
   max-width: 100%;
@@ -87,17 +90,20 @@ html,
 }
 
 /*
-  Layer is viewport-wide; scale 1.00–1.10 from center makes it slightly
-  larger than the viewport at mid-scroll so the side strips can clip.
-  Height is +28% / 156% so a ≤10% vertical parallax travel never shows void.
+  Landscape rest: 15% zoom-out by WIDTH (layer ≈ 115vw). Height follows
+  16:9 then grows to still cover. Layer is centered so bounce has leftover
+  overflow on both sides; the image itself stays left-anchored.
+  Scroll scale is 1.00–1.08 (not 1.15) so intentional zoom leaves headroom
+  inside the 15% buffer. Extra min-height covers ≤6vh translate + rubber-band.
 */
 .site-bg__poster {
   position: absolute;
-  left: 0;
-  right: 0;
-  width: 100%;
-  top: -28%;
-  height: 156%;
+  left: 50%;
+  top: 50%;
+  width: 115%;
+  height: auto;
+  min-height: 100%;
+  aspect-ratio: 16 / 9;
   pointer-events: none;
   background-color: var(--void);
   background-image: var(--bg-image);
@@ -106,22 +112,46 @@ html,
   background-size: var(--bg-size);
   background-position: var(--bg-pos);
   transform-origin: center center;
-  transform: translate3d(0, var(--bg-parallax, 0px), 0) scale(var(--bg-scale, 1));
+  transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
+    scale(var(--bg-scale, 1));
   will-change: transform;
 }
 
 /*
-  Landscape: extra poster + layer bleed so Chrome's collapsing URL bar
-  cannot flash void. Travel is still ≤10vh; framing stays centered.
+  Landscape: extra site-bg bleed so Chrome's collapsing URL bar cannot
+  flash void. Travel stays inside leftover overflow after the 8% zoom-in.
 */
 @media (orientation: landscape) {
   .site-bg {
     inset: -16vh 0;
   }
+}
+
+/*
+  Portrait rest: 15% zoom-out by HEIGHT (layer ≈ 115vh). Width grows as
+  needed to cover. Keep the Mars limb on the left — do not center-crop
+  the landscape plate. Same 1.00–1.08 scroll zoom-in budget.
+*/
+@media (orientation: portrait) {
+  :root {
+    --bg-image: url("/images/bg/mars-half-portrait.jpg");
+  }
+
+  html,
+  .html {
+    background-size: auto 115vh;
+    background-position: left top;
+  }
 
   .site-bg__poster {
-    top: -36%;
-    height: 172%;
+    width: auto;
+    min-width: 100%;
+    height: 115%;
+    aspect-ratio: 9 / 16;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
+      scale(var(--bg-scale, 1));
   }
 }
 
@@ -445,7 +475,7 @@ html.theme--dark a:visited,
 html.theme--light a:link,
 html.theme--light a:visited {
   /* Literal hex: Chrome drops var() on :visited and falls back to UA blue. */
-  color: #c77a54;
+  color: #c4945a;
 }
 
 html a:hover,
@@ -503,7 +533,7 @@ html.theme--light .archive a:visited,
 html.theme--light .archive__list-title,
 html.theme--light .archive__list-title:link,
 html.theme--light .archive__list-title:visited {
-  color: #c77a54;
+  color: #c4945a;
 }
 
 html .post__content h3 a,
@@ -628,7 +658,7 @@ html.theme--dark .post__content a:visited,
 html.theme--light .post__content a,
 html.theme--light .post__content a:link,
 html.theme--light .post__content a:visited {
-  color: #c77a54;
+  color: #c4945a;
 }
 
 html .post__content a:hover,
@@ -1080,12 +1110,9 @@ html.is-nav-carry .wrapper__main {
 }
 
 @media screen and (max-width: 960px) {
-  html,
-  .html,
   .site-bg__poster {
-    /* Narrow and portrait: same cover-width as landscape — never crop sides. */
-    --bg-size: 100% auto;
-    background-size: 100% auto;
+    /* Narrow screens keep cover + left limb; do not revert to 100% auto. */
+    background-size: var(--bg-size);
     background-position: var(--bg-pos);
   }
 
