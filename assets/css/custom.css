@@ -368,6 +368,15 @@ html.theme--light .sidebar__introduction-title a:visited {
   font-size: 2.1rem;
 }
 
+.sidebar__introduction-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--sand);
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+}
+
 html .sidebar__introduction-title a:hover,
 html .sidebar__list-item a:hover,
 html.theme--dark .sidebar__introduction-title a:hover,
@@ -1026,27 +1035,26 @@ html.theme--dark a.sidebar__tag:hover {
   content: "";
   position: absolute;
   z-index: 0;
-  /* Box much larger than the visible oval so the fade ends inside, not on a hard edge. */
-  /* Pre-#32 oval; nudged slightly left and down only. */
-  left: -73%;
-  right: -55%;
-  top: -52%;
-  bottom: -58%;
+  /* ~80% of pre-#32 bloom; leftover left/down nudge eased back up/right. */
+  left: -58%;
+  right: -45%;
+  top: -43%;
+  bottom: -45%;
   width: auto;
   height: auto;
   pointer-events: none;
   /* 3D covers sit a bit right of the PNG center (spine on the left). */
   background: radial-gradient(
-    ellipse 48% 44% at 54% 47%,
-    rgba(var(--sand-rgb), 0.82) 0%,
-    rgba(var(--sand-rgb), 0.5) 36%,
-    rgba(var(--sand-rgb), 0.2) 56%,
-    rgba(var(--sand-rgb), 0.05) 70%,
+    ellipse 38% 35% at 54% 47%,
+    rgba(var(--sand-rgb), 0.66) 0%,
+    rgba(var(--sand-rgb), 0.4) 36%,
+    rgba(var(--sand-rgb), 0.16) 56%,
+    rgba(var(--sand-rgb), 0.04) 70%,
     rgba(var(--sand-rgb), 0) 80%
   );
   transform: none;
-  opacity: 0.95;
-  transition: opacity 0.22s ease;
+  opacity: 0.76;
+  transition: none;
 }
 
 .series-grid__cover {
@@ -1105,16 +1113,10 @@ html.theme--dark a.sidebar__tag:hover {
 }
 
 .bookshelf__item:focus-visible .bookshelf__cover img,
-.series-grid__item:focus-visible .series-grid__cover img {
+.bookshelf__item:active .bookshelf__cover img,
+.series-grid__item:focus-visible .series-grid__cover img,
+.series-grid__item:active .series-grid__cover img {
   transform: scale(1.07);
-}
-
-.bookshelf__item:hover .bookshelf__cover::before,
-.bookshelf__item:focus .bookshelf__cover::before,
-.bookshelf__item:focus-within .bookshelf__cover::before,
-.bookshelf__item:focus-visible .bookshelf__cover::before,
-.bookshelf__item:active .bookshelf__cover::before {
-  opacity: 1;
 }
 
 .bookshelf__title,
@@ -1344,9 +1346,9 @@ html.is-nav-carry .wrapper__main {
   }
 
   .bookshelf__cover::before {
-    left: -75%;
-    right: -55%;
-    top: -55%;
-    bottom: -61%;
+    left: -59%;
+    right: -45%;
+    top: -44%;
+    bottom: -46%;
   }
 }
