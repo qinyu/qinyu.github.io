@@ -20,7 +20,8 @@ html,
   color-scheme: dark;
 }
 
-/* Static dune backdrop. Subtle scroll parallax via --bg-parallax. */
+/* Dune backdrop. Layer is 120vh (10% bleed above + below) so parallax
+   never flashes a seam. --bg-parallax is clamped to 8vh in JS. */
 html {
   background-color: var(--void);
 }
@@ -28,17 +29,27 @@ html {
 html::before {
   content: "";
   position: fixed;
-  inset: -18vh 0;
+  left: 0;
+  right: 0;
+  top: -10vh;
+  height: 120vh;
   z-index: -2;
   pointer-events: none;
   background-color: var(--void);
   background-image: var(--bg-image);
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-position: left 8% bottom 4%;
+  background-position: left 8% bottom 12%;
   background-size: 82% auto;
   transform: translate3d(0, var(--bg-parallax, 0px), 0);
   will-change: transform;
+}
+
+/* Tall / narrow viewports: grow the poster so 120vh + 8vh travel still covers. */
+@media (max-aspect-ratio: 10 / 9) {
+  html::before {
+    background-size: auto 130%;
+  }
 }
 
 html::after {
@@ -171,7 +182,7 @@ html.theme--dark .sidebar__list-item a:hover {
 
 .sidebar__introduction-description,
 .sidebar__introduction-description p {
-  color: var(--muted);
+  color: #c9c3b8;
   font-size: 1.4rem;
   line-height: 1.7;
 }
@@ -179,13 +190,13 @@ html.theme--dark .sidebar__list-item a:hover {
 html .sidebar__list-item a,
 html.theme--dark .sidebar__list-item a,
 html.theme--light .sidebar__list-item a {
-  color: #c4bfb4;
+  color: #ddd8ce;
 }
 
 .footer,
 .footer a,
 .footer__item {
-  color: var(--muted-dim);
+  color: #a8a298;
 }
 
 .nav__list-item {
@@ -357,16 +368,21 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item:hover,
 .bookshelf__item:focus,
-.bookshelf__item:focus-visible,
 .bookshelf__item:active,
 .series-grid__item:hover,
 .series-grid__item:focus,
-.series-grid__item:focus-visible,
 .series-grid__item:active {
   background: none;
   border: 0;
-  outline: none;
   transform: none;
+}
+
+.bookshelf__item:focus-visible,
+.series-grid__item:focus-visible {
+  background: none;
+  border: 0;
+  outline: 2px solid rgba(196, 165, 116, 0.9);
+  outline-offset: 3px;
 }
 
 .post__content a.bookshelf__item,
@@ -398,16 +414,17 @@ html.theme--dark .post__content a:hover {
   z-index: 0;
   left: 50%;
   top: 54%;
-  width: 92%;
-  height: 82%;
+  width: 128%;
+  height: 112%;
   pointer-events: none;
   background: radial-gradient(
-    ellipse at 50% 50%,
-    rgba(196, 165, 116, 0.5) 0%,
-    rgba(196, 165, 116, 0.26) 36%,
-    rgba(196, 165, 116, 0.08) 58%,
-    rgba(196, 165, 116, 0) 74%
+    ellipse at 50% 48%,
+    rgba(196, 165, 116, 0.4) 0%,
+    rgba(196, 165, 116, 0.2) 42%,
+    rgba(196, 165, 116, 0.06) 64%,
+    rgba(196, 165, 116, 0) 78%
   );
+  filter: blur(16px);
   transform: translate(-50%, -50%);
   transform-origin: center center;
   transition: transform 0.22s ease;
@@ -493,8 +510,8 @@ html.theme--dark .post__content a:hover {
 
 @media screen and (max-width: 960px) {
   html::before {
-    background-size: 85% auto;
-    background-position: left 4% bottom 8%;
+    background-size: auto 130%;
+    background-position: left 4% bottom 10%;
   }
 
   .wrapper__main {
