@@ -21,46 +21,62 @@ html,
   color-scheme: dark;
 }
 
-/* Dune poster only. 120vh layer = 10% bleed above + below; JS clamps travel to 8vh. */
-html {
+/*
+  Dedicated layers (not html::before/::after):
+  - .site-bg / .site-bg__poster: full-bleed dune; only the poster child micro-moves
+  - .site-bg__veil: position:fixed; inset:0; never translated
+  iOS Safari treats html/body pseudos as scroll-tied; transforming html::before
+  also made the veil jitter. Keep transform off html/body and off the veil.
+*/
+html,
+.html {
   background-color: var(--void);
+  transform: none;
 }
 
-html::before {
-  content: "";
+.body {
+  isolation: isolate;
+  transform: none;
+}
+
+.site-bg {
   position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+  transform: none;
+}
+
+/* 10% vertical bleed so an 8vh parallax travel never shows void. */
+.site-bg__poster {
+  position: absolute;
   left: 0;
   right: 0;
-  top: -10vh;
-  height: 120vh;
-  z-index: -2;
+  top: -10%;
+  height: 120%;
   pointer-events: none;
   background-color: var(--void);
   background-image: var(--bg-image);
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-position: left 8% bottom 12%;
-  background-size: 82% auto;
+  background-size: cover;
+  background-position: left 6% bottom 8%;
   transform: translate3d(0, var(--bg-parallax, 0px), 0);
   will-change: transform;
 }
 
-@media (max-aspect-ratio: 10 / 9) {
-  html::before {
-    background-size: auto 130%;
-  }
-}
-
-/* Viewport veil: never parallax. Always covers the visual viewport. */
-html::after {
-  content: "";
+.site-bg__veil {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
   z-index: -1;
   pointer-events: none;
   transform: none;
+  will-change: auto;
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0.28) 0,
@@ -593,12 +609,12 @@ html.theme--dark .post__content a:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html::before {
+  .site-bg__poster {
     transform: none;
     will-change: auto;
   }
 
-  html::after {
+  .site-bg__veil {
     transform: none;
   }
 
@@ -610,8 +626,7 @@ html.theme--dark .post__content a:hover {
 }
 
 @media screen and (max-width: 960px) {
-  html::before {
-    background-size: auto 130%;
+  .site-bg__poster {
     background-position: left 4% bottom 10%;
   }
 
