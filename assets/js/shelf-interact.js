@@ -6,7 +6,7 @@
     if (el.classList.contains("series-grid__item")) {
       return el;
     }
-    return el.querySelector(".bookshelf__cover") || el;
+    return el.querySelector(".bookshelf__cover img") || el.querySelector(".bookshelf__cover") || el;
   };
 
   const bind = (el) => {

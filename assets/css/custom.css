@@ -73,7 +73,7 @@ html,
   background-repeat: no-repeat;
   /* Viewport-sized fallback (not document-tall cover) so overscroll
      still shows the 20% height buffer instead of a void band.
-     Height-based: 120vw auto is shorter than a 4:3 iPad viewport. */
+     Height-based: auto 120vh avoids the 4:3 iPad vertical shortfall. */
   background-size: auto 120vh;
   background-position: left center;
   min-height: 100%;
@@ -1125,17 +1125,18 @@ html.theme--dark .post a.series-grid__item:active {
   content: "";
   position: absolute;
   z-index: 0;
-  /* ~80% of pre-#32 bloom; leftover left/down nudge eased back up/right. */
-  left: -58%;
-  right: -45%;
-  top: -43%;
-  bottom: -45%;
+  /* ~93% of pre-#32 bloom (−70/−58/−55/−55, ellipse 48% 44%),
+     redistributed 靠左下: more left+bottom than right+top.
+     Focal slightly left and down of center — not the 3D-spine 54% 47%. */
+  left: -68%;
+  right: -51%;
+  top: -48%;
+  bottom: -55%;
   width: auto;
   height: auto;
   pointer-events: none;
-  /* 3D covers sit a bit right of the PNG center (spine on the left). */
   background: radial-gradient(
-    ellipse 38% 35% at 54% 47%,
+    ellipse 45% 41% at 46% 55%,
     rgba(var(--sand-rgb), 0.66) 0%,
     rgba(var(--sand-rgb), 0.4) 36%,
     rgba(var(--sand-rgb), 0.16) 56%,
@@ -1168,9 +1169,7 @@ html.theme--dark .post a.series-grid__item:active {
   -webkit-user-drag: none;
   -webkit-touch-callout: none;
   user-select: none;
-  transform: none;
   transform-origin: center center;
-  transition: none;
   will-change: auto;
 }
 
@@ -1187,20 +1186,24 @@ html.theme--dark .post a.series-grid__item:active {
   height: 100%;
   object-fit: cover;
   filter: none;
+  transform: none;
+  transition: none;
 }
 
 /*
   Unified shelf motion (books + series):
   hover / long-press hold scale; click = short bounce.
-  Series scales the whole card; books scale the cover only.
-  Glow stays static — no ::before flash or yellow plate.
+  Series scales the whole card; books scale the cover image only
+  so the rear halo (::before) stays put. No ::before flash or
+  yellow plate.
 */
 .series-grid__item {
   transform-origin: center center;
   transition: transform 0.22s ease;
 }
 
-.bookshelf__cover {
+.post__content .bookshelf__cover img {
+  transform-origin: center center;
   transition: transform 0.22s ease;
 }
 
@@ -1209,7 +1212,7 @@ html.theme--dark .post a.series-grid__item:active {
     transform: scale(1.07);
   }
 
-  .bookshelf__item:hover .bookshelf__cover {
+  .post__content .bookshelf__item:hover .bookshelf__cover img {
     transform: scale(1.07);
   }
 }
@@ -1218,12 +1221,12 @@ html.theme--dark .post a.series-grid__item:active {
   transform: scale(1.07);
 }
 
-.bookshelf__cover.is-shelf-held {
+.post__content .bookshelf__cover img.is-shelf-held {
   transform: scale(1.07);
 }
 
 .series-grid__item.is-shelf-bounce,
-.bookshelf__cover.is-shelf-bounce {
+.post__content .bookshelf__cover img.is-shelf-bounce {
   animation: shelf-bounce 0.38s ease;
 }
 
@@ -1330,9 +1333,9 @@ html.is-nav-carry .wrapper__main {
   .series-grid__item:hover,
   .series-grid__item.is-shelf-held,
   .series-grid__item.is-shelf-bounce,
-  .bookshelf__item:hover .bookshelf__cover,
-  .bookshelf__cover.is-shelf-held,
-  .bookshelf__cover.is-shelf-bounce {
+  .post__content .bookshelf__item:hover .bookshelf__cover img,
+  .post__content .bookshelf__cover img.is-shelf-held,
+  .post__content .bookshelf__cover img.is-shelf-bounce {
     transform: none;
   }
 }
@@ -1488,9 +1491,9 @@ html.is-nav-carry .wrapper__main {
   }
 
   .bookshelf__cover::before {
-    left: -59%;
-    right: -45%;
-    top: -44%;
-    bottom: -46%;
+    left: -69%;
+    right: -51%;
+    top: -49%;
+    bottom: -56%;
   }
 }
