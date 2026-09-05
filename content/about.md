@@ -10,7 +10,8 @@ author = "覃宇"
 
 以前在 Thoughtworks 做技术教练，辅导过银行、电信和手机厂商的团队：交付、领域驱动设计、遗留系统现代化。工作没变，工具变了。
 
-这个站点是博客。微信公众号同名，叫「覃宇码字的地方」。
+这个站点是博客。导航里有[出版著作]({{< ref "books" >}})和[文章全集]({{< ref "post" >}})。微信公众号同名，叫「覃宇码字的地方」。
 
 - [出版著作]({{< ref "books" >}})：译著和写过的书
+- [文章全集]({{< ref "post" >}})：这里的全部文章
 - [翻译系列]({{< ref "translations" >}})：[软件架构编年史]({{< ref "architecture-chronicles" >}}) 与 [Wardley Maps](/series/wardley-maps-book/)
