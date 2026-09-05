@@ -1231,7 +1231,8 @@ html.is-nav-carry .series-grid .medium-zoom-image {
   }
 
   .wrapper__sidebar {
-    padding-top: 4.6rem;
+    /* Room under the fixed five-item nav; avatar must not sit flush. */
+    padding-top: 7.2rem;
     height: auto;
     align-self: auto;
   }
