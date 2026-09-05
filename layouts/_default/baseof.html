@@ -32,7 +32,7 @@
           var duneScale = sessionStorage.getItem("dune-bg-scale");
           if (duneScale != null) {
             var parsedScale = parseFloat(duneScale);
-            if (!isNaN(parsedScale) && parsedScale > 0) {
+            if (!isNaN(parsedScale) && parsedScale >= 1) {
               root.style.setProperty("--bg-scale", parsedScale.toFixed(4));
             }
           }

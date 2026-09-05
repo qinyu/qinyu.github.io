@@ -1,20 +1,21 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // Vertical: ~28% bleed (landscape ~36%); travel ≤10vh either way.
-  // Horizontal ±5%: scale 1.00 at scroll extremes, 1.10 at mid-page.
+  // Base layer is already 115% of width-fit (15% overflow).
+  // On scroll: zoom IN toward center, never below that base.
+  // Max +15% from base (scale 1.00 → 1.15). Vertical travel ≤10vh.
   const maxTravel = 0.1;
+  const baseScale = 1;
+  const maxScale = 1.15;
   const ease = 0.16;
   const storageKey = "dune-bg-parallax";
   const scaleKey = "dune-bg-scale";
   const handoffKey = "dune-bg-handoff";
-  const edgeScale = 1;
-  const midScale = 1.1;
 
   let current = 0;
   let target = 0;
-  let currentScale = edgeScale;
-  let targetScale = edgeScale;
+  let currentScale = baseScale;
+  let targetScale = baseScale;
   let running = false;
   let touchStartY = 0;
   let touchPull = 0;
@@ -34,15 +35,11 @@
     return y;
   };
 
-  const scaleFromProgress = (progress) => {
-    const fromMid = Math.abs(progress - 0.5) * 2;
-    return midScale + (edgeScale - midScale) * fromMid;
-  };
-
   const persistParallax = () => {
     try {
       sessionStorage.setItem(storageKey, String(current));
       sessionStorage.setItem(scaleKey, String(currentScale));
+      sessionStorage.removeItem("dune-bg-shift-x");
     } catch (_) {
       /* private mode */
     }
@@ -64,12 +61,12 @@
     const savedScale = sessionStorage.getItem(scaleKey);
     if (savedScale != null) {
       const parsedScale = parseFloat(savedScale);
-      if (!Number.isNaN(parsedScale)) {
+      if (!Number.isNaN(parsedScale) && parsedScale >= baseScale) {
         currentScale = parsedScale;
       }
     } else {
       const existingScale = parseFloat(getComputedStyle(root).getPropertyValue("--bg-scale"));
-      if (!Number.isNaN(existingScale) && existingScale > 0) {
+      if (!Number.isNaN(existingScale) && existingScale >= baseScale) {
         currentScale = existingScale;
       }
     }
@@ -117,20 +114,20 @@
 
   const computeScale = () => {
     if (reduce.matches) {
-      return edgeScale;
+      return baseScale;
     }
     const y = readScrollY();
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
     if (pull > 0) {
-      return edgeScale;
+      return baseScale;
     }
-    return scaleFromProgress(pageProgress());
+    return baseScale + (maxScale - baseScale) * pageProgress();
   };
 
   const apply = () => {
     const maxPx = (window.innerHeight || 1) * maxTravel;
     current = clamp(current, -maxPx, maxPx);
-    currentScale = clamp(currentScale, edgeScale, midScale);
+    currentScale = clamp(currentScale, baseScale, maxScale);
     root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
     root.style.setProperty("--bg-scale", currentScale.toFixed(4));
     persistParallax();
@@ -149,8 +146,8 @@
   const snapRest = () => {
     current = 0;
     target = 0;
-    currentScale = edgeScale;
-    targetScale = edgeScale;
+    currentScale = baseScale;
+    targetScale = baseScale;
     holdFirstFrame = false;
     apply();
     running = false;
@@ -310,7 +307,8 @@
     snapRest();
   } else {
     // Paint the carried frame first, then ease to this page's Y. Never snap.
-    holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - edgeScale) > 0.0008;
+    holdFirstFrame =
+      arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - baseScale) > 0.0008;
     apply();
     kick();
   }
