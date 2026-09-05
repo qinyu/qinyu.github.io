@@ -268,9 +268,9 @@ html,
   }
 
   .wrapper__sidebar {
-    width: 300px;
-    max-width: 300px;
-    flex: 0 0 300px;
+    width: 330px;
+    max-width: 330px;
+    flex: 0 0 330px;
     border: none;
     box-shadow: none;
   }
@@ -280,7 +280,7 @@ html,
     width: 800px;
     max-width: 800px;
     flex: 0 0 800px;
-    padding: 0 40px 48px;
+    padding: 0 24px 48px 32px;
     background-color: transparent !important;
     border: none;
     box-shadow: none;
@@ -337,25 +337,19 @@ html,
     position: sticky;
     top: 0;
     z-index: 10;
-    margin: 0 -40px;
-    padding: 0 40px;
-    background-color: var(--void) !important;
+    margin: 0 -24px 0 -32px;
+    padding: 0 24px 0 32px;
+    background-color: transparent !important;
     border: none;
     border-bottom: none;
     box-shadow: none;
   }
 
-  /* Desktop only: opaque bar + upward shield. Portrait keeps the veil through the nav. */
+  /* Landscape: no opaque bar, no upward void shield. Portrait nav is unchanged. */
   .header::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 100%;
-    height: 100vh;
-    height: 100dvh;
-    background-color: var(--void);
-    pointer-events: none;
+    content: none;
+    display: none;
+    background: none;
   }
 
   .nav__list {
@@ -379,8 +373,8 @@ html,
   }
 
   .wrapper__sidebar {
-    width: 300px;
-    max-width: 300px;
+    width: 330px;
+    max-width: 330px;
   }
 
   .wrapper__main {
