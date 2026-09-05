@@ -1,12 +1,12 @@
 {{ define "main" }}
   <div
-    class="post {{ with .Site.Params.doNotLoadAnimations }}
+    class="post post--cards {{ with .Site.Params.doNotLoadAnimations }}
       .
     {{ else }}
       animated fadeInDown
     {{ end }}"
   >
-    <div class="post__content">
+    <div class="post__content post__content--cards">
       {{ .Content }}
     </div>
   </div>
