@@ -23,9 +23,9 @@
     still cover. Portrait: layer height ≈ 115% of the viewport
     (zoom-out by height), width grows as needed to cover; pin the
     image left so the limb stays visible (do not center-crop it away).
-    Scroll zoom-in uses a smaller slice of that 15% (JS --bg-scale
-    1.00–1.04). Leftover overflow absorbs bounce; top rubber-band still
-    eases a slight scale-in. Never rest at exact cover (100% layer).
+    Scroll zoom-in uses a small slice of that 15% (JS --bg-scale
+    1.00–1.024). Leftover overflow absorbs bounce; top rubber-band still
+    eases a milder scale-in. Never rest at exact cover (100% layer).
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
@@ -94,7 +94,7 @@ html,
   Landscape rest: 15% zoom-out by WIDTH (layer ≈ 115vw). Height follows
   16:9 then grows to still cover. Layer is centered so bounce has leftover
   overflow on both sides; the image itself stays left-anchored.
-  Scroll scale is 1.00–1.04 so most of the 15% buffer stays unused.
+  Scroll scale is 1.00–1.024 so most of the 15% buffer stays unused.
   Extra min-height covers ≤6vh translate + rubber-band.
 */
 .site-bg__poster {
@@ -131,7 +131,7 @@ html,
 /*
   Portrait rest: 15% zoom-out by HEIGHT (layer ≈ 115vh). Width grows as
   needed to cover.   Keep the Mars limb on the left — do not center-crop
-  the landscape plate. Same 1.00–1.04 scroll zoom-in budget.
+  the landscape plate. Same 1.00–1.024 scroll zoom-in budget.
 */
 @media (orientation: portrait) {
   :root {

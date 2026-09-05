@@ -2,9 +2,9 @@
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   // CSS layer stays 115% at rest (15% overflow buffer). Do not shrink
-  // that rest size. Intentional scroll zoom uses ~4% (1.00–1.04) so
-  // most of the buffer stays unused. Top rubber-band still eases a
-  // slight scale-in (not translate-only). Translate stays ≤6vh.
+  // that rest size. Intentional scroll zoom is ~3/5 of the 1.04 peak
+  // (1.00–1.024) so it is felt but does not track foreground scroll.
+  // Top rubber-band still eases a milder scale-in. Translate stays ≤6vh.
   const maxTravel = 0.06;
   const ease = 0.16;
   const arriveEase = 0.08;
@@ -13,8 +13,8 @@
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
   const baseScale = 1;
-  const peakScale = 1.04;
-  const bouncePeak = 1.022;
+  const peakScale = 1.024;
+  const bouncePeak = 1.012;
 
   let current = 0;
   let target = 0;
