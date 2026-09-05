@@ -1,6 +1,8 @@
 {{ define "main" }}
   {{ $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-  {{ $chapters := where $posts "RelPermalink" "like" `^/post/architecture-chronicles/` }}
+  {{ $byPath := where $posts "RelPermalink" "like" `^/post/architecture-chronicles/` }}
+  {{ $bySeries := where $posts "Params.series" "intersect" (slice "软件架构编年史") }}
+  {{ $chapters := $byPath | union $bySeries }}
   {{ $homePosts := $posts | complement $chapters | first 5 }}
   {{ range $homePosts }}
     <div
