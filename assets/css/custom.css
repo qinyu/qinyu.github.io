@@ -265,6 +265,50 @@ html .archive__list-title:hover {
   font-size: 1.2rem;
 }
 
+.post__tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.15rem 0 1.35rem;
+}
+
+html .post__content a.post__tag-chip,
+html.theme--dark .post__content a.post__tag-chip,
+html.theme--light .post__content a.post__tag-chip,
+html .post__footer a.tag,
+html.theme--dark .post__footer a.tag,
+html.theme--light .post__footer a.tag {
+  display: inline-block;
+  margin: 0;
+  padding: 0.12rem 0.75rem;
+  border: 1px solid rgba(196, 165, 116, 0.5);
+  border-radius: 999px;
+  background-color: var(--ochre-wash);
+  color: var(--sand);
+  font-size: 1.2rem;
+  line-height: 1.7;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+html .post__footer a.tag {
+  margin: 0 0.45rem 0.45rem 0;
+}
+
+html .post__footer a.tag::before {
+  content: none;
+}
+
+html .post__content a.post__tag-chip:hover,
+html.theme--dark .post__content a.post__tag-chip:hover,
+html.theme--light .post__content a.post__tag-chip:hover,
+html .post__footer a.tag:hover,
+html.theme--dark .post__footer a.tag:hover {
+  color: #1a1610;
+  background-color: var(--sand);
+  border-color: var(--sand);
+}
+
 .post__meta-item:nth-child(2) {
   display: none;
 }

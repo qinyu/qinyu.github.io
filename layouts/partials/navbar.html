@@ -19,6 +19,8 @@
           {{ $active = $.IsHome }}
         {{ else if eq $menuItem.Identifier "posts" }}
           {{ $active = or $active (eq $.Type "post") (strings.HasPrefix $url "/post/") }}
+        {{ else if eq $menuItem.Identifier "tags" }}
+          {{ $active = or $active (strings.HasPrefix $url "/tags/") }}
         {{ else if eq $menuItem.Identifier "books" }}
           {{ $active = or $active (strings.HasPrefix $url "/books/") }}
         {{ else if eq $menuItem.Identifier "translations" }}
