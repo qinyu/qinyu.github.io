@@ -1,0 +1,74 @@
+<div
+  class="{{ with .Site.Params.doNotLoadAnimations }}
+    .
+  {{ else }}
+    animated fadeInDown
+  {{ end }}"
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      {{ $url := .RelPermalink }}
+      {{ range $menuId, $menuItem := .Site.Menus.main }}
+        {{ $active := eq $url $menuItem.URL }}
+        {{ if eq $menuItem.Identifier "home" }}
+          {{ $active = $.IsHome }}
+        {{ else if eq $menuItem.Identifier "posts" }}
+          {{ $active = or $active (eq $.Type "post") (strings.HasPrefix $url "/post/") }}
+        {{ else if eq $menuItem.Identifier "books" }}
+          {{ $active = or $active (strings.HasPrefix $url "/books/") }}
+        {{ else if eq $menuItem.Identifier "translations" }}
+          {{ $active = or $active (strings.HasPrefix $url "/translations/") (strings.HasPrefix $url "/series/") }}
+        {{ else if eq $menuItem.Identifier "about" }}
+          {{ $active = or $active (strings.HasPrefix $url "/about/") }}
+        {{ end }}
+        <li class="nav__list-item">
+          {{ .Pre }}
+          <a
+            {{ if $active }}
+              class="nav__link--active"
+            {{ end }}
+            href="{{ .URL }}"
+            {{ if strings.HasPrefix .URL "http" }}
+              target="_blank" rel="noopener noreferrer"
+            {{ end }}
+            title="{{ .Title }}"
+            >{{ $menuItem.Name }}</a
+          >
+        </li>
+      {{ end }}
+    </ul>
+    <ul class="nav__list nav__list--end">
+      {{ if and .IsTranslated hugo.IsMultilingual }}
+        <li class="nav__list-item">
+          <div class="optionswitch">
+            <input class="optionswitch__picker" type="checkbox" id="languagepicker" hidden />
+            <label class="optionswitch__label" for="languagepicker"
+              >{{ .Site.Language.LanguageName }} <i class="fa fa-angle-down" aria-hidden="true"></i
+            ></label>
+            <div class="optionswitch__triangle"></div>
+            <ul class="optionswitch__list">
+              {{ range $.Translations }}
+                <li class="optionswitch__list-item">
+                  <a href="{{ .RelPermalink }}" title="{{ .Language.LanguageName }}"
+                    ><span
+                      {{ if eq . $.Site.Language }}
+                        class="active"
+                      {{ end }}
+                      aria-label="{{ i18n "ariaLanguage" }}{{ .Language.LanguageName }}"
+                      >{{ .Language.LanguageName }}</span
+                    >
+                  </a>
+                </li>
+              {{ end }}
+            </ul>
+          </div>
+        </li>
+      {{ end }}
+    </ul>
+  </nav>
+</div>
