@@ -4,6 +4,7 @@
   // Layer bleed is 20% top + 20% bottom; travel ≤10vh either way.
   const maxTravel = 0.1;
   const ease = 0.16;
+  const arriveEase = 0.08;
   const storageKey = "dune-bg-parallax";
   const scrollKey = "dune-bg-scroll";
   const handoffKey = "dune-bg-handoff";
@@ -159,8 +160,9 @@
       return;
     }
     target = computeTarget();
+    const step = arriving ? arriveEase : ease;
     if (arriving && !userTookScroll && arriveScroll > 0.5) {
-      arriveScroll += (0 - arriveScroll) * ease;
+      arriveScroll += (0 - arriveScroll) * step;
       if (arriveScroll < 0.5) {
         arriveScroll = 0;
       }
@@ -175,7 +177,7 @@
       finishArrive();
       return;
     }
-    current += delta * ease;
+    current += delta * step;
     apply();
     running = true;
     window.requestAnimationFrame(tick);

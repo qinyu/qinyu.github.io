@@ -15,7 +15,14 @@
       /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
       try {
         var root = document.documentElement;
-        if (sessionStorage.getItem("dune-bg-handoff") === "1") {
+        var duneParallaxEarly = sessionStorage.getItem("dune-bg-parallax");
+        var duneScrollEarly = sessionStorage.getItem("dune-bg-scroll");
+        var handoff = sessionStorage.getItem("dune-bg-handoff") === "1";
+        if (
+          handoff ||
+          (duneScrollEarly != null && Math.abs(parseFloat(duneScrollEarly) || 0) > 0.5) ||
+          (duneParallaxEarly != null && Math.abs(parseFloat(duneParallaxEarly) || 0) > 0.5)
+        ) {
           root.classList.add("is-nav-carry");
         }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
