@@ -230,6 +230,9 @@ html.theme--light a.sidebar__tag:hover {
   border-color: #d8d2c8;
 }
 
+.footer,
+.footer a,
+.footer__item,
 html .footer,
 html .footer a,
 html .footer__item,
@@ -239,7 +242,7 @@ html .footer.footer__sidebar,
 html .footer.footer__base,
 html .footer.footer__sidebar .footer__item,
 html .footer.footer__base .footer__item {
-  color: #cfc8bc !important;
+  color: var(--ink) !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
