@@ -27,13 +27,28 @@ html,
 /*
   Dedicated layers (not html::before/::after):
   - .site-bg / .site-bg__poster: full-bleed dune; only the poster child micro-moves
-  - .site-bg__veil: position:fixed; inset:0; never translated
+  - .site-bg__veil: position:fixed; bleeds past the viewport; never translated
   iOS Safari treats html/body pseudos as scroll-tied; transforming html::before
   also made the veil jitter. Keep transform off html/body and off the veil.
 */
 html,
 .html {
+  /* Overscroll gutter paints this, not a void band. Viewport layers sit on top. */
   background-color: var(--void);
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.28) 0,
+      rgba(0, 0, 0, 0.42) 28%,
+      rgba(0, 0, 0, 0.72) 46%,
+      rgba(0, 0, 0, 0.88) 100%
+    ),
+    var(--bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 6% 55%;
+  min-height: 100%;
+  min-height: 100dvh;
   transform: none;
 }
 
@@ -76,12 +91,11 @@ html,
 .site-bg__veil {
   display: block;
   position: fixed;
-  inset: 0;
+  /* Inset only — do not lock height to 100dvh (leaves a void gap on overscroll). */
+  inset: -20vh 0;
   width: 100%;
-  height: 100%;
-  height: 100dvh;
-  min-height: 100%;
-  min-height: 100dvh;
+  height: auto;
+  min-height: 0;
   z-index: -1;
   pointer-events: none;
   transform: none;
@@ -107,23 +121,14 @@ html,
   background-image: none;
 }
 
-/* Opaque nav + upward shield so rubber-band never shows page content through/above it. */
-.header {
-  background-color: var(--void) !important;
-  background-image: none;
-  z-index: 10;
+.body {
+  min-height: 100%;
+  min-height: 100dvh;
 }
 
-.header::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 100%;
-  height: 100vh;
-  height: 100dvh;
-  background-color: var(--void);
-  pointer-events: none;
+.header {
+  background-image: none;
+  z-index: 10;
 }
 
 .themeswitch {
@@ -180,6 +185,19 @@ html,
     padding: 0 36px;
     background-color: var(--void) !important;
     border-bottom: 1px solid rgba(var(--sand-rgb), 0.35);
+  }
+
+  /* Desktop only: opaque bar + upward shield. Portrait keeps the veil through the nav. */
+  .header::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 100vh;
+    height: 100dvh;
+    background-color: var(--void);
+    pointer-events: none;
   }
 
   .nav__list {
@@ -653,8 +671,8 @@ html.theme--dark .post__content a:hover {
   color: var(--muted);
 }
 
-.navbar-burger__line {
-  background-color: #d8d2c8 !important;
+.navbar-burger {
+  display: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -675,19 +693,26 @@ html.theme--dark .post__content a:hover {
 }
 
 @media screen and (max-width: 960px) {
+  html,
+  .html {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)),
+      var(--bg-image);
+    background-position: 4% 58%;
+  }
+
   .site-bg__poster {
     background-position: 4% 58%;
   }
 
-  /* Portrait veil: even wash over the full poster, not the old content slab. */
+  /* Portrait veil: even wash, bleed past the viewport so overscroll stays covered. */
   .site-bg__veil {
     display: block;
     position: fixed;
-    inset: 0;
+    inset: -20vh 0;
     width: 100%;
-    height: 100%;
-    height: 100dvh;
-    min-height: 100dvh;
+    height: auto;
+    min-height: 0;
     transform: none;
     background: rgba(0, 0, 0, 0.46);
   }
@@ -710,8 +735,13 @@ html.theme--dark .post__content a:hover {
     padding-top: env(safe-area-inset-top, 0px);
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
-    background-color: var(--void) !important;
-    border-bottom: 1px solid rgba(var(--sand-rgb), 0.35);
+    background-color: transparent !important;
+    border-bottom: none;
+  }
+
+  .header::before {
+    content: none;
+    display: none;
   }
 
   .header > * {
@@ -719,8 +749,56 @@ html.theme--dark .post__content a:hover {
     width: 100%;
   }
 
-  .navbar-burger {
-    margin-right: 0;
+  /* Inline the same five desktop items; do not use the Anatole hamburger. */
+  .nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.15rem 0.85rem;
+    width: 100%;
+    margin: 0;
+    padding: 1rem 1.2rem 0.75rem !important;
+    background-color: transparent !important;
+    list-style: none;
+  }
+
+  .nav__list--end {
+    display: none;
+  }
+
+  .nav__list-item {
+    padding: 0.15rem 0;
+    text-align: center;
+  }
+
+  .nav__list-item a {
+    font-size: 1.3rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  }
+
+  html.theme--dark .nav__link--active,
+  html.theme--light .nav__link--active,
+  html .nav__link--active,
+  a.nav__link--active {
+    color: var(--sand);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .wrapper__sidebar {
+    padding-top: 4.6rem;
+  }
+
+  .sidebar {
+    margin-top: 0.6rem;
   }
 
   .sidebar__tags {
