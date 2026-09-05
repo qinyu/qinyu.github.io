@@ -20,18 +20,21 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    15% zoom-out is an overflow buffer for rubber-band / overscroll —
-    not a zoom budget to fully consume. Landscape: layer width ≈ 115%
-    of the viewport (zoom-out by width), height grows as needed to
-    still cover — min-height 115% so 4:3 iPad does not sit the plate
-    edges on the viewport (the file has no vertical cosmos). Portrait:
-    ~20% smaller painted disk than #36 cover-stretch, still fill the
-    viewport, pin left so leftover scale is right-hand cosmos.
-    Scroll zoom-in uses a small slice of the overflow (JS --bg-scale
-    1.00–1.024). Never rest at exact cover or contain/fixed-vh.
-    Rest layer size is of a viewport-sized .site-bg (inset:0).
-    Do not size the poster as 115% of an lvh-bloated site-bg.
+    Cover + overflow only — never contain / fixed-vh letterbox.
+    Bounce budget (per side, matches parallax.js):
+      rest_overflow ≥ bounce (6%) + peakZoom/2 (1.2%) + safety (2%)
+                    ≥ 9.2%  →  layer ≥ 118.4%
+    --bg-rest is 120% so leftover overflow stays ≥ bounce after
+    the small scroll zoom. JS peakScale is computed from the
+    measured leftover, not hardcoded 1.024.
+    Landscape: 115% width (#36 composition) + --bg-rest min-height
+    so 4:3 iPad does not sit plate edges on the viewport (the file
+    has no vertical cosmos). Portrait: same cover fill; ~20% more
+    right-hand cosmos is position inside this still-covering plate
+    (--bg-pos left), not a layer smaller than the viewport.
+    Rest layer is of a viewport-sized .site-bg (inset:0).
   */
+  --bg-rest: 120%;
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
   --bg-pos: left center;
@@ -67,8 +70,8 @@ html,
     var(--bg-image);
   background-repeat: no-repeat;
   /* Viewport-sized fallback (not document-tall cover) so overscroll
-     still shows the 15% width buffer instead of a void band. */
-  background-size: 115vw auto;
+     still shows the rest-overflow buffer instead of a void band. */
+  background-size: 120vw auto;
   background-position: left top;
   min-height: 100%;
   min-height: 100dvh;
@@ -100,13 +103,10 @@ html,
 }
 
 /*
-  Landscape rest (pre-#32 / #36): 15% zoom-out by WIDTH (layer ≈
-  115vw of a viewport-tall site-bg). Height follows 16:9 then grows
-  to still cover. #36 used min-height:100%, which on 4:3 iPad sat the
-  plate’s hard top/bottom edges on the viewport. min-height:115%
-  keeps leftover overflow so bounce stays inside the image.
-  Layer is centered so bounce has leftover overflow; the image
-  stays left-anchored. Scroll scale is 1.00–1.024.
+  Landscape rest (pre-#32 / #36 cover): 15% zoom-out by WIDTH
+  (layer ≈ 115vw). Height follows 16:9 then grows to --bg-rest
+  (120%) so 4:3 iPad bounce/zoom never exposes the plate edge.
+  Layer is centered; the image stays left-anchored.
 */
 .site-bg__poster {
   position: absolute;
@@ -115,7 +115,7 @@ html,
   width: 115%;
   max-width: 115%;
   height: auto;
-  min-height: 115%;
+  min-height: var(--bg-rest);
   aspect-ratio: 16 / 9;
   pointer-events: none;
   background-color: var(--void);
@@ -153,22 +153,20 @@ html,
 }
 
 /*
-  Portrait: layer still covers (min-width 100%, height 115% overflow)
-  — never contain / smaller-than-viewport letterbox. #36 used cover,
-  which on 3:4 iPad width-stretched the 9:16 plate and ate the right
-  cosmos. Paint at auto 92% of that 115% box (~20% smaller disk than
-  #36’s cover-stretch) and pin left so the leftover is right-hand
-  black. The portrait file already has cosmos above/below the disk.
+  Portrait: cover + --bg-rest overflow, pin left. The 9:16 file
+  already has ~19% cosmos on the right; left-anchor keeps the limb
+  and lets that cosmos read in-frame. Do not paint smaller than
+  cover (auto 92% / contain) — that opens a --void gap on a side.
+  Layer min-width 100% so the box itself still spans the viewport.
 */
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
-    --bg-size: auto 92%;
   }
 
   html,
   .html {
-    background-size: auto 106vh;
+    background-size: auto 120vh;
     background-position: left top;
   }
 
@@ -176,7 +174,7 @@ html,
     width: auto;
     min-width: 100%;
     max-width: none;
-    height: 115%;
+    height: var(--bg-rest);
     aspect-ratio: 9 / 16;
     left: 0;
     top: 50%;

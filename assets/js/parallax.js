@@ -1,12 +1,14 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // CSS layer stays oversized at rest (landscape 115% cover,
-  // portrait ~20% smaller painted disk, still covering). Do not
-  // shrink that rest size below cover. Scroll zoom is ~3/5 of the
-  // 1.04 peak (1.00–1.024). Top rubber-band still eases a milder
-  // scale-in. Translate stays ≤6vh.
+  // CSS rest is --bg-rest 120% (cover + overflow, never contain).
+  // Bounce budget: leftover overflow ≥ bounce travel on the tightest
+  // axis. peakScale is measured, not guessed:
+  //   max_scale ≤ 1 + (rest_overflow_frac − bounce_reserve − safety)
+  // Translate stays ≤6vh. Do not shrink rest below cover.
   const maxTravel = 0.06;
+  const bounceReserve = maxTravel;
+  const safetyMargin = 0.02;
   const ease = 0.16;
   const arriveEase = 0.08;
   const storageKey = "site-bg-parallax";
@@ -14,8 +16,8 @@
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
   const baseScale = 1;
-  const peakScale = 1.024;
-  const bouncePeak = 1.012;
+  let peakScale = 1.02;
+  let bouncePeak = 1.01;
 
   let current = 0;
   let target = 0;
@@ -33,6 +35,23 @@
   let navScrollY = 0;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+
+  const measureOverflowFrac = () => {
+    const el = document.querySelector(".site-bg__poster");
+    const vh = window.innerHeight || 1;
+    if (!el) {
+      return 0;
+    }
+    // Layout height, before translate/scale. Centered rest overflow
+    // is half the extra; bounce consumes this on the tight (Y) axis.
+    return Math.max(0, (el.offsetHeight / vh - 1) / 2);
+  };
+
+  const syncPeakScale = () => {
+    const overflowFrac = measureOverflowFrac();
+    peakScale = Math.max(baseScale, 1 + overflowFrac - bounceReserve - safetyMargin);
+    bouncePeak = baseScale + (peakScale - baseScale) / 2;
+  };
 
   const readScrollY = () => {
     const y = window.scrollY || root.scrollTop || 0;
@@ -408,6 +427,7 @@
   window.addEventListener(
     "resize",
     () => {
+      syncPeakScale();
       syncPortraitNav();
       kick();
     },
@@ -430,13 +450,22 @@
   });
   if (window.visualViewport) {
     window.visualViewport.addEventListener("scroll", kick, { passive: true });
-    window.visualViewport.addEventListener("resize", kick, { passive: true });
+    window.visualViewport.addEventListener(
+      "resize",
+      () => {
+        syncPeakScale();
+        kick();
+      },
+      { passive: true },
+    );
   }
   if (typeof reduce.addEventListener === "function") {
     reduce.addEventListener("change", kick);
   } else if (typeof reduce.addListener === "function") {
     reduce.addListener(kick);
   }
+
+  syncPeakScale();
 
   if (reduce.matches) {
     snapRest();
