@@ -297,7 +297,11 @@
 
   window.addEventListener("pagehide", () => {
     persistParallax();
-    persistScroll(readScrollY());
+    // Unload often reports scrollY=0; do not clobber a handoff offset.
+    const y = readScrollY();
+    if (y > 0.5) {
+      persistScroll(y);
+    }
   });
 
   window.addEventListener(
