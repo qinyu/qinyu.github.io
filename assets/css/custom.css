@@ -20,19 +20,22 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    15% zoom-out is an overflow buffer for rubber-band / overscroll —
-    not a zoom budget to fully consume. Landscape: layer width ≈ 115%
-    of the viewport (zoom-out by width), height grows as needed to
-    still cover. Portrait: layer height ≈ 115% of the viewport
-    (zoom-out by height), width grows as needed to cover; pin the
-    image left so the limb stays visible (do not center-crop it away).
-    Scroll zoom-in uses a small slice of that 15% (JS --bg-scale
+    20% zoom-out is an overflow buffer for rubber-band / overscroll —
+    not a zoom budget to fully consume. Landscape: layer ≈ 120% of
+    the viewport in both axes (zoom-out by width; min-height 120%
+    so 4:3 iPad landscape still has top/bottom headroom — 120% of
+    a 16:9 width is shorter than a 4:3 viewport, so width-only
+    overflow left the image flush and flashed a hard limb edge).
+    Portrait: layer height ≈ 120% of the viewport (zoom-out by
+    height), width grows as needed to cover; pin the image left
+    so the limb stays visible (do not center-crop it away).
+    Scroll zoom-in uses a small slice of that 20% (JS --bg-scale
     1.00–1.024, not the pre-#32 1.08). Leftover overflow absorbs
     bounce. Never rest at exact cover (100% layer).
-    Rest layer size is 115% of a viewport-sized .site-bg (inset:0
-    in both orientations), same pre-#32 scale. Portrait pins the
-    plate left so the disk is not center-cropped toward the right.
-    Do not size the poster as 115% of an lvh-bloated site-bg.
+    Rest layer size is 120% of a viewport-sized .site-bg (inset:0
+    in both orientations). Portrait pins the plate left so the
+    disk is not center-cropped toward the right. Do not size the
+    poster as 120% of an lvh-bloated site-bg.
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
@@ -69,9 +72,10 @@ html,
     var(--bg-image);
   background-repeat: no-repeat;
   /* Viewport-sized fallback (not document-tall cover) so overscroll
-     still shows the 15% width buffer instead of a void band. */
-  background-size: 115vw auto;
-  background-position: left top;
+     still shows the 20% height buffer instead of a void band.
+     Height-based: 120vw auto is shorter than a 4:3 iPad viewport. */
+  background-size: auto 120vh;
+  background-position: left center;
   min-height: 100%;
   min-height: 100dvh;
   max-width: 100%;
@@ -102,20 +106,21 @@ html,
 }
 
 /*
-  Landscape rest (pre-#32): 15% zoom-out by WIDTH (layer ≈ 115vw
-  of a viewport-tall site-bg). Height follows 16:9 then grows to
-  still cover. Layer is centered so bounce has leftover overflow;
-  the image stays left-anchored. Scroll scale is 1.00–1.024
-  (kept from #34; not pre-#32 1.08).
+  Landscape rest: 20% zoom-out (layer ≈ 120% of a viewport-sized
+  site-bg). Width 120%; min-height 120% so 4:3 landscape keeps
+  top/bottom bounce inside the image (16:9-at-120%-width is still
+  shorter than the viewport). Layer is centered so leftover
+  overflow sits on both ends; the image stays left-anchored.
+  Scroll scale is 1.00–1.024 (kept from #34; not pre-#32 1.08).
 */
 .site-bg__poster {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 115%;
-  max-width: 115%;
+  width: 120%;
+  max-width: 120%;
   height: auto;
-  min-height: 100%;
+  min-height: 120%;
   aspect-ratio: 16 / 9;
   pointer-events: none;
   background-color: var(--void);
@@ -131,21 +136,23 @@ html,
 }
 
 /*
-  Wide desktop: 115vw of 1440–1920+ makes the left-limb disk read
+  Wide desktop: 120vw of 1440–1920+ makes the left-limb disk read
   too wide vs iPad landscape. Cap the plate at iPad-Pro-landscape
-  115% (~1366×1.15) and pin left so the limb stays put. Tablet
-  landscape (below 1440) keeps the 115% rest above.
+  120% (~1366×1.20 ≈ 1640px) and pin left so the limb stays put.
+  Tablet landscape (below 1440) keeps the 120% rest above.
+  min-height 120% still comes from the base rule so the cap does
+  not flush the image to the viewport top/bottom.
 */
 @media (orientation: landscape) and (min-width: 1440px) {
   html,
   .html {
-    background-size: 1570px auto;
-    background-position: left top;
+    background-size: 1640px auto;
+    background-position: left center;
   }
 
   .site-bg__poster {
-    width: 1570px;
-    max-width: 1570px;
+    width: 1640px;
+    max-width: 1640px;
     left: 0;
     transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
       scale(var(--bg-scale, 1));
@@ -153,11 +160,10 @@ html,
 }
 
 /*
-  Portrait rest (pre-#32 scale): 15% zoom-out by HEIGHT (layer ≈
-  115vh). Pin the plate to the LEFT — pre-#32 comments already
-  said do not center-crop. left:50% + translate(-50%) on a 9:16
-  box wider than the viewport shaved the left of the disk and
-  jammed the planet against the right edge.
+  Portrait rest: 20% zoom-out by HEIGHT (layer ≈ 120vh). Pin the
+  plate to the LEFT — do not center-crop. left:50% + translate(-50%)
+  on a 9:16 box wider than the viewport shaved the left of the
+  disk and jammed the planet against the right edge.
 */
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
@@ -166,15 +172,15 @@ html,
 
   html,
   .html {
-    background-size: auto 115vh;
-    background-position: left top;
+    background-size: auto 120vh;
+    background-position: left center;
   }
 
   .site-bg__poster {
     width: auto;
     min-width: 100%;
     max-width: none;
-    height: 115%;
+    height: 120%;
     aspect-ratio: 9 / 16;
     left: 0;
     top: 50%;
