@@ -49,12 +49,18 @@ html,
   background-position: 6% 55%;
   min-height: 100%;
   min-height: 100dvh;
+  max-width: 100%;
+  overflow-x: hidden;
   transform: none;
 }
 
 .body {
   isolation: isolate;
   transform: none;
+  max-width: 100%;
+  /* Hidden x only: overflow:hidden would square-clip the shelf glow. */
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .site-bg {
@@ -139,6 +145,14 @@ html,
 .body {
   min-height: 100%;
   min-height: 100dvh;
+}
+
+.wrapper,
+.wrapper__main,
+.wrapper__sidebar {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .header {
@@ -524,17 +538,25 @@ html.theme--dark .post__content a:hover {
 }
 
 /* #18 isolates .body; keep that stack, but do not clip the shelf glow. */
-.body,
 .post--cards,
-.post__content--cards {
+.post__content--cards,
+.bookshelf,
+.series-grid,
+.bookshelf__item,
+.series-grid__item,
+.bookshelf__cover {
   overflow: visible;
 }
 
 .bookshelf,
 .series-grid {
   display: grid;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin: 0;
-  padding: 3.2rem 0 1.6rem;
+  padding: 3.2rem 0 2.4rem;
   overflow: visible;
 }
 
@@ -564,6 +586,8 @@ html.theme--dark .post__content a:hover {
   isolation: auto;
   contain: none;
   overflow: visible;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .series-grid__item {
@@ -605,6 +629,8 @@ html.theme--dark .post__content a:hover {
   justify-content: center;
   box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   transform: none;
 }
 
@@ -615,26 +641,34 @@ html.theme--dark .post__content a:hover {
   aspect-ratio: 1 / 1;
   padding: 14%;
   overflow: visible;
+  min-width: 0;
+  max-width: 100%;
 }
 
-/* Glow on the card via inset, no transform/filter — isolation cannot square-clip it. */
-.bookshelf__item::before {
+/*
+  Glow on the cover box (not the title+meta card) so it stays centered
+  on the silhouette. Taller inset than wide: closest-side ellipse can
+  finish fading before the box edge — no square top/bottom cut.
+  Inset only; no transform/filter (those get isolation-clipped).
+*/
+.bookshelf__cover::before {
   content: "";
   position: absolute;
   z-index: 0;
-  left: -28%;
-  right: -28%;
-  top: -18%;
-  height: 92%;
+  left: -22%;
+  right: -22%;
+  top: -40%;
+  bottom: -40%;
   width: auto;
+  height: auto;
   pointer-events: none;
   background: radial-gradient(
-    ellipse at 50% 50%,
+    ellipse closest-side at 50% 50%,
     rgba(var(--sand-rgb), 0.82) 0%,
-    rgba(var(--sand-rgb), 0.52) 30%,
-    rgba(var(--sand-rgb), 0.24) 54%,
-    rgba(var(--sand-rgb), 0.06) 72%,
-    rgba(var(--sand-rgb), 0) 82%
+    rgba(var(--sand-rgb), 0.52) 34%,
+    rgba(var(--sand-rgb), 0.24) 58%,
+    rgba(var(--sand-rgb), 0.06) 80%,
+    rgba(var(--sand-rgb), 0) 100%
   );
   transform: none;
   opacity: 0.95;
@@ -655,6 +689,8 @@ html.theme--dark .post__content a:hover {
   width: 100%;
   height: 100%;
   margin: 0;
+  max-width: 100%;
+  min-width: 0;
   object-fit: contain;
   pointer-events: none;
   transform: none;
@@ -680,30 +716,36 @@ html.theme--dark .post__content a:hover {
   transform: scale(1.07);
 }
 
-.bookshelf__item:hover::before,
-.bookshelf__item:focus::before,
-.bookshelf__item:focus-within::before,
-.bookshelf__item:focus-visible::before,
-.bookshelf__item:active::before {
+.bookshelf__item:hover .bookshelf__cover::before,
+.bookshelf__item:focus .bookshelf__cover::before,
+.bookshelf__item:focus-within .bookshelf__cover::before,
+.bookshelf__item:focus-visible .bookshelf__cover::before,
+.bookshelf__item:active .bookshelf__cover::before {
   opacity: 1;
 }
 
 .bookshelf__title,
 .series-grid__title {
   margin-top: 0.85rem;
+  max-width: 100%;
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.4;
   color: var(--sand);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .bookshelf__meta,
 .series-grid__meta {
   margin-top: 0.3rem;
+  max-width: 100%;
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.4;
   color: var(--muted);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .navbar-burger {
@@ -731,7 +773,7 @@ html.is-nav-carry .animated {
     transition: none !important;
   }
 
-  .bookshelf__item::before,
+  .bookshelf__cover::before,
   .post__content .bookshelf__cover img,
   .post__content .series-grid__cover img {
     transition: none;
@@ -790,9 +832,12 @@ html.is-nav-carry .animated {
     display: none;
   }
 
-  .header > * {
+  .header > *,
+  .nav,
+  .nav__list {
     box-sizing: border-box;
     width: 100%;
+    max-width: 100%;
   }
 
   /* Inline the same five desktop items; do not use the Anatole hamburger. */
@@ -823,6 +868,7 @@ html.is-nav-carry .animated {
   .nav__list-item {
     padding: 0.15rem 0;
     text-align: center;
+    min-width: 0;
   }
 
   .nav__list-item a {
@@ -851,16 +897,31 @@ html.is-nav-carry .animated {
     justify-content: center;
     margin-left: 1.2rem;
     margin-right: 1.2rem;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .bookshelf {
     grid-template-columns: repeat(5, 1fr);
-    gap: 1.4rem 0.55rem;
+    gap: 1.8rem 0.4rem;
+    padding: 2.8rem 0 2.2rem;
   }
 
   .series-grid {
     grid-template-columns: repeat(3, 1fr);
     column-gap: 12px;
     row-gap: 24px;
+  }
+
+  .bookshelf__item {
+    padding: 1.4rem 0.12rem 0.85rem;
+  }
+
+  /* Extra vertical room on narrow 5-col cells so the oval is not boxed. */
+  .bookshelf__cover::before {
+    left: -16%;
+    right: -16%;
+    top: -48%;
+    bottom: -48%;
   }
 }
