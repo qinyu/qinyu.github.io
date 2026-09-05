@@ -1,0 +1,11 @@
+<div class="bookshelf">
+  {{ range hugo.Data.books }}
+    <a class="bookshelf__item" href="{{ .url }}" rel="noopener noreferrer" target="_blank">
+      <span class="bookshelf__cover">
+        <img src="{{ .cover }}" alt="{{ .title }}" />
+      </span>
+      <span class="bookshelf__title">{{ .title }}</span>
+      <span class="bookshelf__meta">{{ .role }} · {{ .year }}</span>
+    </a>
+  {{ end }}
+</div>
