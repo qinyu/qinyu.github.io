@@ -4,7 +4,7 @@
       <span class="bookshelf__cover">
         <img src="{{ .cover }}" alt="{{ .title }}" draggable="false" />
       </span>
-      <span class="bookshelf__title">{{ .title }}</span>
+      <span class="bookshelf__title{{ if .compact }} bookshelf__title--tight{{ end }}">{{ .title }}</span>
       <span class="bookshelf__meta">{{ .role }} · {{ .year }}</span>
     </a>
   {{ end }}

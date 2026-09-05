@@ -1,11 +1,14 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // CSS layer is already 115% (15% overflow buffer). That buffer is for
-  // rubber-band / overscroll — do not consume it with scroll zoom.
-  // Intentional zoom-in toward center uses ~8% (1.00–1.08), leftover ~7%+
-  // for bounce. Translate stays ≤6vh so it fits inside remaining overflow
-  // after that zoom. Do not peak at 1.15 on a 115% layer.
+  // Merged main: landscape layer 115%, --bg-scale 1.00–1.08.
+  // At scroll top, scale is the MIN (1.00), not max zoom-in.
+  // 115% × 1.00 still has ~15% overflow on paper — but bounce only
+  // drove translateY and clamped scale to 1.00, so the finger felt
+  // Y-only (easy to read as a "zoom-in limit").
+  // Now: rest width ~122%, intentional zoom 1.00–1.06 (peak ≈ 129%
+  // wide). Top overscroll eases scale UP a little (1.00 → ~1.035)
+  // so horizontal framing follows the pull. Never clamp to flush cover.
   const maxTravel = 0.06;
   const ease = 0.16;
   const arriveEase = 0.08;
@@ -13,8 +16,11 @@
   const scrollKey = "site-bg-scroll";
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
+  const barKey = "site-nav-bar";
+  const leaveMs = 160;
   const baseScale = 1;
-  const peakScale = 1.08;
+  const peakScale = 1.06;
+  const bounceScaleIn = 0.035;
 
   let current = 0;
   let target = 0;
@@ -22,7 +28,8 @@
   let targetScale = baseScale;
   let running = false;
   let touchStartY = 0;
-  let touchPull = 0;
+  let touchPullTop = 0;
+  let touchPullBottom = 0;
   let touching = false;
   // After an in-site nav: keep the outgoing visual, ease to the new page's Y.
   let arriving = false;
@@ -33,14 +40,25 @@
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
-  const readScrollY = () => {
+  // Layout viewport only. window.innerHeight / visualViewport.height
+  // thrash when Chrome's URL bar collapses and would pop --bg-scale.
+  const layoutHeight = () => root.clientHeight || window.innerHeight || 1;
+
+  const readScrollY = () => window.scrollY || root.scrollTop || 0;
+
+  const maxScrollY = () => Math.max(0, root.scrollHeight - layoutHeight());
+
+  const topOverscrollPx = () => {
     const y = window.scrollY || root.scrollTop || 0;
-    const vv = window.visualViewport;
-    if (y <= 0 && vv && vv.offsetTop) {
-      return y + vv.offsetTop;
-    }
-    return y;
+    return Math.max(y < 0 ? -y : 0, touchPullTop);
   };
+
+  const bottomOverscrollPx = () => {
+    const y = window.scrollY || root.scrollTop || 0;
+    return Math.max(y > maxScrollY() ? y - maxScrollY() : 0, touchPullBottom);
+  };
+
+  const bounceT = (pull) => clamp(pull / (layoutHeight() * 0.18), 0, 1);
 
   const scaleFromProgress = (progress) => {
     // Zoom-in from rest (top = base) toward center; never returns to 1.00
@@ -124,8 +142,7 @@
 
   const pageProgress = () => {
     const y = readScrollY();
-    const vh = window.innerHeight || 1;
-    const maxScroll = Math.max(1, root.scrollHeight - vh);
+    const maxScroll = Math.max(1, maxScrollY());
     return clamp(y / maxScroll, 0, 1);
   };
 
@@ -133,12 +150,10 @@
     if (reduce.matches) {
       return 0;
     }
-    const y = readScrollY();
-    const vh = window.innerHeight || 1;
-    const maxPx = vh * maxTravel;
-    const pull = Math.max(y < 0 ? -y : 0, touchPull);
-    if (pull > 0) {
-      return clamp(pull * 0.22, 0, maxPx);
+    const maxPx = layoutHeight() * maxTravel;
+    const top = topOverscrollPx();
+    if (top > 0) {
+      return clamp(top * 0.22, 0, maxPx);
     }
     const progress = pageProgress();
     return clamp(-progress * maxPx, -maxPx, maxPx);
@@ -148,16 +163,20 @@
     if (reduce.matches) {
       return baseScale;
     }
-    const y = readScrollY();
-    const pull = Math.max(y < 0 ? -y : 0, touchPull);
-    if (pull > 0) {
-      return baseScale;
+    const top = topOverscrollPx();
+    if (top > 0) {
+      // Was Y-only (clamped to 1.00). Zoom-in with reserved width.
+      return baseScale + bounceScaleIn * bounceT(top);
+    }
+    const bottom = bottomOverscrollPx();
+    if (bottom > 0) {
+      return peakScale - bounceScaleIn * bounceT(bottom);
     }
     return scaleFromProgress(pageProgress());
   };
 
   const apply = () => {
-    const maxPx = (window.innerHeight || 1) * maxTravel;
+    const maxPx = layoutHeight() * maxTravel;
     current = clamp(current, -maxPx, maxPx);
     currentScale = clamp(currentScale, baseScale, peakScale);
     root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
@@ -177,6 +196,10 @@
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "auto";
     }
+    window.setTimeout(() => {
+      root.classList.remove("is-nav-carry");
+      root.classList.remove("is-nav-arrive");
+    }, 400);
   };
 
   const snapRest = () => {
@@ -246,9 +269,7 @@
   const cancelScrollSettle = () => {
     userTookScroll = true;
     arriveScroll = 0;
-    navScrollY = 0;
-    applyScrollCarry();
-    root.classList.remove("is-nav-carry");
+    finishArrive();
   };
   const markHandoff = () => {
     persistParallax();
@@ -257,6 +278,107 @@
       sessionStorage.setItem(handoffKey, "1");
     } catch (_) {
       /* private mode */
+    }
+  };
+
+  const portraitNav = window.matchMedia("(max-width: 960px)");
+  const portraitNavSlop = 8;
+
+  const syncPortraitNav = () => {
+    if (!portraitNav.matches) {
+      root.classList.remove("is-portrait-nav-away");
+      return;
+    }
+    const y = window.scrollY || root.scrollTop || 0;
+    if (y > portraitNavSlop) {
+      root.classList.add("is-portrait-nav-away");
+    } else {
+      root.classList.remove("is-portrait-nav-away");
+    }
+  };
+
+  const navRoot = () => document.querySelector(".header .nav");
+
+  const activeNavLink = () =>
+    document.querySelector(".header .nav__list:not(.nav__list--end) a.nav__link--active");
+
+  const ensureUnderline = (nav) => {
+    let bar = nav.querySelector(".nav__underline");
+    if (!bar) {
+      bar = document.createElement("span");
+      bar.className = "nav__underline";
+      bar.setAttribute("aria-hidden", "true");
+      nav.appendChild(bar);
+    }
+    return bar;
+  };
+
+  const barMetrics = (nav, link) => {
+    const nr = nav.getBoundingClientRect();
+    const r = link.getBoundingClientRect();
+    return {
+      left: r.left - nr.left,
+      width: r.width,
+      top: r.bottom - nr.top - 1,
+    };
+  };
+
+  const applyBar = (bar, metrics, animate) => {
+    bar.style.transition = animate && !reduce.matches ? "" : "none";
+    bar.style.left = `${metrics.left.toFixed(2)}px`;
+    bar.style.width = `${metrics.width.toFixed(2)}px`;
+    bar.style.top = `${metrics.top.toFixed(2)}px`;
+    if (!animate) {
+      void bar.offsetWidth;
+    }
+  };
+
+  const persistBar = (metrics) => {
+    try {
+      sessionStorage.setItem(barKey, JSON.stringify(metrics));
+    } catch (_) {
+      /* private mode */
+    }
+  };
+
+  const readBar = () => {
+    try {
+      const raw = sessionStorage.getItem(barKey);
+      if (!raw) {
+        return null;
+      }
+      sessionStorage.removeItem(barKey);
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.left === "number") {
+        return parsed;
+      }
+    } catch (_) {
+      /* private mode */
+    }
+    return null;
+  };
+
+  const initNavMotion = () => {
+    const nav = navRoot();
+    const link = activeNavLink();
+    if (!nav || !link) {
+      return;
+    }
+    const bar = ensureUnderline(nav);
+    const dest = barMetrics(nav, link);
+    const from = arriving ? readBar() : null;
+    if (from && !reduce.matches) {
+      applyBar(bar, from, false);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => applyBar(bar, dest, true));
+      });
+    } else {
+      applyBar(bar, dest, false);
+    }
+    if (arriving && !reduce.matches) {
+      window.requestAnimationFrame(() => {
+        root.classList.add("is-nav-arrive");
+      });
     }
   };
 
@@ -295,6 +417,20 @@
         return;
       }
       markHandoff();
+      const nav = navRoot();
+      if (nav && nav.contains(link) && !reduce.matches) {
+        const dest = barMetrics(nav, link);
+        persistBar(dest);
+        applyBar(ensureUnderline(nav), dest, true);
+      }
+      const page = document.querySelector(".page-body");
+      if (page && !reduce.matches) {
+        event.preventDefault();
+        page.classList.add("is-page-leave");
+        window.setTimeout(() => {
+          window.location.href = next.href;
+        }, leaveMs);
+      }
     },
     true,
   );
@@ -317,7 +453,8 @@
       }
       touching = true;
       touchStartY = touch.clientY;
-      touchPull = 0;
+      touchPullTop = 0;
+      touchPullBottom = 0;
     },
     { passive: true },
   );
@@ -330,11 +467,19 @@
         return;
       }
       const dy = touch.clientY - touchStartY;
-      if (readScrollY() <= 0 && dy > 0) {
-        touchPull = dy;
+      const y = window.scrollY || root.scrollTop || 0;
+      const max = maxScrollY();
+      if (y <= 0 && dy > 0) {
+        touchPullTop = dy;
+        touchPullBottom = 0;
+        kick();
+      } else if (y >= max - 1 && dy < 0) {
+        touchPullBottom = -dy;
+        touchPullTop = 0;
         kick();
       } else {
-        touchPull = 0;
+        touchPullTop = 0;
+        touchPullBottom = 0;
       }
     },
     { passive: true },
@@ -342,13 +487,21 @@
 
   const endTouch = () => {
     touching = false;
-    touchPull = 0;
+    touchPullTop = 0;
+    touchPullBottom = 0;
     kick();
   };
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
 
-  window.addEventListener("scroll", kick, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      syncPortraitNav();
+      kick();
+    },
+    { passive: true },
+  );
   window.addEventListener(
     "wheel",
     () => {
@@ -379,7 +532,22 @@
     },
     true,
   );
-  window.addEventListener("resize", kick, { passive: true });
+  // Layout resize (rotate / desktop window) only. Do not subscribe to
+  // visualViewport — Chrome URL-bar collapse fires those and would
+  // re-kick scale against a changing visual height.
+  window.addEventListener(
+    "resize",
+    () => {
+      const nav = navRoot();
+      const link = activeNavLink();
+      if (nav && link) {
+        applyBar(ensureUnderline(nav), barMetrics(nav, link), false);
+      }
+      syncPortraitNav();
+      kick();
+    },
+    { passive: true },
+  );
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       arriving = false;
@@ -392,12 +560,9 @@
         history.scrollRestoration = "auto";
       }
     }
+    syncPortraitNav();
     kick();
   });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("scroll", kick, { passive: true });
-    window.visualViewport.addEventListener("resize", kick, { passive: true });
-  }
   if (typeof reduce.addEventListener === "function") {
     reduce.addEventListener("change", kick);
   } else if (typeof reduce.addListener === "function") {
@@ -412,4 +577,6 @@
     apply();
     kick();
   }
+  initNavMotion();
+  syncPortraitNav();
 })();

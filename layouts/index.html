@@ -6,11 +6,7 @@
   {{ $homePosts := $posts | complement $chapters | first 5 }}
   {{ range $homePosts }}
     <div
-      class="post post-entry {{ with .Site.Params.doNotLoadAnimations }}
-        .
-      {{ else }}
-        animated fadeInDown
-      {{ end }}"
+      class="post post-entry"
     >
       <div class="post__content">
         <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
@@ -24,5 +20,10 @@
         {{ end }}
       </div>
     </div>
+  {{ end }}
+  {{ with site.GetPage "/post" }}
+    <p class="home-more">
+      <a href="{{ .RelPermalink }}">查看文章全集</a>
+    </p>
   {{ end }}
 {{ end }}
