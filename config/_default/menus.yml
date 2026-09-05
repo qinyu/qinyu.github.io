@@ -7,6 +7,10 @@ main:
     weight: 200
     identifier: posts
     url: /post/
+  - name: 标签
+    weight: 225
+    identifier: tags
+    url: /tags/
   - name: 出版物
     weight: 250
     identifier: books

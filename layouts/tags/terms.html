@@ -1,0 +1,18 @@
+{{ define "main" }}
+  <div
+    class="post {{ with .Site.Params.doNotLoadAnimations }}
+      .
+    {{ else }}
+      animated fadeInDown
+    {{ end }}"
+  >
+    <div class="post__content">
+      <h1>{{ .Title }}</h1>
+      <nav class="post__tag-chips tag-index" aria-label="{{ .Title }}">
+        {{ range .Pages.ByTitle }}
+          <a class="post__tag-chip" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{ end }}
+      </nav>
+    </div>
+  </div>
+{{ end }}

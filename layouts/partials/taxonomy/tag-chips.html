@@ -1,0 +1,7 @@
+{{ with .GetTerms "tags" }}
+  <nav class="post__tag-chips" aria-label="标签">
+    {{- range . -}}
+      <a class="post__tag-chip" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    {{- end -}}
+  </nav>
+{{ end }}
