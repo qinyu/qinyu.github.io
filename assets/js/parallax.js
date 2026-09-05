@@ -1,11 +1,10 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // CSS layer is already 115% (15% overflow buffer). That buffer is for
-  // rubber-band / overscroll — do not consume it with scroll zoom.
-  // Intentional zoom-in toward center uses ~8% (1.00–1.08), leftover ~7%+
-  // for bounce. Translate stays ≤6vh so it fits inside remaining overflow
-  // after that zoom. Do not peak at 1.15 on a 115% layer.
+  // CSS layer stays 115% at rest (15% overflow buffer). Do not shrink
+  // that rest size. Intentional scroll zoom is ~3/5 of the 1.04 peak
+  // (1.00–1.024) so it is felt but does not track foreground scroll.
+  // Top rubber-band still eases a milder scale-in. Translate stays ≤6vh.
   const maxTravel = 0.06;
   const ease = 0.16;
   const arriveEase = 0.08;
@@ -14,7 +13,8 @@
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
   const baseScale = 1;
-  const peakScale = 1.08;
+  const peakScale = 1.024;
+  const bouncePeak = 1.012;
 
   let current = 0;
   let target = 0;
@@ -149,9 +149,11 @@
       return baseScale;
     }
     const y = readScrollY();
+    const vh = window.innerHeight || 1;
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
     if (pull > 0) {
-      return baseScale;
+      const t = clamp(pull / (vh * 0.2), 0, 1);
+      return baseScale + (bouncePeak - baseScale) * t;
     }
     return scaleFromProgress(pageProgress());
   };
@@ -159,7 +161,7 @@
   const apply = () => {
     const maxPx = (window.innerHeight || 1) * maxTravel;
     current = clamp(current, -maxPx, maxPx);
-    currentScale = clamp(currentScale, baseScale, peakScale);
+    currentScale = clamp(currentScale, baseScale, Math.max(peakScale, bouncePeak));
     root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
     root.style.setProperty("--bg-scale", currentScale.toFixed(4));
     persistParallax();
@@ -250,6 +252,22 @@
     applyScrollCarry();
     root.classList.remove("is-nav-carry");
   };
+  const portraitNav = window.matchMedia("(max-width: 960px)");
+  const portraitNavSlop = 8;
+
+  const syncPortraitNav = () => {
+    if (!portraitNav.matches) {
+      root.classList.remove("is-portrait-nav-away");
+      return;
+    }
+    const y = window.scrollY || root.scrollTop || 0;
+    if (y > portraitNavSlop) {
+      root.classList.add("is-portrait-nav-away");
+    } else {
+      root.classList.remove("is-portrait-nav-away");
+    }
+  };
+
   const markHandoff = () => {
     persistParallax();
     persistScroll(readScrollY());
@@ -348,7 +366,14 @@
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
 
-  window.addEventListener("scroll", kick, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      syncPortraitNav();
+      kick();
+    },
+    { passive: true },
+  );
   window.addEventListener(
     "wheel",
     () => {
@@ -379,7 +404,14 @@
     },
     true,
   );
-  window.addEventListener("resize", kick, { passive: true });
+  window.addEventListener(
+    "resize",
+    () => {
+      syncPortraitNav();
+      kick();
+    },
+    { passive: true },
+  );
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       arriving = false;
@@ -392,6 +424,7 @@
         history.scrollRestoration = "auto";
       }
     }
+    syncPortraitNav();
     kick();
   });
   if (window.visualViewport) {
@@ -412,4 +445,10 @@
     apply();
     kick();
   }
+  if (typeof portraitNav.addEventListener === "function") {
+    portraitNav.addEventListener("change", syncPortraitNav);
+  } else if (typeof portraitNav.addListener === "function") {
+    portraitNav.addListener(syncPortraitNav);
+  }
+  syncPortraitNav();
 })();

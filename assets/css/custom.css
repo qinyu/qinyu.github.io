@@ -11,8 +11,10 @@
   --sand-rgb: 196, 148, 90;
   --muted: #8a8478;
   --muted-dim: #5c574f;
-  /* Dark ochre rule (kept from #32), not neutral gray. */
-  --line: #3d2a14;
+  /* Mid ochre rule: one token for post dividers and the landscape
+     sidebar/content rule. Brighter than #3d2a14 so it reads on both
+     the dark veil and the yellow Mars plate; not full --sand. */
+  --line: #8a6430;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
@@ -23,9 +25,9 @@
     still cover. Portrait: layer height ≈ 115% of the viewport
     (zoom-out by height), width grows as needed to cover; pin the
     image left so the limb stays visible (do not center-crop it away).
-    Scroll zoom-in uses only part of that 15% (JS --bg-scale 1.00–1.08).
-    Leftover overflow absorbs bounce; translate travel stays inside
-    the remainder. Never rest at exact cover (100% layer / scale 1).
+    Scroll zoom-in uses a small slice of that 15% (JS --bg-scale
+    1.00–1.024). Leftover overflow absorbs bounce; top rubber-band still
+    eases a milder scale-in. Never rest at exact cover (100% layer).
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
@@ -83,7 +85,10 @@ html,
 
 .site-bg {
   position: fixed;
-  inset: 0;
+  /* Bleed past the layout viewport. Use lvh so this box does not
+     resize with Chrome's URL bar; do not chase visualViewport. */
+  inset: -50vh 0;
+  inset: -50lvh 0;
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
@@ -94,8 +99,8 @@ html,
   Landscape rest: 15% zoom-out by WIDTH (layer ≈ 115vw). Height follows
   16:9 then grows to still cover. Layer is centered so bounce has leftover
   overflow on both sides; the image itself stays left-anchored.
-  Scroll scale is 1.00–1.08 (not 1.15) so intentional zoom leaves headroom
-  inside the 15% buffer. Extra min-height covers ≤6vh translate + rubber-band.
+  Scroll scale is 1.00–1.024 so most of the 15% buffer stays unused.
+  Extra min-height covers ≤6vh translate + rubber-band.
 */
 .site-bg__poster {
   position: absolute;
@@ -119,19 +124,20 @@ html,
 }
 
 /*
-  Landscape: extra site-bg bleed so Chrome's collapsing URL bar cannot
-  flash void. Travel stays inside leftover overflow after the 8% zoom-in.
+  Landscape: extra site-bg bleed (lvh) so Chrome's collapsing URL bar
+  cannot flash uncovered Mars. Poster rest size stays 115%.
 */
 @media (orientation: landscape) {
   .site-bg {
-    inset: -16vh 0;
+    inset: -70vh 0;
+    inset: -70lvh 0;
   }
 }
 
 /*
   Portrait rest: 15% zoom-out by HEIGHT (layer ≈ 115vh). Width grows as
   needed to cover. Keep the Mars limb on the left — do not center-crop
-  the landscape plate. Same 1.00–1.08 scroll zoom-in budget.
+  the landscape plate. Same 1.00–1.024 scroll zoom-in budget.
 */
 @media (orientation: portrait) {
   :root {
@@ -159,11 +165,15 @@ html,
 .site-bg__veil {
   display: block;
   position: fixed;
-  /* Inset only — do not lock height to 100dvh (leaves a void gap on overscroll). */
-  inset: -28vh 0;
+  /* ≥20vw past the viewport on both ends (width-relative). No JS,
+     no visualViewport. Landscape URL-bar collapse stays covered. */
+  top: -20vw;
+  right: 0;
+  bottom: -20vw;
+  left: 0;
   width: 100%;
   height: auto;
-  min-height: 0;
+  min-height: calc(100lvh + 40vw);
   z-index: -1;
   pointer-events: none;
   transform: none;
@@ -368,6 +378,15 @@ html.theme--light .sidebar__introduction-title a:visited {
   font-size: 2.1rem;
 }
 
+.sidebar__introduction-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--sand);
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+}
+
 html .sidebar__introduction-title a:hover,
 html .sidebar__list-item a:hover,
 html.theme--dark .sidebar__introduction-title a:hover,
@@ -405,14 +424,20 @@ html.theme--light .sidebar__list-item a:visited {
 }
 
 html a.sidebar__tag,
+html a.sidebar__tag:link,
+html a.sidebar__tag:visited,
 html.theme--dark a.sidebar__tag,
-html.theme--light a.sidebar__tag {
+html.theme--dark a.sidebar__tag:link,
+html.theme--dark a.sidebar__tag:visited,
+html.theme--light a.sidebar__tag,
+html.theme--light a.sidebar__tag:link,
+html.theme--light a.sidebar__tag:visited {
   display: inline-block;
   flex: 0 0 auto;
   padding: 0.1rem 0.65rem;
   border: 1px solid rgba(var(--sand-rgb), 0.75);
   border-radius: 999px;
-  color: var(--ink);
+  color: #fff;
   background-color: transparent;
   font-size: 1.2rem;
   line-height: 1.7;
@@ -447,30 +472,52 @@ html .footer.footer__base .footer__item {
   text-transform: none;
 }
 
-.nav__list-item a,
-.nav__list-item a:link,
-.nav__list-item a:visited,
-.nav__list-item .optionswitch__label {
-  color: #d8d2c8;
+html .nav__list-item a,
+html .nav__list-item a:link,
+html .nav__list-item a:visited,
+html.theme--dark .nav__list-item a,
+html.theme--dark .nav__list-item a:link,
+html.theme--dark .nav__list-item a:visited,
+html.theme--light .nav__list-item a,
+html.theme--light .nav__list-item a:link,
+html.theme--light .nav__list-item a:visited,
+html .nav__list-item .optionswitch__label {
+  color: #fff;
   font-size: 1.4rem;
 }
 
-.nav__list-item a:hover,
-.nav__list-item .optionswitch__label:hover {
+html .nav__list-item a:hover,
+html.theme--dark .nav__list-item a:hover,
+html.theme--light .nav__list-item a:hover,
+html .nav__list-item .optionswitch__label:hover {
   color: var(--sand);
 }
 
 html.theme--dark .nav__link--active,
 html.theme--light .nav__link--active,
 html .nav__link--active,
+html .nav__list-item a.nav__link--active,
+html .nav__list-item a.nav__link--active:link,
+html .nav__list-item a.nav__link--active:visited,
+html.theme--dark .nav__list-item a.nav__link--active,
+html.theme--dark .nav__list-item a.nav__link--active:link,
+html.theme--dark .nav__list-item a.nav__link--active:visited,
+html.theme--light .nav__list-item a.nav__link--active,
+html.theme--light .nav__list-item a.nav__link--active:link,
+html.theme--light .nav__list-item a.nav__link--active:visited,
 a.nav__link--active {
   color: var(--sand);
   border-bottom-color: var(--sand);
 }
 
-.post {
+.post,
+.archive {
   margin: 0;
-  padding: 2.6rem 0;
+  /* Same side inset as the book / translation grids. */
+  padding: 2.6rem 1.8rem;
+}
+
+.post {
   border-bottom: 1px solid var(--line);
 }
 
@@ -705,9 +752,14 @@ html.theme--dark .post__content a:hover {
 
 .post__content pre,
 .post__content .chroma {
+  /* Solarized Dark tokens; site canvas stays --code-bg, not Chroma's #002b36. */
   background-color: var(--code-bg) !important;
-  border: 1px solid #333;
+  border: 1px solid var(--line);
   border-radius: 2px;
+}
+
+.post__content .chroma .bg {
+  background-color: var(--code-bg) !important;
 }
 
 .post__content ul li::marker,
@@ -832,12 +884,13 @@ html .sidebar__introduction-title a:visited {
 
 html .nav__list-item a:visited,
 html .nav__list-item .optionswitch__label:visited {
-  color: #d8d2c8;
+  color: #fff;
 }
 
 html .nav__link--active:visited,
 html.theme--dark .nav__link--active:visited,
-html.theme--light .nav__link--active:visited {
+html.theme--light .nav__link--active:visited,
+html .nav__list-item a.nav__link--active:visited {
   color: var(--sand);
 }
 
@@ -847,9 +900,14 @@ html .sidebar .footer a:visited {
 }
 
 html .post__content a.post__tag-chip:visited,
-html .post__footer a.tag:visited,
-html a.sidebar__tag:visited {
+html .post__footer a.tag:visited {
   color: var(--sand);
+}
+
+html a.sidebar__tag:visited,
+html.theme--dark a.sidebar__tag:visited,
+html.theme--light a.sidebar__tag:visited {
+  color: #fff;
 }
 
 html .post__content a.post__tag-chip:hover,
@@ -880,8 +938,9 @@ html.theme--dark a.sidebar__tag:hover {
   max-width: 100%;
   min-width: 0;
   margin: 0;
-  /* No extra top band — share .post’s 2.6rem with text pages. */
-  padding: 0 0 0.4rem;
+  /* No extra top band — share .post’s 2.6rem with text pages.
+     Side inset matches .post / .archive. */
+  padding: 0 1.8rem 0.4rem;
   overflow: visible;
 }
 
@@ -905,7 +964,9 @@ html.theme--dark a.sidebar__tag:hover {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 0.2rem 0.7rem 0.8rem;
+  width: 90%;
+  justify-self: center;
+  padding: 0.2rem 0.55rem 0.8rem;
   border: 0;
   background: none;
   transform: none;
@@ -920,11 +981,10 @@ html.theme--dark a.sidebar__tag:hover {
   touch-action: pan-y;
 }
 
-.series-grid__item {
+.post__content .series-grid__item,
+.post__content .bookshelf__item {
   align-items: center;
   text-align: center;
-  width: 90%;
-  justify-self: center;
 }
 
 .bookshelf__item:hover,
@@ -987,27 +1047,26 @@ html.theme--dark a.sidebar__tag:hover {
   content: "";
   position: absolute;
   z-index: 0;
-  /* Box much larger than the visible oval so the fade ends inside, not on a hard edge. */
-  /* Pre-#32 oval; nudged slightly left and down. */
-  left: -76%;
-  right: -52%;
-  top: -50%;
-  bottom: -60%;
+  /* ~80% of pre-#32 bloom; leftover left/down nudge eased back up/right. */
+  left: -58%;
+  right: -45%;
+  top: -43%;
+  bottom: -45%;
   width: auto;
   height: auto;
   pointer-events: none;
   /* 3D covers sit a bit right of the PNG center (spine on the left). */
   background: radial-gradient(
-    ellipse 48% 44% at 50% 52%,
-    rgba(var(--sand-rgb), 0.82) 0%,
-    rgba(var(--sand-rgb), 0.5) 36%,
-    rgba(var(--sand-rgb), 0.2) 56%,
-    rgba(var(--sand-rgb), 0.05) 70%,
+    ellipse 38% 35% at 54% 47%,
+    rgba(var(--sand-rgb), 0.66) 0%,
+    rgba(var(--sand-rgb), 0.4) 36%,
+    rgba(var(--sand-rgb), 0.16) 56%,
+    rgba(var(--sand-rgb), 0.04) 70%,
     rgba(var(--sand-rgb), 0) 80%
   );
   transform: none;
-  opacity: 0.95;
-  transition: opacity 0.22s ease;
+  opacity: 0.42;
+  transition: none;
 }
 
 .series-grid__cover {
@@ -1066,20 +1125,18 @@ html.theme--dark a.sidebar__tag:hover {
 }
 
 .bookshelf__item:focus-visible .bookshelf__cover img,
-.series-grid__item:focus-visible .series-grid__cover img {
+.bookshelf__item:active .bookshelf__cover img,
+.series-grid__item:focus-visible .series-grid__cover img,
+.series-grid__item:active .series-grid__cover img {
   transform: scale(1.07);
 }
 
-.bookshelf__item:hover .bookshelf__cover::before,
-.bookshelf__item:focus .bookshelf__cover::before,
-.bookshelf__item:focus-within .bookshelf__cover::before,
-.bookshelf__item:focus-visible .bookshelf__cover::before,
-.bookshelf__item:active .bookshelf__cover::before {
-  opacity: 1;
-}
-
 .bookshelf__title,
-.series-grid__title {
+.series-grid__title,
+.post__content .bookshelf__title,
+.post__content .series-grid__title {
+  display: block;
+  width: 100%;
   margin-top: 0.85rem;
   max-width: 100%;
   padding-left: 0.4em;
@@ -1099,7 +1156,11 @@ html.theme--dark a.sidebar__tag:hover {
 }
 
 .bookshelf__meta,
-.series-grid__meta {
+.series-grid__meta,
+.post__content .bookshelf__meta,
+.post__content .series-grid__meta {
+  display: block;
+  width: 100%;
   margin-top: 0.3rem;
   max-width: 100%;
   padding-left: 0.4em;
@@ -1170,14 +1231,17 @@ html.is-nav-carry .wrapper__main {
       var(--bg-image);
   }
 
-  /* Portrait veil: even wash, bleed past the viewport so overscroll stays covered. */
+  /* Portrait veil: even wash; same 20vw top/bottom bleed. */
   .site-bg__veil {
     display: block;
     position: fixed;
-    inset: -28vh 0;
+    top: -20vw;
+    right: 0;
+    bottom: -20vw;
+    left: 0;
     width: 100%;
     height: auto;
-    min-height: 0;
+    min-height: calc(100lvh + 40vw);
     transform: none;
     background: rgba(0, 0, 0, 0.46);
   }
@@ -1202,6 +1266,14 @@ html.is-nav-carry .wrapper__main {
     padding-right: env(safe-area-inset-right, 0px);
     background-color: rgba(0, 0, 0, 0.36) !important;
     border-bottom: none;
+    /* Hide without layout jump: only visible at scroll top. */
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  html.is-portrait-nav-away .header {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .header::before {
@@ -1263,11 +1335,12 @@ html.is-nav-carry .wrapper__main {
   }
 
   .wrapper__sidebar {
-    padding-top: 4.6rem;
+    /* Room under the fixed five-item nav; avatar must not sit flush. */
+    padding-top: 8rem;
   }
 
   .sidebar {
-    margin-top: 0.6rem;
+    margin-top: 0.8rem;
   }
 
   .sidebar__tags {
@@ -1278,11 +1351,20 @@ html.is-nav-carry .wrapper__main {
     min-width: 0;
   }
 
+  .post,
+  .archive {
+    padding: 2.6rem 0.8rem;
+  }
+
+  .bookshelf,
+  .series-grid {
+    padding: 0 0.8rem 0.4rem;
+  }
+
   .bookshelf {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 0.9rem;
     row-gap: 1.2rem;
-    padding: 0 0 0.4rem;
   }
 
   .series-grid {
@@ -1296,9 +1378,9 @@ html.is-nav-carry .wrapper__main {
   }
 
   .bookshelf__cover::before {
-    left: -78%;
-    right: -52%;
-    top: -53%;
-    bottom: -63%;
+    left: -59%;
+    right: -45%;
+    top: -44%;
+    bottom: -46%;
   }
 }
