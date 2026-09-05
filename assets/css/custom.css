@@ -431,13 +431,13 @@ html.theme--dark .post__content a:hover {
 .series-grid {
   display: grid;
   margin: 0;
-  padding: 2.6rem 0 1.4rem;
+  padding: 3.2rem 0 1.6rem;
   overflow: visible;
 }
 
 .bookshelf {
   grid-template-columns: repeat(5, 1fr);
-  gap: 2.4rem 1.2rem;
+  gap: 3rem 1.2rem;
 }
 
 .series-grid {
@@ -454,7 +454,7 @@ html.theme--dark .post__content a:hover {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 1.15rem 0.55rem 0.95rem;
+  padding: 1.8rem 0.45rem 1.1rem;
   border: 0;
   background: none;
   transform: none;
@@ -514,27 +514,27 @@ html.theme--dark .post__content a:hover {
   overflow: visible;
 }
 
-/* Glow lives on the card, not the 1:1 cover box, so blur/overflow cannot square-clip it. */
+/* Glow is on the card, oversized, no filter — so it cannot be square-clipped. */
 .bookshelf__item::before {
   content: "";
   position: absolute;
   z-index: 0;
   left: 50%;
-  top: 36%;
-  width: 128%;
-  height: 72%;
+  top: 34%;
+  width: 168%;
+  height: 118%;
   pointer-events: none;
   background: radial-gradient(
-    ellipse at 50% 50%,
-    rgba(196, 165, 116, 0.58) 0%,
-    rgba(196, 165, 116, 0.32) 34%,
-    rgba(196, 165, 116, 0.12) 56%,
-    rgba(196, 165, 116, 0.03) 72%,
-    rgba(196, 165, 116, 0) 86%
+    ellipse at 50% 46%,
+    rgba(196, 165, 116, 0.5) 0%,
+    rgba(196, 165, 116, 0.26) 30%,
+    rgba(196, 165, 116, 0.1) 52%,
+    rgba(196, 165, 116, 0.03) 70%,
+    rgba(196, 165, 116, 0) 84%
   );
   transform: translate(-50%, -50%);
   transform-origin: center center;
-  opacity: 0.92;
+  opacity: 0.95;
   transition: opacity 0.22s ease;
 }
 
@@ -556,8 +556,7 @@ html.theme--dark .post__content a:hover {
   pointer-events: none;
   transform: none;
   transform-origin: center center;
-  transition: transform 0.22s ease, filter 0.22s ease;
-  filter: drop-shadow(0 0 12px rgba(196, 165, 116, 0.28));
+  transition: transform 0.22s ease;
 }
 
 .post__content .series-grid__cover img {
@@ -581,13 +580,6 @@ html.theme--dark .post__content a:hover {
 .bookshelf__item:focus-visible::before,
 .bookshelf__item:active::before {
   opacity: 1;
-}
-
-.bookshelf__item:hover .bookshelf__cover img,
-.bookshelf__item:focus .bookshelf__cover img,
-.bookshelf__item:focus-visible .bookshelf__cover img,
-.bookshelf__item:active .bookshelf__cover img {
-  filter: drop-shadow(0 0 16px rgba(196, 165, 116, 0.42));
 }
 
 .bookshelf__title,
