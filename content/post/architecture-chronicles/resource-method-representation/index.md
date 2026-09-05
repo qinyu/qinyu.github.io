@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2018/08/31/resource-method-representation/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 MVC 诞生于 1979 年，它诞生于使用 CLI 用户界面的桌面应用上下文中，它暗示如果用户外部因素导致数据库变化，那么 UI 就应该自动地变化。同样的模式也可以完美地应用在稍后出现的 GUI 桌面应用上。
 
@@ -73,7 +73,7 @@ MVC 模式是一种展现模式，以一种将模型、领域与用户界面分�
 
 而 RMR 模式超越了这个范畴。它告诉我们如何设计我们的业务对象和领域对象。不仅如此，它还告诉我们领域实体应该体现传达机制：HTTP 方法。
 
-这就意味着它不只是展现模式，而是架构模式，因为它要影响应用的所有层次。它还意味着以这种模式构建的应用并非以领域为中心，而是以 HTTP 为中心。我们的实体最终拥有的是反应传达机制而非领域操作的方法。
+这就意味着它不只是展现模式，而是架构模式，因为它要影响应用的所有层次。它还意味着以这种模式构建的应用并非以领域为中心，而是以 HTTP 为中心。我们的实体最终拥有的是反映传达机制而非领域操作的方法。
 
 我认为用这种模式构建小规模的 API 是可行的，但是我不认为它可以用在企业级应用中，因为我相信企业级应用需要领域驱动设计方法，以及与之相符的以领域为中心的软件开发策略。
 

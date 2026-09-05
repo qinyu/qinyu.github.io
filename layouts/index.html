@@ -1,8 +1,8 @@
 {{ define "main" }}
   {{ $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
   {{ $chapters := where $posts "RelPermalink" "like" `^/post/architecture-chronicles/` }}
-  {{ $paginator := .Paginate ($posts | complement $chapters) }}
-  {{ range $paginator.Pages }}
+  {{ $homePosts := $posts | complement $chapters | first 5 }}
+  {{ range $homePosts }}
     <div
       class="post post-entry {{ with .Site.Params.doNotLoadAnimations }}
         .
@@ -23,7 +23,4 @@
       </div>
     </div>
   {{ end }}
-  <div class="pagination">
-    {{ partial "pagination.html" . }}
-  </div>
 {{ end }}

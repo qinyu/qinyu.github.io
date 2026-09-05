@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2017/09/14/ports-adapters-architecture/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 2005年，Alistair Cockburn构思了[端口和适配器架构](http://alistair.cockburn.us/Hexagonal+architecture) (又称[六边形架构](http://alistair.cockburn.us/Hexagonal+architecture))并记录在他的博客中。下面这句话就是他对该架构的目标的定义：
 
@@ -80,7 +80,7 @@ draft: false
 
 ## 适配器的两种不同类型
 
-左侧代表 UI 的适配器被称为**主适配器**或者**主动适配器**，因为是它们发起了对应用的一些操作。而右侧表示和后端工具链接的适配器，被称为**从适配器**或者**被动适配器**，因为它们只会对主适配器的操作作出响应。
+左侧代表 UI 的适配器被称为**主适配器**或者**主动适配器**，因为是它们发起了对应用的一些操作。而右侧表示和后端工具连接的适配器，被称为**从适配器**或者**被动适配器**，因为它们只会对主适配器的操作作出响应。
 
 端口/适配器的用法也有一点区别：
 
@@ -113,7 +113,7 @@ draft: false
 
 如果我们采用传统架构，我们需要查找所有使用SOLR的代码并替换成Elasticsearch。然而，这可不是简单的查找替换：两个引擎的用法不同，方法、输入、输出也不尽相同，替换并不是一件轻松的任务。而在运行时在决定使用那个引擎甚至是不可能的。
 
-然而，假设我们使用了端口和适配器架构，我们只需要创建一个新的适配器，比如就叫UserSearchElasticsearchAdapter，在注入时使用它换掉SOLR的适配器，也许改一下DCI中的配置就可以做到。我们完全可以使用工厂来决定注入那个适配器，实现在运行时注入不同的实现。
+然而，假设我们使用了端口和适配器架构，我们只需要创建一个新的适配器，比如就叫UserSearchElasticsearchAdapter，在注入时使用它换掉SOLR的适配器，也许改一下 DIC 中的配置就可以做到。我们完全可以使用工厂来决定注入哪个适配器，实现在运行时注入不同的实现。
 
 ## 传达机制的隔离
 
@@ -140,7 +140,7 @@ draft: false
 
 这就是全部！
 
-然而，我惊讶的发现[早在十三年前同样的思想就已经公开发表了](https://herbertograca.com/2017/08/24/ebi-architecture/)([译]({{< ref "post/architecture-chronicles/ebi-architecture" >}}))，尽管它没有刻意地强调要将工具和传达机制从应用核心中隔离出来。
+然而，我惊讶地发现[早在十三年前同样的思想就已经公开发表了](https://herbertograca.com/2017/08/24/ebi-architecture/)([译]({{< ref "post/architecture-chronicles/ebi-architecture" >}}))，尽管它没有刻意地强调要将工具和传达机制从应用核心中隔离出来。
 
 {{< figure src="fig_7_14_boundaries.jpg" class="medium" >}}
 

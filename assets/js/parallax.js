@@ -5,8 +5,7 @@
   const maxBleed = 0.08;
   let ticking = false;
 
-  const apply = () => {
-    ticking = false;
+  const paint = () => {
     if (reduce.matches) {
       root.style.setProperty("--bg-parallax", "0px");
       return;
@@ -17,20 +16,26 @@
     root.style.setProperty("--bg-parallax", `${(-progress * maxPx).toFixed(1)}px`);
   };
 
-  const onScroll = () => {
+  const schedule = () => {
     if (reduce.matches || ticking) {
+      if (reduce.matches) {
+        root.style.setProperty("--bg-parallax", "0px");
+      }
       return;
     }
     ticking = true;
-    window.requestAnimationFrame(apply);
+    window.requestAnimationFrame(() => {
+      ticking = false;
+      paint();
+    });
   };
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", apply, { passive: true });
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule, { passive: true });
   if (typeof reduce.addEventListener === "function") {
-    reduce.addEventListener("change", apply);
+    reduce.addEventListener("change", paint);
   } else if (typeof reduce.addListener === "function") {
-    reduce.addListener(apply);
+    reduce.addListener(paint);
   }
-  apply();
+  paint();
 })();

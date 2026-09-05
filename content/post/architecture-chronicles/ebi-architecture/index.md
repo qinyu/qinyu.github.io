@@ -14,9 +14,9 @@ draft: false
 
 <!--more-->
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
-EBI 架构(Entity-Boundary-Interactor，实体-边界-交互器)架构因为 Robert C. Martin 关于整洁架构(我会在后续的文章中介绍)的讲座而被人熟知。
+EBI 架构(Entity-Boundary-Interactor，实体-边界-交互器)因为 Robert C. Martin 关于整洁架构(我会在后续的文章中介绍)的讲座而被人熟知。
 
 然而，Ivar Jacobson 早在 1992 年就在他的著作 [Object-Oriented Software Engineering: A use case driven approach](https://www.amazon.com/Object-Oriented-Software-Engineering-Driven-Approach/dp/0201403471)中提出了这个模式。那时，Jacobson 实际上把它叫做实体-接口-控制(Entity-Interface-Control)，但是后来改成了 EBI，避免“接口”和编程语言中的结构“接口”混淆，以及“控制”和 MVC 中的控制器混淆。
 
@@ -24,7 +24,7 @@ EBI 架构(Entity-Boundary-Interactor，实体-边界-交互器)架构因为 Rob
 
 # 实体
 
-实体对象承载着系统使用的数据与所有和这些数据天然耦合在一起的行为。每一个实体对象都代表着一个和问题域相关的概念，以及它承载的身份和可恢复的(持久化)数据。Jacobson 告诉我们，实体对象应该包含和对象自己变同时发生变化的逻辑，例如，如果它的数据结构发生变化，这些数据上的操作也需要改变，因此它们也应该放在实体内。
+实体对象承载着系统使用的数据与所有和这些数据天然耦合在一起的行为。每一个实体对象都代表着一个和问题域相关的概念，以及它承载的身份和可恢复的(持久化)数据。Jacobson 告诉我们，实体对象应该包含和对象自身同时发生变化的逻辑，例如，如果它的数据结构发生变化，这些数据上的操作也需要改变，因此它们也应该放在实体内。
 
 有意思的是，早在 1992 年，Jacobson 就作出了如下警告：
 
@@ -64,7 +64,7 @@ EBI 架构(Entity-Boundary-Interactor，实体-边界-交互器)架构因为 Rob
 
 # 为什么是三种对象类型？
 
-当时，Jacobson 宣称其它的 OO 方法会把所有的职责都放在实体本身，但是他(和他的支持者)则倾向与将这些职责分散到三种对象类型中，因为这样能让系统更适应变化。
+当时，Jacobson 宣称其它的 OO 方法会把所有的职责都放在实体本身，但是他(和他的支持者)则倾向于将这些职责分散到三种对象类型中，因为这样能让系统更适应变化。
 
 > […] 所有的系统都会发生变化。因此，只有所有的变化都发生在局部，稳定性才会存在，也就是说，变化最好只能影响系统中的一个对象。—— Ivar Jacobson 1992, pg. 135
 
