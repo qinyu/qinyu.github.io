@@ -374,6 +374,15 @@ html.theme--light .sidebar__introduction-title a {
   font-size: 2.1rem;
 }
 
+.sidebar__introduction-subtitle {
+  margin: 0.35rem 0 0;
+  color: #c8b89a;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+}
+
 html .sidebar__introduction-title a:hover,
 html .sidebar__list-item a:hover,
 html.theme--dark .sidebar__introduction-title a:hover,
@@ -1214,6 +1223,11 @@ html.is-nav-carry .series-grid .medium-zoom-image {
   html.theme--dark .post__footer a.tag,
   html.theme--light .post__footer a.tag {
     border-color: rgba(var(--sand-rgb), 0.88);
+  }
+
+  .sidebar__introduction-subtitle {
+    color: var(--muted);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
   }
 }
 
