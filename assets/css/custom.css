@@ -69,9 +69,9 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  /* Viewport-sized fallback (not document-tall cover) so overscroll
-     still shows the rest-overflow buffer instead of a void band. */
-  background-size: 120vw auto;
+  /* Overscroll gutter: cover the layout viewport plus --bg-rest,
+     never a 16:9-by-width slice that letterboxes 4:3 iPad. */
+  background-size: max(120vw, calc(120vh * 16 / 9)) auto;
   background-position: left top;
   min-height: 100%;
   min-height: 100dvh;
@@ -131,28 +131,6 @@ html,
 }
 
 /*
-  Wide desktop: 115vw of 1440–1920+ makes the left-limb disk read
-  too wide vs iPad landscape. Cap the plate at iPad-Pro-landscape
-  115% (~1366×1.15) and pin left so the limb stays put. Tablet
-  landscape (below 1440) keeps the 115% rest above.
-*/
-@media (orientation: landscape) and (min-width: 1440px) {
-  html,
-  .html {
-    background-size: 1570px auto;
-    background-position: left top;
-  }
-
-  .site-bg__poster {
-    width: 1570px;
-    max-width: 1570px;
-    left: 0;
-    transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
-      scale(var(--bg-scale, 1));
-  }
-}
-
-/*
   Portrait: cover + --bg-rest overflow, pin left. The 9:16 file
   already has ~19% cosmos on the right; left-anchor keeps the limb
   and lets that cosmos read in-frame. Do not paint smaller than
@@ -166,7 +144,7 @@ html,
 
   html,
   .html {
-    background-size: auto 120vh;
+    background-size: max(120vw, calc(120vh * 9 / 16)) auto;
     background-position: left top;
   }
 
