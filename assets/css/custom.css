@@ -252,6 +252,15 @@ html,
     box-shadow: none;
   }
 
+  /* Card shelves (出版著作 / 翻译作品) fill leftover width.
+     Prose pages stay on the 800px measure above. */
+  .wrapper__main:has(.post--cards) {
+    width: auto;
+    max-width: none;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
   .sidebar,
   html .sidebar,
   html.theme--dark .sidebar,
@@ -346,6 +355,11 @@ html,
   .wrapper__main {
     width: 800px;
     max-width: 800px;
+  }
+
+  .wrapper__main:has(.post--cards) {
+    width: auto;
+    max-width: none;
   }
 }
 
@@ -946,6 +960,27 @@ html.theme--dark a.sidebar__tag:hover {
   grid-template-columns: repeat(3, 1fr);
   column-gap: 2.2rem;
   row-gap: 3.6rem;
+}
+
+/* Wide desktop: more columns. Tablet / iPad landscape stay 4 / 3. */
+@media screen and (min-width: 1440px) {
+  .bookshelf {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .series-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .bookshelf {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .series-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 .bookshelf__item,
