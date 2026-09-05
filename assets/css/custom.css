@@ -444,7 +444,8 @@ html.theme--dark .post__content a:hover {
   color: var(--sand);
 }
 
-/* Bookshelf layout pages need visible overflow for cover glow. */
+/* #18 isolates .body; keep that stack, but do not clip the shelf glow. */
+.body,
 .post--cards,
 .post__content--cards {
   overflow: visible;
@@ -537,15 +538,16 @@ html.theme--dark .post__content a:hover {
   overflow: visible;
 }
 
-/* Glow is on the card, oversized, no filter — so it cannot be square-clipped. */
+/* Glow on the card via inset, no transform/filter — isolation cannot square-clip it. */
 .bookshelf__item::before {
   content: "";
   position: absolute;
   z-index: 0;
-  left: 50%;
-  top: 34%;
-  width: 168%;
-  height: 118%;
+  left: -28%;
+  right: -28%;
+  top: -18%;
+  height: 92%;
+  width: auto;
   pointer-events: none;
   background: radial-gradient(
     ellipse at 50% 50%,
@@ -555,8 +557,7 @@ html.theme--dark .post__content a:hover {
     rgba(var(--sand-rgb), 0.06) 72%,
     rgba(var(--sand-rgb), 0) 82%
   );
-  transform: translate(-50%, -50%);
-  transform-origin: center center;
+  transform: none;
   opacity: 0.95;
   transition: opacity 0.22s ease;
 }
@@ -580,7 +581,6 @@ html.theme--dark .post__content a:hover {
   transform: none;
   transform-origin: center center;
   transition: transform 0.22s ease;
-  filter: drop-shadow(0 0 14px rgba(var(--sand-rgb), 0.35));
 }
 
 .post__content .series-grid__cover img {
