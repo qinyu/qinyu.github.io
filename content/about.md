@@ -12,5 +12,5 @@ author = "覃宇"
 
 这个站点是博客。微信公众号同名，叫「覃宇码字的地方」。
 
-- [出版物]({{< ref "books" >}})：译著和写过的书
+- [出版著作]({{< ref "books" >}})：译著和写过的书
 - [翻译系列]({{< ref "translations" >}})：[软件架构编年史]({{< ref "architecture-chronicles" >}}) 与 [Wardley Maps](/series/wardley-maps-book/)
