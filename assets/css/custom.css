@@ -513,7 +513,8 @@ a.nav__link--active {
 .post,
 .archive {
   margin: 0;
-  padding: 2.6rem 0;
+  /* Same side inset as the book / translation grids. */
+  padding: 2.6rem 1.8rem;
 }
 
 .post {
@@ -937,8 +938,9 @@ html.theme--dark a.sidebar__tag:hover {
   max-width: 100%;
   min-width: 0;
   margin: 0;
-  /* No extra top band — share .post’s 2.6rem with text pages. */
-  padding: 0 0 0.4rem;
+  /* No extra top band — share .post’s 2.6rem with text pages.
+     Side inset matches .post / .archive. */
+  padding: 0 1.8rem 0.4rem;
   overflow: visible;
 }
 
@@ -946,7 +948,6 @@ html.theme--dark a.sidebar__tag:hover {
   grid-template-columns: repeat(4, 1fr);
   column-gap: 1.5rem;
   row-gap: 1.6rem;
-  padding: 0 1.8rem 0.4rem;
 }
 
 .series-grid {
@@ -980,7 +981,8 @@ html.theme--dark a.sidebar__tag:hover {
   touch-action: pan-y;
 }
 
-.series-grid__item {
+.post__content .series-grid__item,
+.post__content .bookshelf__item {
   align-items: center;
   text-align: center;
 }
@@ -1130,7 +1132,11 @@ html.theme--dark a.sidebar__tag:hover {
 }
 
 .bookshelf__title,
-.series-grid__title {
+.series-grid__title,
+.post__content .bookshelf__title,
+.post__content .series-grid__title {
+  display: block;
+  width: 100%;
   margin-top: 0.85rem;
   max-width: 100%;
   padding-left: 0.4em;
@@ -1150,7 +1156,11 @@ html.theme--dark a.sidebar__tag:hover {
 }
 
 .bookshelf__meta,
-.series-grid__meta {
+.series-grid__meta,
+.post__content .bookshelf__meta,
+.post__content .series-grid__meta {
+  display: block;
+  width: 100%;
   margin-top: 0.3rem;
   max-width: 100%;
   padding-left: 0.4em;
@@ -1341,11 +1351,20 @@ html.is-nav-carry .wrapper__main {
     min-width: 0;
   }
 
+  .post,
+  .archive {
+    padding: 2.6rem 0.8rem;
+  }
+
+  .bookshelf,
+  .series-grid {
+    padding: 0 0.8rem 0.4rem;
+  }
+
   .bookshelf {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 0.9rem;
     row-gap: 1.2rem;
-    padding: 0 0.8rem 0.4rem;
   }
 
   .series-grid {
