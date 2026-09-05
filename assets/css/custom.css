@@ -14,7 +14,23 @@
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
-  --bg-image: url("/images/bg/dune-bg-composed.jpg");
+  /*
+    Source poster is 1229×1600 (walker ≈34% x, 84.45% y).
+    Size is cover-width: 100% of source width → 100% of the layer width.
+    Never use `cover` (that crops left/right on tall viewports).
+    Portrait default hangs the *complete* poster below the stacked nav —
+    pinning the walker to 36vh was shifting the art up and clipping the
+    top-left crest, which reads as a left/right crop.
+    Landscape overrides --bg-pos-y to pin the walker under the sidebar avatar.
+  */
+  --bg-image: url("/images/bg/dune-poster.jpg");
+  --bg-size: 100% auto;
+  --poster-ratio: 1.30187144; /* 1600 / 1229 */
+  --figure-y: 0.84445;
+  --bg-box-top: -20vh;
+  --portrait-img-top: 8vh;
+  --bg-pos-y: calc(var(--portrait-img-top) - var(--bg-box-top));
+  --bg-pos: 50% var(--bg-pos-y);
 }
 
 html,
@@ -45,16 +61,22 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 6% 55%;
+  background-size: var(--bg-size);
+  background-position: var(--bg-pos);
   min-height: 100%;
   min-height: 100dvh;
+  max-width: 100%;
+  overflow-x: hidden;
   transform: none;
 }
 
 .body {
   isolation: isolate;
   transform: none;
+  max-width: 100%;
+  /* Hidden x only: overflow:hidden would square-clip the shelf glow. */
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .site-bg {
@@ -67,8 +89,8 @@ html,
 }
 
 /*
-  Width fills the viewport. Height is +20% above and +20% below (140% tall)
-  so a ≤10% vertical parallax travel never shows void.
+  Full source width (100% auto — no left/right crop) in both orientations.
+  Height is +20% / 140% so a ≤10% vertical parallax travel never shows void.
 */
 .site-bg__poster {
   position: absolute;
@@ -82,8 +104,8 @@ html,
   background-image: var(--bg-image);
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-size: cover;
-  background-position: 6% 55%;
+  background-size: var(--bg-size);
+  background-position: var(--bg-pos);
   transform: translate3d(0, var(--bg-parallax, 0px), 0);
   will-change: transform;
 }
@@ -93,6 +115,15 @@ html,
   cannot flash void. Portrait stays at 20% / 140%. Travel is still ≤10vh.
 */
 @media (orientation: landscape) {
+  :root {
+    --bg-box-top: -32vh;
+    --bg-figure-view: 47vh;
+    --bg-figure-in-box: calc(var(--bg-figure-view) - var(--bg-box-top));
+    --bg-pos-y: calc(
+      var(--bg-figure-in-box) - var(--figure-y) * var(--poster-ratio) * 100vw
+    );
+  }
+
   .site-bg {
     inset: -16vh 0;
   }
@@ -139,6 +170,14 @@ html,
 .body {
   min-height: 100%;
   min-height: 100dvh;
+}
+
+.wrapper,
+.wrapper__main,
+.wrapper__sidebar {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .header {
@@ -524,17 +563,25 @@ html.theme--dark .post__content a:hover {
 }
 
 /* #18 isolates .body; keep that stack, but do not clip the shelf glow. */
-.body,
 .post--cards,
-.post__content--cards {
+.post__content--cards,
+.bookshelf,
+.series-grid,
+.bookshelf__item,
+.series-grid__item,
+.bookshelf__cover {
   overflow: visible;
 }
 
 .bookshelf,
 .series-grid {
   display: grid;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin: 0;
-  padding: 3.2rem 0 1.6rem;
+  padding: 3.2rem 0 2.4rem;
   overflow: visible;
 }
 
@@ -557,13 +604,19 @@ html.theme--dark .post__content a:hover {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 1.8rem 0.45rem 1.1rem;
+  padding: 2.4rem 0.45rem 1.2rem;
   border: 0;
   background: none;
   transform: none;
   isolation: auto;
   contain: none;
   overflow: visible;
+  min-width: 0;
+  max-width: 100%;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: pan-y;
 }
 
 .series-grid__item {
@@ -605,36 +658,48 @@ html.theme--dark .post__content a:hover {
   justify-content: center;
   box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   transform: none;
 }
 
 .bookshelf__cover {
   isolation: auto;
   contain: none;
-  z-index: 1;
-  aspect-ratio: 1 / 1;
-  padding: 14%;
+  z-index: 0;
+  /* Follow the PNG (≈3:4), not a 1/1 square — aspect-ratio boxes clip glow. */
+  aspect-ratio: auto;
+  padding: 0;
   overflow: visible;
+  min-width: 0;
+  max-width: 100%;
 }
 
-/* Glow on the card via inset, no transform/filter — isolation cannot square-clip it. */
-.bookshelf__item::before {
+/*
+  Glow on the cover silhouette, not the title+meta card. Extra vertical
+  inset so closest-side can fade out before any parent edge.
+  Inset only; no transform/filter (those get isolation-clipped).
+*/
+.bookshelf__cover::before {
   content: "";
   position: absolute;
   z-index: 0;
-  left: -28%;
-  right: -28%;
-  top: -18%;
-  height: 92%;
+  /* Box much larger than the visible oval so the fade ends inside, not on a hard edge. */
+  left: -70%;
+  right: -58%;
+  top: -55%;
+  bottom: -55%;
   width: auto;
+  height: auto;
   pointer-events: none;
+  /* 3D covers sit a bit right of the PNG center (spine on the left). */
   background: radial-gradient(
-    ellipse at 50% 50%,
+    ellipse 48% 44% at 54% 47%,
     rgba(var(--sand-rgb), 0.82) 0%,
-    rgba(var(--sand-rgb), 0.52) 30%,
-    rgba(var(--sand-rgb), 0.24) 54%,
-    rgba(var(--sand-rgb), 0.06) 72%,
-    rgba(var(--sand-rgb), 0) 82%
+    rgba(var(--sand-rgb), 0.5) 36%,
+    rgba(var(--sand-rgb), 0.2) 56%,
+    rgba(var(--sand-rgb), 0.05) 70%,
+    rgba(var(--sand-rgb), 0) 80%
   );
   transform: none;
   opacity: 0.95;
@@ -653,57 +718,84 @@ html.theme--dark .post__content a:hover {
   z-index: 1;
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   margin: 0;
+  max-width: 100%;
+  min-width: 0;
   object-fit: contain;
   pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
   transform: none;
   transform-origin: center center;
-  transition: transform 0.22s ease;
+  transition: none;
+  will-change: auto;
+}
+
+/* Theme medium-zoom stamps this class on every post img (transform ghost). */
+.post__content .bookshelf .medium-zoom-image,
+.post__content .series-grid .medium-zoom-image {
+  cursor: default;
+  z-index: 1;
+  transition: none !important;
+  will-change: auto;
 }
 
 .post__content .series-grid__cover img {
+  height: 100%;
   object-fit: cover;
   filter: none;
 }
 
-.bookshelf__item:hover .bookshelf__cover img,
-.bookshelf__item:focus .bookshelf__cover img,
-.bookshelf__item:focus-within .bookshelf__cover img,
+/* Scale only on real hover / keyboard — touch :active was leaving a ghost. */
+@media (hover: hover) and (pointer: fine) {
+  .post__content .bookshelf__cover img,
+  .post__content .series-grid__cover img {
+    transition: transform 0.22s ease;
+  }
+
+  .bookshelf__item:hover .bookshelf__cover img,
+  .series-grid__item:hover .series-grid__cover img {
+    transform: scale(1.07);
+  }
+}
+
 .bookshelf__item:focus-visible .bookshelf__cover img,
-.bookshelf__item:active .bookshelf__cover img,
-.series-grid__item:hover .series-grid__cover img,
-.series-grid__item:focus .series-grid__cover img,
-.series-grid__item:focus-within .series-grid__cover img,
-.series-grid__item:focus-visible .series-grid__cover img,
-.series-grid__item:active .series-grid__cover img {
+.series-grid__item:focus-visible .series-grid__cover img {
   transform: scale(1.07);
 }
 
-.bookshelf__item:hover::before,
-.bookshelf__item:focus::before,
-.bookshelf__item:focus-within::before,
-.bookshelf__item:focus-visible::before,
-.bookshelf__item:active::before {
+.bookshelf__item:hover .bookshelf__cover::before,
+.bookshelf__item:focus .bookshelf__cover::before,
+.bookshelf__item:focus-within .bookshelf__cover::before,
+.bookshelf__item:focus-visible .bookshelf__cover::before,
+.bookshelf__item:active .bookshelf__cover::before {
   opacity: 1;
 }
 
 .bookshelf__title,
 .series-grid__title {
   margin-top: 0.85rem;
+  max-width: 100%;
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.4;
   color: var(--sand);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .bookshelf__meta,
 .series-grid__meta {
   margin-top: 0.3rem;
+  max-width: 100%;
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.4;
   color: var(--muted);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .navbar-burger {
@@ -714,6 +806,11 @@ html.theme--dark .post__content a:hover {
 html.is-nav-carry .animated {
   animation: none !important;
   transition: none !important;
+}
+
+/* fadeInDown's translateY creates a containing block that square-clips glow. */
+.post--cards.animated {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -731,7 +828,7 @@ html.is-nav-carry .animated {
     transition: none !important;
   }
 
-  .bookshelf__item::before,
+  .bookshelf__cover::before,
   .post__content .bookshelf__cover img,
   .post__content .series-grid__cover img {
     transition: none;
@@ -740,15 +837,19 @@ html.is-nav-carry .animated {
 
 @media screen and (max-width: 960px) {
   html,
+  .html,
+  .site-bg__poster {
+    /* Narrow and portrait: same cover-width as landscape — never crop sides. */
+    --bg-size: 100% auto;
+    background-size: 100% auto;
+    background-position: var(--bg-pos);
+  }
+
+  html,
   .html {
     background-image:
       linear-gradient(rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)),
       var(--bg-image);
-    background-position: 4% 58%;
-  }
-
-  .site-bg__poster {
-    background-position: 4% 58%;
   }
 
   /* Portrait veil: even wash, bleed past the viewport so overscroll stays covered. */
@@ -790,9 +891,12 @@ html.is-nav-carry .animated {
     display: none;
   }
 
-  .header > * {
+  .header > *,
+  .nav,
+  .nav__list {
     box-sizing: border-box;
     width: 100%;
+    max-width: 100%;
   }
 
   /* Inline the same five desktop items; do not use the Anatole hamburger. */
@@ -823,6 +927,7 @@ html.is-nav-carry .animated {
   .nav__list-item {
     padding: 0.15rem 0;
     text-align: center;
+    min-width: 0;
   }
 
   .nav__list-item a {
@@ -851,16 +956,30 @@ html.is-nav-carry .animated {
     justify-content: center;
     margin-left: 1.2rem;
     margin-right: 1.2rem;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .bookshelf {
     grid-template-columns: repeat(5, 1fr);
-    gap: 1.4rem 0.55rem;
+    gap: 1.8rem 0.4rem;
+    padding: 2.8rem 0 2.2rem;
   }
 
   .series-grid {
     grid-template-columns: repeat(3, 1fr);
     column-gap: 12px;
     row-gap: 24px;
+  }
+
+  .bookshelf__item {
+    padding: 1.8rem 0.12rem 0.9rem;
+  }
+
+  .bookshelf__cover::before {
+    left: -72%;
+    right: -58%;
+    top: -58%;
+    bottom: -58%;
   }
 }
