@@ -5,6 +5,7 @@
   const maxTravel = 0.1;
   const ease = 0.16;
   const storageKey = "dune-bg-parallax";
+  const scrollKey = "dune-bg-scroll";
   const handoffKey = "dune-bg-handoff";
 
   let current = 0;
@@ -18,6 +19,7 @@
   let arriveScroll = 0;
   let holdFirstFrame = false;
   let userTookScroll = false;
+  let navScrollY = 0;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -38,6 +40,18 @@
     }
   };
 
+  const persistScroll = (y) => {
+    try {
+      sessionStorage.setItem(scrollKey, String(y));
+    } catch (_) {
+      /* private mode */
+    }
+  };
+
+  const applyScrollCarry = () => {
+    root.style.setProperty("--nav-scroll-y", `${navScrollY.toFixed(2)}px`);
+  };
+
   try {
     const saved = sessionStorage.getItem(storageKey);
     if (saved != null) {
@@ -55,6 +69,13 @@
     if (arriving) {
       sessionStorage.removeItem(handoffKey);
     }
+    const savedScroll = sessionStorage.getItem(scrollKey);
+    if (savedScroll != null) {
+      const parsedScroll = parseFloat(savedScroll);
+      if (!Number.isNaN(parsedScroll)) {
+        navScrollY = Math.max(0, parsedScroll);
+      }
+    }
   } catch (_) {
     /* private mode */
   }
@@ -66,7 +87,12 @@
 
   if (arriving) {
     root.classList.add("is-nav-carry");
-    arriveScroll = readScrollY();
+    const maxScroll = Math.max(0, root.scrollHeight - (window.innerHeight || 0));
+    if (maxScroll > 0) {
+      navScrollY = clamp(navScrollY, 0, maxScroll);
+    }
+    arriveScroll = navScrollY;
+    applyScrollCarry();
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
@@ -101,6 +127,9 @@
     }
     arriving = false;
     arriveScroll = 0;
+    navScrollY = 0;
+    applyScrollCarry();
+    root.classList.remove("is-nav-carry");
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "auto";
     }
@@ -110,11 +139,10 @@
     current = 0;
     target = 0;
     holdFirstFrame = false;
+    navScrollY = 0;
     apply();
+    applyScrollCarry();
     running = false;
-    if (arriving && readScrollY() !== 0) {
-      window.scrollTo(0, 0);
-    }
     finishArrive();
   };
 
@@ -136,7 +164,8 @@
       if (arriveScroll < 0.5) {
         arriveScroll = 0;
       }
-      window.scrollTo(0, arriveScroll);
+      navScrollY = arriveScroll;
+      applyScrollCarry();
     }
     const delta = target - current;
     if (Math.abs(delta) < 0.08 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
@@ -166,10 +195,14 @@
   const cancelScrollSettle = () => {
     userTookScroll = true;
     arriveScroll = 0;
+    navScrollY = 0;
+    applyScrollCarry();
+    root.classList.remove("is-nav-carry");
   };
 
   const markHandoff = () => {
     persistParallax();
+    persistScroll(readScrollY());
     try {
       sessionStorage.setItem(handoffKey, "1");
     } catch (_) {
@@ -214,7 +247,10 @@
     true,
   );
 
-  window.addEventListener("pagehide", persistParallax);
+  window.addEventListener("pagehide", () => {
+    persistParallax();
+    persistScroll(readScrollY());
+  });
 
   window.addEventListener(
     "touchstart",

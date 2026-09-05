@@ -20,12 +20,20 @@
         }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           root.style.setProperty("--bg-parallax", "0px");
+          root.style.setProperty("--nav-scroll-y", "0px");
         } else {
           var duneParallax = sessionStorage.getItem("dune-bg-parallax");
           if (duneParallax != null) {
             root.style.setProperty(
               "--bg-parallax",
               (parseFloat(duneParallax) || 0).toFixed(2) + "px",
+            );
+          }
+          var duneScroll = sessionStorage.getItem("dune-bg-scroll");
+          if (duneScroll != null) {
+            root.style.setProperty(
+              "--nav-scroll-y",
+              (parseFloat(duneScroll) || 0).toFixed(2) + "px",
             );
           }
         }
