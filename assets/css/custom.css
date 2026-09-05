@@ -23,9 +23,9 @@
     still cover. Portrait: layer height ≈ 115% of the viewport
     (zoom-out by height), width grows as needed to cover; pin the
     image left so the limb stays visible (do not center-crop it away).
-    Scroll zoom-in uses only part of that 15% (JS --bg-scale 1.00–1.08).
-    Leftover overflow absorbs bounce; translate travel stays inside
-    the remainder. Never rest at exact cover (100% layer / scale 1).
+    Scroll zoom-in uses a smaller slice of that 15% (JS --bg-scale
+    1.00–1.04). Leftover overflow absorbs bounce; top rubber-band still
+    eases a slight scale-in. Never rest at exact cover (100% layer).
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
@@ -94,8 +94,8 @@ html,
   Landscape rest: 15% zoom-out by WIDTH (layer ≈ 115vw). Height follows
   16:9 then grows to still cover. Layer is centered so bounce has leftover
   overflow on both sides; the image itself stays left-anchored.
-  Scroll scale is 1.00–1.08 (not 1.15) so intentional zoom leaves headroom
-  inside the 15% buffer. Extra min-height covers ≤6vh translate + rubber-band.
+  Scroll scale is 1.00–1.04 so most of the 15% buffer stays unused.
+  Extra min-height covers ≤6vh translate + rubber-band.
 */
 .site-bg__poster {
   position: absolute;
@@ -130,8 +130,8 @@ html,
 
 /*
   Portrait rest: 15% zoom-out by HEIGHT (layer ≈ 115vh). Width grows as
-  needed to cover. Keep the Mars limb on the left — do not center-crop
-  the landscape plate. Same 1.00–1.08 scroll zoom-in budget.
+  needed to cover.   Keep the Mars limb on the left — do not center-crop
+  the landscape plate. Same 1.00–1.04 scroll zoom-in budget.
 */
 @media (orientation: portrait) {
   :root {
@@ -405,14 +405,20 @@ html.theme--light .sidebar__list-item a:visited {
 }
 
 html a.sidebar__tag,
+html a.sidebar__tag:link,
+html a.sidebar__tag:visited,
 html.theme--dark a.sidebar__tag,
-html.theme--light a.sidebar__tag {
+html.theme--dark a.sidebar__tag:link,
+html.theme--dark a.sidebar__tag:visited,
+html.theme--light a.sidebar__tag,
+html.theme--light a.sidebar__tag:link,
+html.theme--light a.sidebar__tag:visited {
   display: inline-block;
   flex: 0 0 auto;
   padding: 0.1rem 0.65rem;
   border: 1px solid rgba(var(--sand-rgb), 0.75);
   border-radius: 999px;
-  color: var(--ink);
+  color: #fff;
   background-color: transparent;
   font-size: 1.2rem;
   line-height: 1.7;
@@ -447,30 +453,51 @@ html .footer.footer__base .footer__item {
   text-transform: none;
 }
 
-.nav__list-item a,
-.nav__list-item a:link,
-.nav__list-item a:visited,
-.nav__list-item .optionswitch__label {
-  color: #d8d2c8;
+html .nav__list-item a,
+html .nav__list-item a:link,
+html .nav__list-item a:visited,
+html.theme--dark .nav__list-item a,
+html.theme--dark .nav__list-item a:link,
+html.theme--dark .nav__list-item a:visited,
+html.theme--light .nav__list-item a,
+html.theme--light .nav__list-item a:link,
+html.theme--light .nav__list-item a:visited,
+html .nav__list-item .optionswitch__label {
+  color: #fff;
   font-size: 1.4rem;
 }
 
-.nav__list-item a:hover,
-.nav__list-item .optionswitch__label:hover {
+html .nav__list-item a:hover,
+html.theme--dark .nav__list-item a:hover,
+html.theme--light .nav__list-item a:hover,
+html .nav__list-item .optionswitch__label:hover {
   color: var(--sand);
 }
 
 html.theme--dark .nav__link--active,
 html.theme--light .nav__link--active,
 html .nav__link--active,
+html .nav__list-item a.nav__link--active,
+html .nav__list-item a.nav__link--active:link,
+html .nav__list-item a.nav__link--active:visited,
+html.theme--dark .nav__list-item a.nav__link--active,
+html.theme--dark .nav__list-item a.nav__link--active:link,
+html.theme--dark .nav__list-item a.nav__link--active:visited,
+html.theme--light .nav__list-item a.nav__link--active,
+html.theme--light .nav__list-item a.nav__link--active:link,
+html.theme--light .nav__list-item a.nav__link--active:visited,
 a.nav__link--active {
   color: var(--sand);
   border-bottom-color: var(--sand);
 }
 
-.post {
+.post,
+.archive {
   margin: 0;
   padding: 2.6rem 0;
+}
+
+.post {
   border-bottom: 1px solid var(--line);
 }
 
@@ -705,9 +732,14 @@ html.theme--dark .post__content a:hover {
 
 .post__content pre,
 .post__content .chroma {
+  /* Solarized Dark tokens; site canvas stays --code-bg, not Chroma's #002b36. */
   background-color: var(--code-bg) !important;
-  border: 1px solid #333;
+  border: 1px solid var(--line);
   border-radius: 2px;
+}
+
+.post__content .chroma .bg {
+  background-color: var(--code-bg) !important;
 }
 
 .post__content ul li::marker,
@@ -832,12 +864,13 @@ html .sidebar__introduction-title a:visited {
 
 html .nav__list-item a:visited,
 html .nav__list-item .optionswitch__label:visited {
-  color: #d8d2c8;
+  color: #fff;
 }
 
 html .nav__link--active:visited,
 html.theme--dark .nav__link--active:visited,
-html.theme--light .nav__link--active:visited {
+html.theme--light .nav__link--active:visited,
+html .nav__list-item a.nav__link--active:visited {
   color: var(--sand);
 }
 
@@ -847,9 +880,14 @@ html .sidebar .footer a:visited {
 }
 
 html .post__content a.post__tag-chip:visited,
-html .post__footer a.tag:visited,
-html a.sidebar__tag:visited {
+html .post__footer a.tag:visited {
   color: var(--sand);
+}
+
+html a.sidebar__tag:visited,
+html.theme--dark a.sidebar__tag:visited,
+html.theme--light a.sidebar__tag:visited {
+  color: #fff;
 }
 
 html .post__content a.post__tag-chip:hover,
@@ -889,6 +927,7 @@ html.theme--dark a.sidebar__tag:hover {
   grid-template-columns: repeat(4, 1fr);
   column-gap: 1.5rem;
   row-gap: 1.6rem;
+  padding: 0 1.8rem 0.4rem;
 }
 
 .series-grid {
@@ -905,7 +944,9 @@ html.theme--dark a.sidebar__tag:hover {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 0.2rem 0.7rem 0.8rem;
+  width: 90%;
+  justify-self: center;
+  padding: 0.2rem 0.55rem 0.8rem;
   border: 0;
   background: none;
   transform: none;
@@ -923,8 +964,6 @@ html.theme--dark a.sidebar__tag:hover {
 .series-grid__item {
   align-items: center;
   text-align: center;
-  width: 90%;
-  justify-self: center;
 }
 
 .bookshelf__item:hover,
@@ -988,17 +1027,17 @@ html.theme--dark a.sidebar__tag:hover {
   position: absolute;
   z-index: 0;
   /* Box much larger than the visible oval so the fade ends inside, not on a hard edge. */
-  /* Pre-#32 oval; nudged slightly left and down. */
-  left: -76%;
-  right: -52%;
-  top: -50%;
-  bottom: -60%;
+  /* Pre-#32 oval; nudged slightly left and down only. */
+  left: -73%;
+  right: -55%;
+  top: -52%;
+  bottom: -58%;
   width: auto;
   height: auto;
   pointer-events: none;
   /* 3D covers sit a bit right of the PNG center (spine on the left). */
   background: radial-gradient(
-    ellipse 48% 44% at 50% 52%,
+    ellipse 48% 44% at 54% 47%,
     rgba(var(--sand-rgb), 0.82) 0%,
     rgba(var(--sand-rgb), 0.5) 36%,
     rgba(var(--sand-rgb), 0.2) 56%,
@@ -1202,6 +1241,14 @@ html.is-nav-carry .wrapper__main {
     padding-right: env(safe-area-inset-right, 0px);
     background-color: rgba(0, 0, 0, 0.36) !important;
     border-bottom: none;
+    /* Hide without layout jump: only visible at scroll top. */
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  html.is-portrait-nav-away .header {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .header::before {
@@ -1263,11 +1310,12 @@ html.is-nav-carry .wrapper__main {
   }
 
   .wrapper__sidebar {
-    padding-top: 4.6rem;
+    /* Room under the fixed five-item nav; avatar must not sit flush. */
+    padding-top: 8rem;
   }
 
   .sidebar {
-    margin-top: 0.6rem;
+    margin-top: 0.8rem;
   }
 
   .sidebar__tags {
@@ -1282,7 +1330,7 @@ html.is-nav-carry .wrapper__main {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 0.9rem;
     row-gap: 1.2rem;
-    padding: 0 0 0.4rem;
+    padding: 0 0.8rem 0.4rem;
   }
 
   .series-grid {
@@ -1296,9 +1344,9 @@ html.is-nav-carry .wrapper__main {
   }
 
   .bookshelf__cover::before {
-    left: -78%;
-    right: -52%;
-    top: -53%;
-    bottom: -63%;
+    left: -75%;
+    right: -55%;
+    top: -55%;
+    bottom: -61%;
   }
 }

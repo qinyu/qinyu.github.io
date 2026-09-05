@@ -9,7 +9,12 @@
     class="html theme--light"
   {{ end }}
 >
-  {{- partial "head.html" . -}}
+  {{- $head := partial "head.html" . -}}
+  {{- $docTitle := .Site.Title -}}
+  {{- if and .IsPage (eq .Section "post") -}}
+    {{- $docTitle = printf "%s｜%s" .Site.Params.author .Title -}}
+  {{- end -}}
+  {{- $head | replaceRE `(?s)<title>.*?</title>` (printf "<title>%s</title>" ($docTitle | htmlEscape)) | safeHTML -}}
   <body class="body">
     <script>
       /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
@@ -18,6 +23,12 @@
         var handoff = sessionStorage.getItem("site-bg-handoff") === "1";
         if (handoff) {
           root.classList.add("is-nav-carry");
+        }
+        if (
+          (window.scrollY || 0) > 8 &&
+          window.matchMedia("(max-width: 960px)").matches
+        ) {
+          root.classList.add("is-portrait-nav-away");
         }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           root.style.setProperty("--bg-parallax", "0px");
