@@ -45,7 +45,8 @@
 
   const measureOverflowFrac = () => {
     const el = document.querySelector(".site-bg__poster");
-    const vh = window.innerHeight || 1;
+    // Layout viewport only — not visualViewport.height (pinch / URL bar).
+    const vh = root.clientHeight || window.innerHeight || 1;
     if (!el || el.offsetHeight < 1) {
       return restFromCss();
     }
@@ -458,14 +459,7 @@
   });
   if (window.visualViewport) {
     window.visualViewport.addEventListener("scroll", kick, { passive: true });
-    window.visualViewport.addEventListener(
-      "resize",
-      () => {
-        syncPeakScale();
-        kick();
-      },
-      { passive: true },
-    );
+    window.visualViewport.addEventListener("resize", kick, { passive: true });
   }
   if (typeof reduce.addEventListener === "function") {
     reduce.addEventListener("change", kick);

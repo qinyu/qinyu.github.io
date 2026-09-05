@@ -156,6 +156,7 @@ html,
     aspect-ratio: 9 / 16;
     left: 0;
     top: 50%;
+    transform-origin: left center;
     transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
       scale(var(--bg-scale, 1));
   }
