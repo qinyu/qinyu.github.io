@@ -4,13 +4,16 @@
   --ink: #e8e4dc;
   --void: #000000;
   --panel: #000000;
-  --sand: #c4a574;
-  --sand-deep: #b8956a;
+  /* Mid-lit sand from dune-bg-composed.jpg: hue ~18–22°, sat tempered for UI. */
+  --sand: #c77a54;
+  --sand-deep: #b26847;
+  --sand-bright: #d6926b;
+  --sand-rgb: 199, 122, 84;
   --muted: #8a8478;
   --muted-dim: #5c574f;
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
-  --ochre-wash: rgba(196, 165, 116, 0.12);
+  --ochre-wash: rgba(var(--sand-rgb), 0.12);
   --bg-image: url("/images/bg/dune-bg-composed.jpg");
 }
 
@@ -136,7 +139,7 @@ html,
   }
 
   .sidebar {
-    border-right: 1px solid rgba(196, 165, 116, 0.22);
+    border-right: 1px solid rgba(var(--sand-rgb), 0.22);
     margin-right: 0;
   }
 
@@ -152,7 +155,7 @@ html,
     margin: 0 -36px;
     padding: 0 36px;
     background-color: var(--panel) !important;
-    border-bottom: 1px solid rgba(196, 165, 116, 0.35);
+    border-bottom: 1px solid rgba(var(--sand-rgb), 0.35);
   }
 
   .nav__list {
@@ -233,7 +236,7 @@ html.theme--light a.sidebar__tag {
   display: inline-block;
   flex: 0 0 auto;
   padding: 0.1rem 0.65rem;
-  border: 1px solid rgba(196, 165, 116, 0.75);
+  border: 1px solid rgba(var(--sand-rgb), 0.75);
   border-radius: 999px;
   color: var(--sand);
   background-color: transparent;
@@ -330,7 +333,7 @@ html.theme--dark .archive__list-title {
 html .post__content h3 a:hover,
 html.theme--dark .post__content h3 a:hover,
 html .archive__list-title:hover {
-  color: #d4b88a;
+  color: var(--sand-bright);
 }
 
 .post-entry__date,
@@ -360,7 +363,7 @@ html.theme--light .post__footer a.tag {
   display: inline-block;
   margin: 0;
   padding: 0.12rem 0.75rem;
-  border: 1px solid rgba(196, 165, 116, 0.5);
+  border: 1px solid rgba(var(--sand-rgb), 0.5);
   border-radius: 999px;
   background-color: var(--ochre-wash);
   color: var(--sand);
@@ -410,7 +413,7 @@ html.theme--light .post__content a {
 
 html .post__content a:hover,
 html.theme--dark .post__content a:hover {
-  color: #d4b88a;
+  color: var(--sand-bright);
 }
 
 .post__content blockquote {
@@ -441,12 +444,9 @@ html.theme--dark .post__content a:hover {
   color: var(--sand);
 }
 
-/* Theme .post / animation stacking must not clip the book glow. */
-.post,
-.post.animated,
-.post__content,
-.wrapper,
-.wrapper__main {
+/* Bookshelf layout pages need visible overflow for cover glow. */
+.post--cards,
+.post__content--cards {
   overflow: visible;
 }
 
@@ -506,7 +506,7 @@ html.theme--dark .post__content a:hover {
 .series-grid__item:focus-visible {
   background: none;
   border: 0;
-  outline: 2px solid rgba(196, 165, 116, 0.9);
+  outline: 2px solid rgba(var(--sand-rgb), 0.9);
   outline-offset: 3px;
 }
 
@@ -548,12 +548,12 @@ html.theme--dark .post__content a:hover {
   height: 118%;
   pointer-events: none;
   background: radial-gradient(
-    ellipse at 50% 46%,
-    rgba(196, 165, 116, 0.5) 0%,
-    rgba(196, 165, 116, 0.26) 30%,
-    rgba(196, 165, 116, 0.1) 52%,
-    rgba(196, 165, 116, 0.03) 70%,
-    rgba(196, 165, 116, 0) 84%
+    ellipse at 50% 50%,
+    rgba(var(--sand-rgb), 0.82) 0%,
+    rgba(var(--sand-rgb), 0.52) 30%,
+    rgba(var(--sand-rgb), 0.24) 54%,
+    rgba(var(--sand-rgb), 0.06) 72%,
+    rgba(var(--sand-rgb), 0) 82%
   );
   transform: translate(-50%, -50%);
   transform-origin: center center;
@@ -580,6 +580,7 @@ html.theme--dark .post__content a:hover {
   transform: none;
   transform-origin: center center;
   transition: transform 0.22s ease;
+  filter: drop-shadow(0 0 14px rgba(var(--sand-rgb), 0.35));
 }
 
 .post__content .series-grid__cover img {
@@ -589,10 +590,12 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item:hover .bookshelf__cover img,
 .bookshelf__item:focus .bookshelf__cover img,
+.bookshelf__item:focus-within .bookshelf__cover img,
 .bookshelf__item:focus-visible .bookshelf__cover img,
 .bookshelf__item:active .bookshelf__cover img,
 .series-grid__item:hover .series-grid__cover img,
 .series-grid__item:focus .series-grid__cover img,
+.series-grid__item:focus-within .series-grid__cover img,
 .series-grid__item:focus-visible .series-grid__cover img,
 .series-grid__item:active .series-grid__cover img {
   transform: scale(1.07);
@@ -600,6 +603,7 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item:hover::before,
 .bookshelf__item:focus::before,
+.bookshelf__item:focus-within::before,
 .bookshelf__item:focus-visible::before,
 .bookshelf__item:active::before {
   opacity: 1;
@@ -657,7 +661,7 @@ html.theme--dark .post__content a:hover {
 
   .header {
     background-color: rgba(0, 0, 0, 0.9) !important;
-    border-bottom: 1px solid rgba(196, 165, 116, 0.35);
+    border-bottom: 1px solid rgba(var(--sand-rgb), 0.35);
   }
 
   .bookshelf {
