@@ -984,31 +984,36 @@ html.theme--dark a.sidebar__tag:hover {
 }
 
 /*
-  Glow on the cover silhouette, not the title+meta card. Extra vertical
-  inset so closest-side can fade out before any parent edge.
-  Inset only; no transform/filter (those get isolation-clipped).
+  Rounded-rect bloom matching the portrait cover — not an ellipse.
+  Plate hugs the cover; glow is layered box-shadow so the fade is
+  soft on all four sides (bottom included) and never hard-clipped.
+  Inset / shadow only; no transform/filter (those get isolation-clipped).
+  Horizontal gaps are tight, so the plate and bloom bias slightly
+  left on purpose: less spill into the next book on the right.
+  Top and bottom stay even.
 */
 .bookshelf__cover::before {
   content: "";
   position: absolute;
   z-index: 0;
-  /* Box much larger than the visible oval so the fade ends inside, not on a hard edge. */
-  left: -70%;
-  right: -58%;
-  top: -55%;
-  bottom: -55%;
+  top: 3%;
+  bottom: 3%;
+  left: 6%;
+  right: 18%;
   width: auto;
   height: auto;
   pointer-events: none;
-  /* 3D covers sit a bit right of the PNG center (spine on the left). */
-  background: radial-gradient(
-    ellipse 48% 44% at 54% 47%,
-    rgba(var(--sand-rgb), 0.82) 0%,
-    rgba(var(--sand-rgb), 0.5) 36%,
-    rgba(var(--sand-rgb), 0.2) 56%,
-    rgba(var(--sand-rgb), 0.05) 70%,
-    rgba(var(--sand-rgb), 0) 80%
-  );
+  border-radius: 4px;
+  background: rgba(var(--sand-rgb), 0.1);
+  box-shadow:
+    -10px 0 18px 5px rgba(var(--sand-rgb), 0.4),
+    4px 0 10px 2px rgba(var(--sand-rgb), 0.14),
+    0 -10px 18px 5px rgba(var(--sand-rgb), 0.32),
+    0 10px 18px 5px rgba(var(--sand-rgb), 0.32),
+    -18px 0 32px 10px rgba(var(--sand-rgb), 0.18),
+    6px 0 16px 4px rgba(var(--sand-rgb), 0.06),
+    0 -16px 28px 8px rgba(var(--sand-rgb), 0.14),
+    0 16px 28px 8px rgba(var(--sand-rgb), 0.14);
   transform: none;
   opacity: 0.95;
   transition: opacity 0.22s ease;
@@ -1061,7 +1066,7 @@ html.theme--dark a.sidebar__tag:hover {
   Hover scale only on a real fine-pointer hover — never on page
   entry. Do not put transition on the img at rest: a first-paint
   scale(1.07) → 1 (or medium-zoom's transform 300ms) was flashing
-  every cover on 出版物.
+  every cover on 出版著作.
 */
 @media (hover: hover) and (pointer: fine) {
   html:not(.is-nav-carry) .bookshelf__item:hover .bookshelf__cover img,
@@ -1094,6 +1099,10 @@ html:not(.is-nav-carry) .series-grid__item:focus-visible .series-grid__cover img
   color: var(--sand);
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.bookshelf__title--tight {
+  font-size: 1.15rem;
 }
 
 .bookshelf__meta,
@@ -1382,9 +1391,9 @@ html.is-nav-carry .series-grid .medium-zoom-image {
   }
 
   .bookshelf__cover::before {
-    left: -72%;
-    right: -58%;
-    top: -58%;
-    bottom: -58%;
+    left: 8%;
+    right: 22%;
+    top: 3%;
+    bottom: 3%;
   }
 }

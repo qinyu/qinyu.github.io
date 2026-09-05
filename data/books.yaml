@@ -32,6 +32,7 @@
 - title: 云原生安全与DevOps保障
   role: 译者
   year: 2020
+  compact: true
   cover: /images/books/35053532.png
   url: https://book.douban.com/subject/35053532/
 - title: 领域驱动设计精粹
@@ -47,6 +48,7 @@
 - title: 代码管理核心技术与实践
   role: 第三作者
   year: 2018
+  compact: true
   cover: /images/books/27611269.png
   url: https://book.douban.com/subject/27611269/
 - title: Kotlin实战
