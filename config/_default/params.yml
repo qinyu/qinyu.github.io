@@ -4,8 +4,8 @@ contentratio: 0.7
 favicon: "favicons/"
 description: |
   前Thoughtworker
-  移动应用架构师
-  技术教练
+  做过教练，也译过书
+  现在写的是人怎么用 AI 把软件做出来
 profilePicture: images/profile.jpg
 customCss:
   - css/custom.css

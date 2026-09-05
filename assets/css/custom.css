@@ -11,3 +11,8 @@
   margin-right: auto;
   text-align: left;
 }
+
+/* Light-mode body: near-black (neutral 800). Dark mode unchanged. */
+.theme--light .post__content {
+  color: #262626;
+}
