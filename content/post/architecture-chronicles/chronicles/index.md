@@ -9,7 +9,7 @@ tags:
 author: 覃宇 
 series:
   - 软件架构编年史
-draft: true
+draft: false
 ---
 
 <!--more-->
@@ -54,11 +54,11 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
     * [1979 – Model-View-Controller(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-controller)
     * [1987/2000 – PAC / Hierarchical Model-View-Controller(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#hierarchical-model-view-controller)
     * [1996 – Model-View-Presenter(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter)
-    * [1998 –"Model 1" & "Model 2" (译)]({{< ref "post/architecture-chronicles/model-1-model-2" >}}) //[原文](https://herbertograca.com/2018/08/29/model-1-model-2)
+    * [1998 –"Model 1" & "Model 2" (译)]({{< ref "post/architecture-chronicles/model-1-model-2" >}}) //[原文](https://herbertograca.com/2018/08/29/model-1-model-2/)
     * [2005 – Model-View-ViewModel(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-view_model)
     * [???? – Model-View-Presenter-ViewModel(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter-view_model)
-    * [2008 – Resource-Method-Representation(译)]({{< ref "post/architecture-chronicles/resource-method-representation" >}}) //[原文](https://herbertograca.com/2018/08/31/resource-method-representation)
-    * [2014 – Action-Domain-Responder(译)]({{< ref "post/architecture-chronicles/action-domain-responder" >}}) //[原文](https://herbertograca.com/2018/09/03/action-domain-responder)
+    * [2008 – Resource-Method-Representation(译)]({{< ref "post/architecture-chronicles/resource-method-representation" >}}) //[原文](https://herbertograca.com/2018/08/31/resource-method-representation/)
+    * [2014 – Action-Domain-Responder(译)]({{< ref "post/architecture-chronicles/action-domain-responder" >}}) //[原文](https://herbertograca.com/2018/09/03/action-domain-responder/)
 8. [EBI架构(译)]({{< ref "post/architecture-chronicles/ebi-architecture" >}}) //[原文](https://herbertograca.com/2017/08/24/ebi-architecture/)
 9. [包与命名空间(译)]({{< ref "post/architecture-chronicles/packaging-and-namespaces" >}}) //[原文](https://herbertograca.com/2017/08/31/packaging-code/)  
 10. [领域驱动设计(译)]({{< ref "post/architecture-chronicles/domain-driven-design" >}}) //[原文](https://herbertograca.com/2017/09/07/domain-driven-design/)

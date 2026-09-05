@@ -9,10 +9,12 @@ tags:
 author: 覃宇 
 series:
   - 软件架构编年史
-draft: true
+draft: false
 ---
 
 <!--more-->
+
+原文：<https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/>
 
 大学毕业之后我做了一名高中老师，直到几年前我决定成为一名全职软件开发者。
 
@@ -24,7 +26,7 @@ draft: true
 
 # 系统的基本构建块
 
-我们从 [EBI 架构](https://herbertograca.com/2017/08/24/ebi-architecture/)以及[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})的回顾开始。它们都有清晰的代码划分，哪些代码在应用内部，哪些代码在外部，而哪些代码用来连接它们。
+我们从 [EBI 架构](https://herbertograca.com/2017/08/24/ebi-architecture/)([译]({{< ref "post/architecture-chronicles/ebi-architecture" >}}))以及[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})的回顾开始。它们都有清晰的代码划分，哪些代码在应用内部，哪些代码在外部，而哪些代码用来连接它们。
 
 除此之外，[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})还明确地识别出了一个系统中的三个基本代码构建块：
 
@@ -32,19 +34,19 @@ draft: true
 - 系统的**业务逻辑**，或者**应用核心**，用户界面要使用这个构建块达成目的；
 - **基础设施**代码，这个构建块将我们的应用核心和诸如数据库、搜索引擎或第三方 API 这样的工具连接起来。
 
-![](https://upload-images.jianshu.io/upload_images/4099-1daa8ede17803638.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="000-explicit-architecture.png" class="medium" >}}
 
 我们真正关心的应该是应用核心。这部分代码才是我们编写代码的目的，它们才是我们的应用。它们可能使用一些不同的用户界面(渐进式 Web 应用，移动应用、命令行、接口...)，但完成实际工作的代码是一模一样的，它们就在应用核心内部，它们不用关心是哪种用户界面触发了它们。
 
 你可以想像得到，典型的应用控制流开始于用户界面中的代码，经过应用核心到达基础设施代码，又返回应用核心，最后将响应传达给用户界面。
 
-![](https://upload-images.jianshu.io/upload_images/4099-866bc1a03cccc9eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="010-explicit-architecture.png" class="medium" >}}
 
 # 工具
 
 在远离我们系统中最重要的代码——应用核心——的地方，还有一些应用会用到的工具，例如数据库引擎、搜索引擎、Web 服务器或者命令行控制台(虽然最后两种工具也是传达机制)。
 
-![](https://upload-images.jianshu.io/upload_images/4099-dbd2c7b9209432c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="020-explicit-architecture.png" class="medium" >}}
 
 把命令行控制台和数据库引擎放在同一个“篮子”中感觉有点奇怪，尽管它们有着不同的用途，但它们实际都是应用使用的工具。关键的区别在于，命令行控制台和 Web 服务器_**告诉我们**_**的应用它要做什么**，而数据库引擎是**由我们的应用来**_**告诉它**_**做什么**。这是针锋相对的差别，强烈地暗示着我们应该如何构建连接这些工具和应用核心的代码。
 
@@ -64,7 +66,7 @@ draft: true
 
 **主适配器**或**主动适配器**_**包装**_**端口**并通过它告知应用核心应该做什么。**它们将来自传达机制的信息转换成对应用核心的方法调用**。
 
-![](https://upload-images.jianshu.io/upload_images/4099-c87811e052f51506.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="030-explicit-architecture.png" class="medium" >}}
 
 换句话说，我们的主动适配器就是 Controller 或者控制台命令，它们需要的接口(端口)由其他类实现，这些类的对象通过构造方法注入到 Controller 或者控制台命令。
 
@@ -76,7 +78,7 @@ draft: true
 
 和主动适配器包装端口不同，**被动适配器**_**实现**_**一个端口(接口)**并被注入到需要这个端口的应用核心里。
 
-![](https://upload-images.jianshu.io/upload_images/4099-8cf33718b3d99621.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="040-explicit-architecture.png" class="medium" >}}
 
 举个例子，假设有一个需要存储数据的简单应用。我们创建了一个符合应用要求的持久化接口，这个接口有一个_保存_数据数组的方法和一个根据 ID 从表中_删除_一行的方法。接口创建好之后，无论何时应用需要保存或删除数据，都应该使用实现了这个持久化接口的对象，而这个对象是通过构造方法注入的。
 
@@ -88,7 +90,7 @@ draft: true
 
 这种模式有一个特征值得留意，适配器依赖特定的工具和特定的端口(它需要提供接口的特定实现)。但业务逻辑只依赖按照它的需求设计的端口(接口)，它并不依赖特定的适配器或工具。
 
-![](https://upload-images.jianshu.io/upload_images/4099-1c413a1dd85644f4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="050-explicit-architecture.png" class="medium" >}}
 
 这意味着依赖的方向是由外向内的，这就是**架构层面的控制反转原则**。
 
@@ -104,7 +106,7 @@ draft: true
 
 用例定义在应用层中，这是 DDD 提供的第一个被[洋葱架构]({{< ref "post/architecture-chronicles/onion-architecture" >}})使用的层。
 
-![](https://upload-images.jianshu.io/upload_images/4099-ce229fb06edca57a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="060-explicit-architecture.png" class="medium" >}}
 
 这个层包括了作为一等公民的应用服务(以及它们的接口)，也包括了[端口和适配器架构]({{< ref "post/architecture-chronicles/ports-and-adapters" >}})中的接口，例如 ORM 接口、搜索引擎接口、消息接口等等。如果我们使用了命令总线和/或查询总线，命令和查询分别对应的处理程序也属于这一层。
 
@@ -130,7 +132,7 @@ draft: true
 
 继续向内一层就是领域层。这一层中的对象包含了数据和操作数据的逻辑，它们只和领域本身有关，独立于调用这些逻辑的业务过程。它们完全独立，对应用层完全无感知。
 
-![](https://upload-images.jianshu.io/upload_images/4099-3278ce17250780df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="070-explicit-architecture.png" class="medium" >}}
 
 ### 领域服务
 
@@ -156,16 +158,16 @@ draft: true
 
 目前为止，我们都是使用层次来划分代码，但这是细粒度的代码隔离。根据 Robert C. Martin 在[尖叫架构](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)中表达的观点，按照子域和[限界上下文](http://ddd.fed.wiki.org/view/welcome-visitors/view/domain-driven-design/view/bounded-context)对代码进行划分这种粗粒度的代码隔离同样重要。这通常被叫做“_按特性分包_”或者“_按组件分包_”，和“_按层次分包_”相呼应。Simon Brown 的文章“[Package by component and architecturally-aligned testing](http://www.codingthearchitecture.com/2015/03/08/package_by_component_and_architecturally_aligned_testing.html)”很好地阐述了这种划分：
 
-| ![](https://upload-images.jianshu.io/upload_images/4099-c0f35044d681746e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) | ![](https://upload-images.jianshu.io/upload_images/4099-fca40bba7e394315.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) | ![](https://upload-images.jianshu.io/upload_images/4099-ab589074ab0d88b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) |
+| ![按层次分包](20150308-package-by-layer.png) | ![按特性分包](20150308-package-by-feature.png) | ![按组件分包](20150308-package-by-component.png) |
 |:-|:-|:-|
 
 我是“_按组件分包_”方式的坚定拥护者，在此我厚着脸皮将 Simon Brown _按组件分包_的示意图做了如下修改：
 
-![](https://upload-images.jianshu.io/upload_images/4099-f2cbf74bfe90b446.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="gdrawing-package-by-component.png" class="medium" >}}
 
 这些代码块在前面描述的分层基础上再进行了“横切”，它们是应用的[组件](https://herbertograca.com/2017/07/05/software-architecture-premises/)([译]({{< ref "post/architecture-chronicles/premises" >}}))。组件的例子包括~~认证~~、~~授权~~、账单、用户、评论或帐号，而它们总是都和领域相关。像认证和/或授权这样的限界上下文应该被看作外部工具，我们应该为它们创建适配器，把它们隐藏在某个端口之后。
 
-![](https://upload-images.jianshu.io/upload_images/4099-2c2db18e915d0176.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="080-explicit-architecture.png" class="medium" >}}
 
 ## 组件解耦
 
@@ -175,7 +177,7 @@ draft: true
 
 以同样的方式完全解耦的组件意味着组件不会直接了解其它任何组件的信息。换句话说，它不会引用任何来自其它组件的细粒度的代码单元，甚至都不会引用接口！这意味着依赖注入和依赖倒置对组件解耦是不够用的，我们还需要一些架构层级的结构。我们需要事件、共享内核、最终一致性甚至发现服务！
 
-![](https://upload-images.jianshu.io/upload_images/4099-368086f81e5fa319.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="gdrawing-decoupling.png" class="medium" >}}
 
 ### 触发其它组件的逻辑
 
@@ -185,7 +187,7 @@ draft: true
 
 然而，如果事件本身“活在” A 中，这将意味着 B 知道了 A 的存在，就和 A 存在耦合。要去掉这个依赖，我们可以创建一个包含应用核心功能的库，由所有组件共享，这就是[共享内核](http://ddd.fed.wiki.org/view/welcome-visitors/view/domain-driven-design/view/shared-kernel)。这意味着两个组件都依赖共享内核，而它们之间却没有耦合。共享内核包含了应用事件和领域事件这样的功能，而且还包含规格对象，以及其它任何有理由共享的东西。记住共享内核的范围应该尽可能的小，因为它的任何变化都会影响所有应用组件。而且，如果我们的系统是语言异构的，比如使用不同语言编写的微服务生态，共享内核需要做到与语言无关的，这样它才能被所有组件理解，无论它们是用哪种语言编写的。例如，共享内核应该包含像 JSON 这样无关语言的事件描述(例如，名称、属性，也许还有方法，尽管它们对规格对象来说更有意义)而不是事件类，这样所有组件/微服务都可以解析它，还可以自动生成各自的具体实现。请在我的下一篇文章中了解更多内容：[超越同心圆分层](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)([译]({{< ref "post/architecture-chronicles/explicit-architecture-02" >}}))
 
-![](https://upload-images.jianshu.io/upload_images/4099-d060e0ed551479df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="explicti_arch_layers.png" class="large" >}}
 
 这种方法既适用于单体应用，也适用于像微服务生态系统这样的分布式应用。然而，这种方法只适用于事件异步投递的情况，在需要即时完成触发其它组件逻辑的上下文中并不适用！组件 A 将需要向组件 B 发起直接的 HTTP 调用。这种情况下，要解耦组件，我们需要一个发现服务，A 可以询问它得知请求应该发送到哪里才能触发期望的操作，又或是向发现服务发起请求并由发现服务将请求代理给相关服务并最终返回响应给请求方。这种方法会把组件和发现服务耦合在一起，但会让组件之间解耦。
 
@@ -220,7 +222,7 @@ draft: true
 
 [**2017-11-18 编辑**] 之前我完全忘记了查询返回数据中的 DTO，现在我把它加了回来。谢谢[指出](https://www.reddit.com/r/PHP/comments/7dcz8k/ddd_hexagonal_onion_clean_cqrs_how_i_put_it_all/dpy6va4/)我这处错误的[MorphineAdministered](https://www.reddit.com/user/MorphineAdministered)。
 
-![](https://upload-images.jianshu.io/upload_images/4099-b2026fb2af832e13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="gdrawing-flow-no-bus.png" class="medium" >}}
 
 上图中我们使用了应用服务接口，尽管我们会质疑这并没有必要。因为应用服务是我们应用代码的一部分，而且我们不会想用另外一种实现来替换它，尽管我们可能会彻底地重构它。　
 
@@ -242,13 +244,13 @@ draft: true
 在下图中，命令处理程序接下来将使用应用服务。然而，这不总是必须的，实际上大多数情况下，处理程序将包含用例的所有逻辑。只有在其它处理程序需要重用同样的逻辑时，我们才需要把处理程序中的逻辑提取出来放到单独的应用服务中。
 
 [**2017-11-18 编辑**] 之前我完全忘记了查询返回数据中的 DTO，现在我把它加了回来。谢谢[指出](https://www.reddit.com/r/PHP/comments/7dcz8k/ddd_hexagonal_onion_clean_cqrs_how_i_put_it_all/dpy6va4/)我这处错误的[MorphineAdministered](https://www.reddit.com/user/MorphineAdministered)。
-![](https://upload-images.jianshu.io/upload_images/4099-356a4f1a46fc21d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="gdrawing-flow-with-bus.png" class="medium" >}}
 
 你可能注意到了，总线和命令查询，以及处理程序之间没有依赖。这是因为实际上它们之间应该互相无感知，才能提供足够的解耦。只有通过配置才能设置总线可以发现哪些命令，或者查询应该由哪个处理程序处理。
 
 如你所见，两种情况下，所有跨越应用核心边界的箭头——依赖——都指向内部。如前所述，这是端口和适配器架构、洋葱架构以及整洁架构的基本规则。
 
-![](https://upload-images.jianshu.io/upload_images/4099-f37993e0762d6291.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+{{< figure src="gdrawing-dependencies-inward.png" class="medium" >}}
 
 ## 总结
 
@@ -268,8 +270,10 @@ draft: true
 
 就到这里，这是我对一切的理解。这就是我脑海中对这一切的梳理。
 
-在下篇文章中我将更深入地展开这些话题: [超越同心圆分层](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)。
+在下篇文章中我将更深入地展开这些话题: [超越同心圆分层](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)([译]({{< ref "post/architecture-chronicles/explicit-architecture-02" >}}))。
 
 然而，我们如何将这些全部展现在代码库中呢？这是再下一篇文章的主题，我如何将架构和领域反映在代码之中。
 
 最后，感谢我的同事[Francesco Mastrogiacomo](https://www.linkedin.com/in/francescomastrogiacomo/)，帮助我制作了漂亮的[信息图](https://drive.google.com/open?id=1E_hx5B4czRVFVhGJbrbPDlb_JFxJC8fYB86OMzZuAhg)。
+
+[原文](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
