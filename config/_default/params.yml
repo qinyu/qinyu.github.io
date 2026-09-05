@@ -9,6 +9,8 @@ description: |
 profilePicture: images/profile.jpg
 customCss:
   - css/custom.css
+customJs:
+  - js/parallax.js
 googleAnalytics: false
 displayMode: dark
 disableThemeSwitcher: true
