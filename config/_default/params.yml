@@ -4,12 +4,18 @@ contentratio: 0.7
 favicon: "favicons/"
 description: |
   前Thoughtworker
-  做过教练，也译过书
-  现在写的是人怎么用 AI 把软件做出来
+  移动应用架构师
+  技术教练
 profilePicture: images/profile.jpg
 customCss:
   - css/custom.css
 googleAnalytics: false
+displayMode: dark
+disableThemeSwitcher: true
+disableTitleCapitalization: true
+indexDateFormat: "2006-01-02"
+singleDateFormat: "2006-01-02"
+listDateFormat: "2006-01-02"
 socialIcons:
   - icon: fab fa-github
     title: GitHub

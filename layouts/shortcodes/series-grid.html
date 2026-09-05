@@ -1,0 +1,11 @@
+<div class="series-grid">
+  {{ range hugo.Data.series }}
+    <a class="series-grid__item" href="{{ .url }}">
+      <span class="series-grid__cover">
+        <img src="{{ .cover }}" alt="{{ .title }}" />
+      </span>
+      <span class="series-grid__title">{{ .title }}</span>
+      <span class="series-grid__meta">{{ .source }}</span>
+    </a>
+  {{ end }}
+</div>

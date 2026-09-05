@@ -1,0 +1,27 @@
+{{ define "main" }}
+  {{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
+  {{ range $paginator.Pages }}
+    <div
+      class="post post-entry {{ with .Site.Params.doNotLoadAnimations }}
+        .
+      {{ else }}
+        animated fadeInDown
+      {{ end }}"
+    >
+      <div class="post__content">
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <time class="post-entry__date" datetime="{{ .Date.Format "2006-01-02" }}">
+          {{ .Date.Format .Site.Params.indexDateFormat }}
+        </time>
+        {{ if .Site.Params.fullPostContent }}
+          <p>{{ .Content | safeHTML | plainify }}</p>
+        {{ else }}
+          <p>{{ .Summary | safeHTML | plainify }}</p>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+  <div class="pagination">
+    {{ partial "pagination.html" . }}
+  </div>
+{{ end }}
