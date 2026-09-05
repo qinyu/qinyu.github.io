@@ -10,6 +10,7 @@
   --muted-dim: #5c574f;
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
+  --ochre-wash: rgba(196, 165, 116, 0.12);
   --bg-image: url("/images/bg/dune-bg-composed.jpg");
 }
 
@@ -20,7 +21,7 @@ html,
   color-scheme: dark;
 }
 
-/* Static dune backdrop. Subtle scroll parallax via --bg-parallax. */
+/* Dune poster only. 120vh layer = 10% bleed above + below; JS clamps travel to 8vh. */
 html {
   background-color: var(--void);
 }
@@ -28,25 +29,38 @@ html {
 html::before {
   content: "";
   position: fixed;
-  inset: -18vh 0;
+  left: 0;
+  right: 0;
+  top: -10vh;
+  height: 120vh;
   z-index: -2;
   pointer-events: none;
   background-color: var(--void);
   background-image: var(--bg-image);
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-position: left 8% bottom 4%;
+  background-position: left 8% bottom 12%;
   background-size: 82% auto;
   transform: translate3d(0, var(--bg-parallax, 0px), 0);
   will-change: transform;
 }
 
+@media (max-aspect-ratio: 10 / 9) {
+  html::before {
+    background-size: auto 130%;
+  }
+}
+
+/* Viewport veil: never parallax. Always covers the visual viewport. */
 html::after {
   content: "";
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
   pointer-events: none;
+  transform: none;
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0.28) 0,
@@ -176,7 +190,7 @@ html.theme--dark .sidebar__list-item a:hover {
 
 .sidebar__introduction-description,
 .sidebar__introduction-description p {
-  color: var(--muted);
+  color: #e4ded3;
   font-size: 1.4rem;
   line-height: 1.7;
 }
@@ -184,7 +198,7 @@ html.theme--dark .sidebar__list-item a:hover {
 html .sidebar__list-item a,
 html.theme--dark .sidebar__list-item a,
 html.theme--light .sidebar__list-item a {
-  color: #c4bfb4;
+  color: #ddd8ce;
 }
 
 .sidebar__tags {
@@ -202,7 +216,7 @@ html.theme--light a.sidebar__tag {
   padding: 0.1rem 0.65rem;
   border: 1px solid rgba(196, 191, 180, 0.7);
   border-radius: 999px;
-  color: #c4bfb4;
+  color: #ddd8ce;
   background-color: transparent;
   font-size: 1.2rem;
   line-height: 1.7;
@@ -216,10 +230,17 @@ html.theme--light a.sidebar__tag:hover {
   border-color: #d8d2c8;
 }
 
-.footer,
-.footer a,
-.footer__item {
-  color: var(--muted-dim);
+html .footer,
+html .footer a,
+html .footer__item,
+html .sidebar .footer,
+html .sidebar .footer__item,
+html .footer.footer__sidebar,
+html .footer.footer__base,
+html .footer.footer__sidebar .footer__item,
+html .footer.footer__base .footer__item {
+  color: #cfc8bc !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .nav__list-item {
@@ -402,6 +423,7 @@ html.theme--dark .post__content a:hover {
   display: grid;
   margin: 0;
   padding: 2rem 0 1.2rem;
+  overflow: visible;
 }
 
 .bookshelf {
@@ -426,6 +448,7 @@ html.theme--dark .post__content a:hover {
   border: 0;
   background: none;
   transform: none;
+  overflow: visible;
 }
 
 .series-grid__item {
@@ -435,16 +458,21 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item:hover,
 .bookshelf__item:focus,
-.bookshelf__item:focus-visible,
 .bookshelf__item:active,
 .series-grid__item:hover,
 .series-grid__item:focus,
-.series-grid__item:focus-visible,
 .series-grid__item:active {
   background: none;
   border: 0;
-  outline: none;
   transform: none;
+}
+
+.bookshelf__item:focus-visible,
+.series-grid__item:focus-visible {
+  background: none;
+  border: 0;
+  outline: 2px solid rgba(196, 165, 116, 0.9);
+  outline-offset: 3px;
 }
 
 .post__content a.bookshelf__item,
@@ -466,6 +494,7 @@ html.theme--dark .post__content a:hover {
 }
 
 .bookshelf__cover {
+  isolation: isolate;
   aspect-ratio: 1 / 1;
   overflow: visible;
 }
@@ -475,17 +504,19 @@ html.theme--dark .post__content a:hover {
   position: absolute;
   z-index: 0;
   left: 50%;
-  top: 54%;
-  width: 92%;
-  height: 82%;
+  top: 50%;
+  width: 138%;
+  height: 138%;
   pointer-events: none;
   background: radial-gradient(
     ellipse at 50% 50%,
-    rgba(196, 165, 116, 0.5) 0%,
-    rgba(196, 165, 116, 0.26) 36%,
-    rgba(196, 165, 116, 0.08) 58%,
-    rgba(196, 165, 116, 0) 74%
+    rgba(196, 165, 116, 0.82) 0%,
+    rgba(196, 165, 116, 0.52) 30%,
+    rgba(196, 165, 116, 0.24) 54%,
+    rgba(196, 165, 116, 0.06) 72%,
+    rgba(196, 165, 116, 0) 82%
   );
+  filter: blur(8px);
   transform: translate(-50%, -50%);
   transform-origin: center center;
   transition: transform 0.22s ease;
@@ -510,10 +541,12 @@ html.theme--dark .post__content a:hover {
   transform: none;
   transform-origin: center center;
   transition: transform 0.22s ease;
+  filter: drop-shadow(0 0 14px rgba(196, 165, 116, 0.35));
 }
 
 .post__content .series-grid__cover img {
   object-fit: cover;
+  filter: none;
 }
 
 .bookshelf__item:hover .bookshelf__cover img,
@@ -562,6 +595,10 @@ html.theme--dark .post__content a:hover {
     will-change: auto;
   }
 
+  html::after {
+    transform: none;
+  }
+
   .bookshelf__cover::before,
   .post__content .bookshelf__cover img,
   .post__content .series-grid__cover img {
@@ -571,8 +608,8 @@ html.theme--dark .post__content a:hover {
 
 @media screen and (max-width: 960px) {
   html::before {
-    background-size: 85% auto;
-    background-position: left 4% bottom 8%;
+    background-size: auto 130%;
+    background-position: left 4% bottom 10%;
   }
 
   .wrapper__main {
