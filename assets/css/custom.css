@@ -14,11 +14,10 @@
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
-  /* Tall source poster: always paint the full width; never crop left/right. */
-  --bg-image: url("/images/bg/dune-poster.jpg");
+  /* Full source width, tall canvas, figure in the mid-lower band. */
+  --bg-image: url("/images/bg/dune-bg-composed.jpg");
   --bg-size: 100% auto;
-  /* Figure sits ~86% down the poster; desktop rest parks it under the avatar. */
-  --bg-pos: 50% bottom 28vh;
+  --bg-pos: 50% 58%;
 }
 
 html,
@@ -184,7 +183,7 @@ html,
 @media screen and (min-width: 961px) {
   :root {
     /* Sidebar column: keep the walker under the avatar, not under the footer. */
-    --bg-pos: 50% bottom 36vh;
+    --bg-pos: 50% 56%;
   }
 
   .wrapper {
@@ -589,7 +588,7 @@ html.theme--dark .post__content a:hover {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 1.8rem 0.45rem 1.1rem;
+  padding: 2.4rem 0.45rem 1.2rem;
   border: 0;
   background: none;
   transform: none;
@@ -649,38 +648,40 @@ html.theme--dark .post__content a:hover {
 .bookshelf__cover {
   isolation: auto;
   contain: none;
-  z-index: 1;
-  aspect-ratio: 1 / 1;
-  padding: 14%;
+  z-index: 0;
+  /* Follow the PNG (≈3:4), not a 1/1 square — aspect-ratio boxes clip glow. */
+  aspect-ratio: auto;
+  padding: 0;
   overflow: visible;
   min-width: 0;
   max-width: 100%;
 }
 
 /*
-  Glow on the cover box (not the title+meta card) so it stays centered
-  on the silhouette. Taller inset than wide: closest-side ellipse can
-  finish fading before the box edge — no square top/bottom cut.
+  Glow on the cover silhouette, not the title+meta card. Extra vertical
+  inset so closest-side can fade out before any parent edge.
   Inset only; no transform/filter (those get isolation-clipped).
 */
 .bookshelf__cover::before {
   content: "";
   position: absolute;
   z-index: 0;
-  left: -22%;
-  right: -22%;
-  top: -40%;
-  bottom: -40%;
+  /* Box much larger than the visible oval so the fade ends inside, not on a hard edge. */
+  left: -70%;
+  right: -58%;
+  top: -55%;
+  bottom: -55%;
   width: auto;
   height: auto;
   pointer-events: none;
+  /* 3D covers sit a bit right of the PNG center (spine on the left). */
   background: radial-gradient(
-    ellipse closest-side at 50% 50%,
+    ellipse 48% 44% at 54% 47%,
     rgba(var(--sand-rgb), 0.82) 0%,
-    rgba(var(--sand-rgb), 0.52) 34%,
-    rgba(var(--sand-rgb), 0.24) 58%,
-    rgba(var(--sand-rgb), 0.06) 80%,
-    rgba(var(--sand-rgb), 0) 100%
+    rgba(var(--sand-rgb), 0.5) 36%,
+    rgba(var(--sand-rgb), 0.2) 56%,
+    rgba(var(--sand-rgb), 0.05) 70%,
+    rgba(var(--sand-rgb), 0) 80%
   );
   transform: none;
   opacity: 0.95;
@@ -699,7 +700,7 @@ html.theme--dark .post__content a:hover {
   z-index: 1;
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   margin: 0;
   max-width: 100%;
   min-width: 0;
@@ -713,6 +714,7 @@ html.theme--dark .post__content a:hover {
 }
 
 .post__content .series-grid__cover img {
+  height: 100%;
   object-fit: cover;
   filter: none;
 }
@@ -772,6 +774,11 @@ html.is-nav-carry .animated {
   transition: none !important;
 }
 
+/* fadeInDown's translateY creates a containing block that square-clips glow. */
+.post--cards.animated {
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-bg__poster {
     transform: none;
@@ -799,7 +806,7 @@ html.is-nav-carry .animated {
   .html,
   .site-bg__poster {
     /* Stacked avatar: keep full poster width; sit the figure band under it. */
-    --bg-pos: 50% 18vh;
+    --bg-pos: 50% 40%;
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
   }
@@ -932,14 +939,13 @@ html.is-nav-carry .animated {
   }
 
   .bookshelf__item {
-    padding: 1.4rem 0.12rem 0.85rem;
+    padding: 1.8rem 0.12rem 0.9rem;
   }
 
-  /* Extra vertical room on narrow 5-col cells so the oval is not boxed. */
   .bookshelf__cover::before {
-    left: -16%;
-    right: -16%;
-    top: -48%;
-    bottom: -48%;
+    left: -72%;
+    right: -58%;
+    top: -58%;
+    bottom: -58%;
   }
 }
