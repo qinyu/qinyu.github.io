@@ -170,11 +170,21 @@ html,
   .sidebar {
     border-right: 1px solid rgba(var(--sand-rgb), 0.22);
     margin-right: 0;
+    animation: none;
+    transform: none;
   }
 
+  /* Pin the avatar stack; do not re-center when main-column height changes. */
   .sidebar__content {
     justify-content: flex-start;
     padding-top: 6.5vh;
+  }
+
+  .sidebar__introduction-title h1 {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
   }
 
   .header {

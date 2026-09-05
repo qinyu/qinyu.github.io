@@ -1,10 +1,4 @@
-<div
-  class="{{ with .Site.Params.doNotLoadAnimations }}
-    .
-  {{ else }}
-    animated fadeInDown
-  {{ end }}"
->
+<div>
   <nav class="nav">
     <ul class="nav__list" id="navMenu">
       {{ $url := .RelPermalink }}
