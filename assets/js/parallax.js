@@ -1,23 +1,27 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // Layer bleed is 20% top + 20% bottom; travel ≤10vh either way.
+  // Vertical: ~28% bleed (landscape ~36%); travel ≤10vh either way.
+  // Horizontal ±5%: scale 1.00 at scroll extremes, 1.10 at mid-page.
   const maxTravel = 0.1;
   const ease = 0.16;
   const storageKey = "dune-bg-parallax";
+  const scaleKey = "dune-bg-scale";
   const handoffKey = "dune-bg-handoff";
+  const edgeScale = 1;
+  const midScale = 1.1;
 
   let current = 0;
   let target = 0;
+  let currentScale = edgeScale;
+  let targetScale = edgeScale;
   let running = false;
   let touchStartY = 0;
   let touchPull = 0;
   let touching = false;
-  // After an in-site nav: keep the outgoing visual, ease to rest. Never snap.
+  // After an in-site nav: keep the outgoing visual, ease to the new page's Y.
   let arriving = false;
-  let arriveScroll = 0;
   let holdFirstFrame = false;
-  let userTookScroll = false;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -30,9 +34,15 @@
     return y;
   };
 
+  const scaleFromProgress = (progress) => {
+    const fromMid = Math.abs(progress - 0.5) * 2;
+    return midScale + (edgeScale - midScale) * fromMid;
+  };
+
   const persistParallax = () => {
     try {
       sessionStorage.setItem(storageKey, String(current));
+      sessionStorage.setItem(scaleKey, String(currentScale));
     } catch (_) {
       /* private mode */
     }
@@ -51,6 +61,18 @@
         current = existing;
       }
     }
+    const savedScale = sessionStorage.getItem(scaleKey);
+    if (savedScale != null) {
+      const parsedScale = parseFloat(savedScale);
+      if (!Number.isNaN(parsedScale)) {
+        currentScale = parsedScale;
+      }
+    } else {
+      const existingScale = parseFloat(getComputedStyle(root).getPropertyValue("--bg-scale"));
+      if (!Number.isNaN(existingScale) && existingScale > 0) {
+        currentScale = existingScale;
+      }
+    }
     arriving = sessionStorage.getItem(handoffKey) === "1";
     if (arriving) {
       sessionStorage.removeItem(handoffKey);
@@ -66,14 +88,20 @@
 
   if (arriving) {
     root.classList.add("is-nav-carry");
-    arriveScroll = readScrollY();
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
   }
 
+  const pageProgress = () => {
+    const y = readScrollY();
+    const vh = window.innerHeight || 1;
+    const maxScroll = Math.max(1, root.scrollHeight - vh);
+    return clamp(y / maxScroll, 0, 1);
+  };
+
   const computeTarget = () => {
-    if (reduce.matches || arriving) {
+    if (reduce.matches) {
       return 0;
     }
     const y = readScrollY();
@@ -83,15 +111,28 @@
     if (pull > 0) {
       return clamp(pull * 0.22, 0, maxPx);
     }
-    const maxScroll = Math.max(1, root.scrollHeight - vh);
-    const progress = clamp(y / maxScroll, 0, 1);
+    const progress = pageProgress();
     return clamp(-progress * maxPx, -maxPx, maxPx);
+  };
+
+  const computeScale = () => {
+    if (reduce.matches) {
+      return edgeScale;
+    }
+    const y = readScrollY();
+    const pull = Math.max(y < 0 ? -y : 0, touchPull);
+    if (pull > 0) {
+      return edgeScale;
+    }
+    return scaleFromProgress(pageProgress());
   };
 
   const apply = () => {
     const maxPx = (window.innerHeight || 1) * maxTravel;
     current = clamp(current, -maxPx, maxPx);
+    currentScale = clamp(currentScale, edgeScale, midScale);
     root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
+    root.style.setProperty("--bg-scale", currentScale.toFixed(4));
     persistParallax();
   };
 
@@ -100,7 +141,6 @@
       return;
     }
     arriving = false;
-    arriveScroll = 0;
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "auto";
     }
@@ -109,12 +149,11 @@
   const snapRest = () => {
     current = 0;
     target = 0;
+    currentScale = edgeScale;
+    targetScale = edgeScale;
     holdFirstFrame = false;
     apply();
     running = false;
-    if (arriving && readScrollY() !== 0) {
-      window.scrollTo(0, 0);
-    }
     finishArrive();
   };
 
@@ -131,22 +170,19 @@
       return;
     }
     target = computeTarget();
-    if (arriving && !userTookScroll && arriveScroll > 0.5) {
-      arriveScroll += (0 - arriveScroll) * ease;
-      if (arriveScroll < 0.5) {
-        arriveScroll = 0;
-      }
-      window.scrollTo(0, arriveScroll);
-    }
+    targetScale = computeScale();
     const delta = target - current;
-    if (Math.abs(delta) < 0.08 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
+    const deltaScale = targetScale - currentScale;
+    if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008) {
       current = target;
+      currentScale = targetScale;
       apply();
       running = false;
       finishArrive();
       return;
     }
     current += delta * ease;
+    currentScale += deltaScale * ease;
     apply();
     running = true;
     window.requestAnimationFrame(tick);
@@ -161,11 +197,6 @@
       running = true;
       window.requestAnimationFrame(tick);
     }
-  };
-
-  const cancelScrollSettle = () => {
-    userTookScroll = true;
-    arriveScroll = 0;
   };
 
   const markHandoff = () => {
@@ -219,7 +250,6 @@
   window.addEventListener(
     "touchstart",
     (event) => {
-      cancelScrollSettle();
       const touch = event.touches[0];
       if (!touch) {
         return;
@@ -257,32 +287,12 @@
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
 
-  window.addEventListener("wheel", cancelScrollSettle, { passive: true });
-  window.addEventListener(
-    "keydown",
-    (event) => {
-      if (
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown" ||
-        event.key === "PageUp" ||
-        event.key === "PageDown" ||
-        event.key === "Home" ||
-        event.key === "End" ||
-        event.key === " "
-      ) {
-        cancelScrollSettle();
-      }
-    },
-    { passive: true },
-  );
-
   window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener("resize", kick, { passive: true });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       arriving = false;
       holdFirstFrame = false;
-      arriveScroll = 0;
     }
     kick();
   });
@@ -299,8 +309,8 @@
   if (reduce.matches) {
     snapRest();
   } else {
-    // Paint the carried offset first, then ease to rest. Never snap to 0 then animate.
-    holdFirstFrame = arriving || Math.abs(current) > 0.08;
+    // Paint the carried frame first, then ease to this page's Y. Never snap.
+    holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - edgeScale) > 0.0008;
     apply();
     kick();
   }
