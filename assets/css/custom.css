@@ -124,9 +124,12 @@ html::after {
     background-color: transparent !important;
   }
 
-  .nav__link--active {
-    border-bottom-color: var(--sand);
+  html.theme--dark .nav__link--active,
+  html.theme--light .nav__link--active,
+  html .nav__link--active,
+  a.nav__link--active {
     color: var(--sand);
+    border-bottom: 1px solid var(--sand);
   }
 }
 
@@ -151,13 +154,17 @@ html::after {
   letter-spacing: 0.02em;
 }
 
-.sidebar__introduction-title a {
+html .sidebar__introduction-title a,
+html.theme--dark .sidebar__introduction-title a,
+html.theme--light .sidebar__introduction-title a {
   color: #fff;
   font-size: 2.1rem;
 }
 
-.sidebar__introduction-title a:hover,
-.sidebar__list-item a:hover {
+html .sidebar__introduction-title a:hover,
+html .sidebar__list-item a:hover,
+html.theme--dark .sidebar__introduction-title a:hover,
+html.theme--dark .sidebar__list-item a:hover {
   color: var(--sand);
 }
 
@@ -168,8 +175,10 @@ html::after {
   line-height: 1.7;
 }
 
-.sidebar__list-item a {
-  color: var(--muted);
+html .sidebar__list-item a,
+html.theme--dark .sidebar__list-item a,
+html.theme--light .sidebar__list-item a {
+  color: #c4bfb4;
 }
 
 .footer,
@@ -193,9 +202,12 @@ html::after {
   color: var(--sand);
 }
 
-.nav__link--active,
+html.theme--dark .nav__link--active,
+html.theme--light .nav__link--active,
+html .nav__link--active,
 a.nav__link--active {
   color: var(--sand);
+  border-bottom-color: var(--sand);
 }
 
 .post {
@@ -226,15 +238,19 @@ a.nav__link--active {
 }
 
 /* Home / list titles: ochre. Single-post h1 stays white. */
-.post__content h3 a,
-.archive__list-title {
+html .post__content h3 a,
+html.theme--dark .post__content h3 a,
+html.theme--light .post__content h3 a,
+html .archive__list-title,
+html.theme--dark .archive__list-title {
   color: var(--sand);
   font-weight: 700;
   letter-spacing: 0;
 }
 
-.post__content h3 a:hover,
-.archive__list-title:hover {
+html .post__content h3 a:hover,
+html.theme--dark .post__content h3 a:hover,
+html .archive__list-title:hover {
   color: #d4b88a;
 }
 
@@ -263,11 +279,14 @@ a.nav__link--active {
   color: var(--ink);
 }
 
-.post__content a {
+html .post__content a,
+html.theme--dark .post__content a,
+html.theme--light .post__content a {
   color: var(--sand);
 }
 
-.post__content a:hover {
+html .post__content a:hover,
+html.theme--dark .post__content a:hover {
   color: #d4b88a;
 }
 
@@ -402,6 +421,10 @@ a.nav__link--active {
   font-weight: 400;
   line-height: 1.4;
   color: var(--muted);
+}
+
+.navbar-burger__line {
+  background-color: #d8d2c8 !important;
 }
 
 @media screen and (max-width: 960px) {
