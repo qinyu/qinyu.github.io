@@ -414,7 +414,8 @@ html.theme--dark a:link,
 html.theme--dark a:visited,
 html.theme--light a:link,
 html.theme--light a:visited {
-  color: var(--sand);
+  /* Literal hex: Chrome drops var() on :visited and falls back to UA blue. */
+  color: #c77a54;
 }
 
 html a:hover,
@@ -448,7 +449,7 @@ html.theme--dark .archive__list-title:visited,
 html.theme--light .archive__list-title,
 html.theme--light .archive__list-title:link,
 html.theme--light .archive__list-title:visited {
-  color: var(--sand);
+  color: #c77a54;
   font-weight: 700;
   letter-spacing: 0;
 }
@@ -531,9 +532,15 @@ html.theme--dark .post__footer a.tag:hover {
 }
 
 html .post__content a,
+html .post__content a:link,
+html .post__content a:visited,
 html.theme--dark .post__content a,
-html.theme--light .post__content a {
-  color: var(--sand);
+html.theme--dark .post__content a:link,
+html.theme--dark .post__content a:visited,
+html.theme--light .post__content a,
+html.theme--light .post__content a:link,
+html.theme--light .post__content a:visited {
+  color: #c77a54;
 }
 
 html .post__content a:hover,
