@@ -85,7 +85,10 @@ html,
 
 .site-bg {
   position: fixed;
-  inset: 0;
+  /* Bleed past the layout viewport. Use lvh so this box does not
+     resize with Chrome's URL bar; do not chase visualViewport. */
+  inset: -50vh 0;
+  inset: -50lvh 0;
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
@@ -121,12 +124,13 @@ html,
 }
 
 /*
-  Landscape: extra site-bg bleed so Chrome's collapsing URL bar cannot
-  flash void. Travel stays inside leftover overflow after the small zoom-in.
+  Landscape: extra site-bg bleed (lvh) so Chrome's collapsing URL bar
+  cannot flash uncovered Mars. Poster rest size stays 115%.
 */
 @media (orientation: landscape) {
   .site-bg {
-    inset: -16vh 0;
+    inset: -70vh 0;
+    inset: -70lvh 0;
   }
 }
 
@@ -161,11 +165,18 @@ html,
 .site-bg__veil {
   display: block;
   position: fixed;
-  /* Inset only — do not lock height to 100dvh (leaves a void gap on overscroll). */
-  inset: -28vh 0;
+  /* Oversized, no transform, no JS resize. Bleed covers the top
+     chrome flash; lvh keeps the box stable when the URL bar collapses. */
+  top: -100vh;
+  top: -100lvh;
+  right: 0;
+  bottom: auto;
+  left: 0;
   width: 100%;
-  height: auto;
-  min-height: 0;
+  height: 300vh;
+  height: 300lvh;
+  min-height: 300vh;
+  min-height: 300lvh;
   z-index: -1;
   pointer-events: none;
   transform: none;
@@ -1213,14 +1224,20 @@ html.is-nav-carry .wrapper__main {
       var(--bg-image);
   }
 
-  /* Portrait veil: even wash, bleed past the viewport so overscroll stays covered. */
+  /* Portrait veil: even wash; same oversized, chrome-stable bleed. */
   .site-bg__veil {
     display: block;
     position: fixed;
-    inset: -28vh 0;
+    top: -100vh;
+    top: -100lvh;
+    right: 0;
+    bottom: auto;
+    left: 0;
     width: 100%;
-    height: auto;
-    min-height: 0;
+    height: 300vh;
+    height: 300lvh;
+    min-height: 300vh;
+    min-height: 300lvh;
     transform: none;
     background: rgba(0, 0, 0, 0.46);
   }
