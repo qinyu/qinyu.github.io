@@ -632,19 +632,73 @@ html a:focus-visible {
   outline-offset: 2px;
 }
 
-::selection {
+::selection,
+::-moz-selection {
   background: rgba(var(--sand-rgb), 0.35);
   color: var(--ink);
 }
 
+html,
+.html {
+  -webkit-tap-highlight-color: rgba(var(--sand-rgb), 0.28);
+}
+
+html ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html ::-webkit-scrollbar-track {
+  background: var(--void);
+}
+
+html ::-webkit-scrollbar-thumb {
+  background: var(--sand-deep);
+}
+
+html ::-webkit-scrollbar-thumb:hover {
+  background: var(--sand);
+}
+
+html button:focus-visible,
+html input:focus-visible,
+html textarea:focus-visible,
+html select:focus-visible {
+  outline: 1px solid var(--sand);
+  outline-offset: 2px;
+}
+
+/* Anatole `.post__content a { color: $info }` and TOC `$info` are #6086b4. */
 #TableOfContents a,
-#TableOfContents li a {
+#TableOfContents li a,
+html .post__content .chroma a,
+html .post__content .highlight a,
+html .footnotes a,
+html .footnote-ref,
+html .footnote-backref,
+html .post__content sup a {
   color: var(--sand);
 }
 
 #TableOfContents a:hover,
-#TableOfContents li a:hover {
-  color: var(--sand-bright);
+#TableOfContents li a:hover,
+html .post__content .chroma a:hover,
+html .footnotes a:hover,
+html .footnote-ref:hover,
+html .footnote-backref:hover,
+html .post__content sup a:hover {
+  color: var(--sand);
+}
+
+html .notice,
+html.theme--dark .notice {
+  background-color: rgba(var(--sand-rgb), 0.18);
+}
+
+html .notice__title,
+html.theme--dark .notice__title {
+  background-color: var(--sand);
+  color: #1a1610;
 }
 
 html .sidebar__introduction-title a:visited {
