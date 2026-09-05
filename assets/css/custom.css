@@ -15,7 +15,8 @@
      sidebar/content rule. Brighter than #3d2a14 so it reads on both
      the dark veil and the yellow Mars plate; not full --sand. */
   --line: #8a6430;
-  --code-bg: #1a1a1a;
+  /* Solarized Light base3 — light code panel on the dark canvas. */
+  --code-bg: #fdf6e3;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
@@ -26,8 +27,12 @@
     (zoom-out by height), width grows as needed to cover; pin the
     image left so the limb stays visible (do not center-crop it away).
     Scroll zoom-in uses a small slice of that 15% (JS --bg-scale
-    1.00–1.024). Leftover overflow absorbs bounce; top rubber-band still
-    eases a milder scale-in. Never rest at exact cover (100% layer).
+    1.00–1.024, not the pre-#32 1.08). Leftover overflow absorbs
+    bounce. Never rest at exact cover (100% layer).
+    Rest layer size is 115% of a viewport-sized .site-bg (inset:0
+    in both orientations), same pre-#32 scale. Portrait pins the
+    plate left so the disk is not center-cropped toward the right.
+    Do not size the poster as 115% of an lvh-bloated site-bg.
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
@@ -85,10 +90,11 @@ html,
 
 .site-bg {
   position: fixed;
-  /* Bleed past the layout viewport. Use lvh so this box does not
-     resize with Chrome's URL bar; do not chase visualViewport. */
-  inset: -50vh 0;
-  inset: -50lvh 0;
+  /* Pre-#32 rest box: viewport-sized in both orientations.
+     #32/#34 lvh bleed (−16 / −50 / −70) made min-height:100%
+     + aspect-ratio explode or shift the plate. Chrome bleed
+     belongs on the veil (portrait template), not this box. */
+  inset: 0;
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
@@ -96,17 +102,18 @@ html,
 }
 
 /*
-  Landscape rest: 15% zoom-out by WIDTH (layer ≈ 115vw). Height follows
-  16:9 then grows to still cover. Layer is centered so bounce has leftover
-  overflow on both sides; the image itself stays left-anchored.
-  Scroll scale is 1.00–1.024 so most of the 15% buffer stays unused.
-  Extra min-height covers ≤6vh translate + rubber-band.
+  Landscape rest (pre-#32): 15% zoom-out by WIDTH (layer ≈ 115vw
+  of a viewport-tall site-bg). Height follows 16:9 then grows to
+  still cover. Layer is centered so bounce has leftover overflow;
+  the image stays left-anchored. Scroll scale is 1.00–1.024
+  (kept from #34; not pre-#32 1.08).
 */
 .site-bg__poster {
   position: absolute;
   left: 50%;
   top: 50%;
   width: 115%;
+  max-width: 115%;
   height: auto;
   min-height: 100%;
   aspect-ratio: 16 / 9;
@@ -124,22 +131,35 @@ html,
 }
 
 /*
-  Landscape: extra site-bg bleed (lvh) so Chrome's collapsing URL bar
-  cannot flash uncovered Mars. Poster rest size stays 115%.
+  Wide desktop: 115vw of 1440–1920+ makes the left-limb disk read
+  too wide vs iPad landscape. Cap the plate at iPad-Pro-landscape
+  115% (~1366×1.15) and pin left so the limb stays put. Tablet
+  landscape (below 1440) keeps the 115% rest above.
 */
-@media (orientation: landscape) {
-  .site-bg {
-    inset: -70vh 0;
-    inset: -70lvh 0;
+@media (orientation: landscape) and (min-width: 1440px) {
+  html,
+  .html {
+    background-size: 1570px auto;
+    background-position: left top;
+  }
+
+  .site-bg__poster {
+    width: 1570px;
+    max-width: 1570px;
+    left: 0;
+    transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
+      scale(var(--bg-scale, 1));
   }
 }
 
 /*
-  Portrait rest: 15% zoom-out by HEIGHT (layer ≈ 115vh). Width grows as
-  needed to cover. Keep the Mars limb on the left — do not center-crop
-  the landscape plate. Same 1.00–1.024 scroll zoom-in budget.
+  Portrait rest (pre-#32 scale): 15% zoom-out by HEIGHT (layer ≈
+  115vh). Pin the plate to the LEFT — pre-#32 comments already
+  said do not center-crop. left:50% + translate(-50%) on a 9:16
+  box wider than the viewport shaved the left of the disk and
+  jammed the planet against the right edge.
 */
-@media (orientation: portrait) {
+@media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
   }
@@ -153,11 +173,12 @@ html,
   .site-bg__poster {
     width: auto;
     min-width: 100%;
+    max-width: none;
     height: 115%;
     aspect-ratio: 9 / 16;
-    left: 50%;
+    left: 0;
     top: 50%;
-    transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
+    transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
       scale(var(--bg-scale, 1));
   }
 }
@@ -165,8 +186,10 @@ html,
 .site-bg__veil {
   display: block;
   position: fixed;
-  /* ≥20vw past the viewport on both ends (width-relative). No JS,
-     no visualViewport. Landscape URL-bar collapse stays covered. */
+  /* Portrait template, used in both orientations: width-relative
+     20vw bleed past top/bottom, min-height 100lvh+40vw. Do not
+     give landscape its own 300lvh / −70lvh scheme — that flashed
+     edges and also blew the rest plate. */
   top: -20vw;
   right: 0;
   bottom: -20vw;
@@ -752,14 +775,17 @@ html.theme--dark .post__content a:hover {
 
 .post__content pre,
 .post__content .chroma {
-  /* Solarized Dark tokens; site canvas stays --code-bg, not Chroma's #002b36. */
+  /* Solarized Light panel (#fdf6e3) so Light tokens stay readable
+     on the dark site canvas. Border is Solarized base2. */
   background-color: var(--code-bg) !important;
-  border: 1px solid var(--line);
+  color: #657b83;
+  border: 1px solid #eee8d5;
   border-radius: 2px;
 }
 
 .post__content .chroma .bg {
   background-color: var(--code-bg) !important;
+  color: #657b83;
 }
 
 .post__content ul li::marker,
@@ -987,20 +1013,66 @@ html.theme--dark a.sidebar__tag:hover {
   text-align: center;
 }
 
+html .post a.bookshelf__item,
+html .post a.bookshelf__item:link,
+html .post a.bookshelf__item:visited,
+html .post a.bookshelf__item:hover,
+html .post a.bookshelf__item:focus,
+html .post a.bookshelf__item:focus-visible,
+html .post a.bookshelf__item:focus-within,
+html .post a.bookshelf__item:active,
+html .post a.series-grid__item,
+html .post a.series-grid__item:link,
+html .post a.series-grid__item:visited,
+html .post a.series-grid__item:hover,
+html .post a.series-grid__item:focus,
+html .post a.series-grid__item:focus-visible,
+html .post a.series-grid__item:focus-within,
+html .post a.series-grid__item:active,
+html.theme--dark .post a.bookshelf__item,
+html.theme--dark .post a.bookshelf__item:hover,
+html.theme--dark .post a.bookshelf__item:focus,
+html.theme--dark .post a.bookshelf__item:active,
+html.theme--dark .post a.series-grid__item,
+html.theme--dark .post a.series-grid__item:hover,
+html.theme--dark .post a.series-grid__item:focus,
+html.theme--dark .post a.series-grid__item:active {
+  background: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bookshelf__item,
+.series-grid__item {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.series-grid__item::before,
+.series-grid__item::after,
+.bookshelf__item::before,
+.bookshelf__item::after {
+  content: none;
+  background: none !important;
+}
+
 .bookshelf__item:hover,
 .bookshelf__item:focus,
 .bookshelf__item:active,
 .series-grid__item:hover,
 .series-grid__item:focus,
 .series-grid__item:active {
-  background: none;
+  background: none !important;
+  background-color: transparent !important;
   border: 0;
-  transform: none;
 }
 
 .bookshelf__item:focus-visible,
 .series-grid__item:focus-visible {
-  background: none;
+  background: none !important;
+  background-color: transparent !important;
   border: 0;
   outline: 2px solid rgba(var(--sand-rgb), 0.9);
   outline-offset: 3px;
@@ -1023,7 +1095,7 @@ html.theme--dark a.sidebar__tag:hover {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  transform: none;
+  transform-origin: center center;
 }
 
 .bookshelf__cover {
@@ -1065,7 +1137,7 @@ html.theme--dark a.sidebar__tag:hover {
     rgba(var(--sand-rgb), 0) 80%
   );
   transform: none;
-  opacity: 0.42;
+  opacity: 0.76;
   transition: none;
 }
 
@@ -1111,24 +1183,54 @@ html.theme--dark a.sidebar__tag:hover {
   filter: none;
 }
 
-/* Scale only on real hover / keyboard — touch :active was leaving a ghost. */
+/*
+  Unified shelf motion (books + series):
+  hover / long-press hold scale; click = short bounce.
+  Series scales the whole card; books scale the cover only.
+  Glow stays static — no ::before flash or yellow plate.
+*/
+.series-grid__item {
+  transform-origin: center center;
+  transition: transform 0.22s ease;
+}
+
+.bookshelf__cover {
+  transition: transform 0.22s ease;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .post__content .bookshelf__cover img,
-  .post__content .series-grid__cover img {
-    transition: transform 0.22s ease;
+  .series-grid__item:hover {
+    transform: scale(1.07);
   }
 
-  .bookshelf__item:hover .bookshelf__cover img,
-  .series-grid__item:hover .series-grid__cover img {
+  .bookshelf__item:hover .bookshelf__cover {
     transform: scale(1.07);
   }
 }
 
-.bookshelf__item:focus-visible .bookshelf__cover img,
-.bookshelf__item:active .bookshelf__cover img,
-.series-grid__item:focus-visible .series-grid__cover img,
-.series-grid__item:active .series-grid__cover img {
+.series-grid__item.is-shelf-held {
   transform: scale(1.07);
+}
+
+.bookshelf__cover.is-shelf-held {
+  transform: scale(1.07);
+}
+
+.series-grid__item.is-shelf-bounce,
+.bookshelf__cover.is-shelf-bounce {
+  animation: shelf-bounce 0.38s ease;
+}
+
+@keyframes shelf-bounce {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.07);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .bookshelf__title,
@@ -1211,9 +1313,21 @@ html.is-nav-carry .wrapper__main {
   }
 
   .bookshelf__cover::before,
+  .bookshelf__cover,
+  .series-grid__item,
   .post__content .bookshelf__cover img,
   .post__content .series-grid__cover img {
     transition: none;
+    animation: none;
+  }
+
+  .series-grid__item:hover,
+  .series-grid__item.is-shelf-held,
+  .series-grid__item.is-shelf-bounce,
+  .bookshelf__item:hover .bookshelf__cover,
+  .bookshelf__cover.is-shelf-held,
+  .bookshelf__cover.is-shelf-bounce {
+    transform: none;
   }
 }
 
@@ -1231,18 +1345,8 @@ html.is-nav-carry .wrapper__main {
       var(--bg-image);
   }
 
-  /* Portrait veil: even wash; same 20vw top/bottom bleed. */
+  /* Same veil box as landscape; even wash only. */
   .site-bg__veil {
-    display: block;
-    position: fixed;
-    top: -20vw;
-    right: 0;
-    bottom: -20vw;
-    left: 0;
-    width: 100%;
-    height: auto;
-    min-height: calc(100lvh + 40vw);
-    transform: none;
     background: rgba(0, 0, 0, 0.46);
   }
 

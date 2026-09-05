@@ -14,7 +14,7 @@ ignoreFiles:
   - content/temp/
 markup:
   highlight:
-    style: solarized-dark
+    style: solarized-light
     noClasses: false
     codeFences: true
     guessSyntax: true
