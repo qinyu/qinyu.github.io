@@ -1,0 +1,34 @@
+{{ $enableMediumZoom := default true (.Site.Params.enableMediumZoom) }}
+{{- if eq $enableMediumZoom true -}}
+  {{ $js := resources.Get "js/medium-zoom.js" }}
+  {{ $secureJS := $js | resources.Minify | resources.Fingerprint }}
+  <script
+    type="text/javascript"
+    src="{{ $secureJS.RelPermalink }}"
+    integrity="{{ $secureJS.Data.Integrity }}"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    /* Theme inits zoom on every post img. Shelf/series covers must not clone. */
+    (function () {
+      document.querySelectorAll(".bookshelf img, .series-grid img").forEach(function (img) {
+        var clean = img.cloneNode(true);
+        clean.className = String(clean.className || "")
+          .replace(/medium-zoom-image\S*/g, "")
+          .trim();
+        clean.draggable = false;
+        clean.setAttribute("draggable", "false");
+        img.parentNode.replaceChild(clean, img);
+      });
+      document.addEventListener(
+        "dragstart",
+        function (event) {
+          if (event.target.closest && event.target.closest(".bookshelf, .series-grid")) {
+            event.preventDefault();
+          }
+        },
+        true,
+      );
+    })();
+  </script>
+{{- end -}}

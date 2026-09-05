@@ -599,7 +599,9 @@ html.theme--dark .post__content a:hover {
   min-width: 0;
   max-width: 100%;
   -webkit-user-drag: none;
+  -webkit-touch-callout: none;
   user-select: none;
+  touch-action: pan-y;
 }
 
 .series-grid__item {
@@ -708,10 +710,21 @@ html.theme--dark .post__content a:hover {
   object-fit: contain;
   pointer-events: none;
   -webkit-user-drag: none;
+  -webkit-touch-callout: none;
   user-select: none;
   transform: none;
   transform-origin: center center;
-  transition: transform 0.22s ease;
+  transition: none;
+  will-change: auto;
+}
+
+/* Theme medium-zoom stamps this class on every post img (transform ghost). */
+.post__content .bookshelf .medium-zoom-image,
+.post__content .series-grid .medium-zoom-image {
+  cursor: default;
+  z-index: 1;
+  transition: none !important;
+  will-change: auto;
 }
 
 .post__content .series-grid__cover img {
@@ -722,6 +735,11 @@ html.theme--dark .post__content a:hover {
 
 /* Scale only on real hover / keyboard — touch :active was leaving a ghost. */
 @media (hover: hover) and (pointer: fine) {
+  .post__content .bookshelf__cover img,
+  .post__content .series-grid__cover img {
+    transition: transform 0.22s ease;
+  }
+
   .bookshelf__item:hover .bookshelf__cover img,
   .series-grid__item:hover .series-grid__cover img {
     transform: scale(1.07);
@@ -806,7 +824,8 @@ html.is-nav-carry .animated {
   html,
   .html,
   .site-bg__poster {
-    /* Stacked avatar: keep full poster width; sit the figure band under it. */
+    /* Same rule as landscape: full source width, never crop left/right. */
+    --bg-size: 100% auto;
     --bg-pos: 50% 36%;
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
