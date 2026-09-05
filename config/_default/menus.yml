@@ -10,11 +10,10 @@ main:
   - name: 作品
     weight: 300
     identifier: works
-  - name: 翻译写作
-    weight: 310
+  - name: 出版物
+    weight: 250
     identifier: books
     url: /books/
-    parent: works
   - name: 线上课程
     weight: 320
     identifier: courses
