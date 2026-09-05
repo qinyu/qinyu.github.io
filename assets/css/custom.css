@@ -1055,7 +1055,7 @@ html.theme--dark a.sidebar__tag:hover {
     rgba(var(--sand-rgb), 0) 80%
   );
   transform: none;
-  opacity: 0.76;
+  opacity: 0.42;
   transition: none;
 }
 
