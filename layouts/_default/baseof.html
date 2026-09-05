@@ -9,7 +9,12 @@
     class="html theme--light"
   {{ end }}
 >
-  {{- partial "head.html" . -}}
+  {{- $head := partial "head.html" . -}}
+  {{- $docTitle := .Site.Title -}}
+  {{- if and .IsPage (eq .Section "post") -}}
+    {{- $docTitle = printf "%s｜%s" .Site.Params.author .Title -}}
+  {{- end -}}
+  {{- $head | replaceRE `(?s)<title>.*?</title>` (printf "<title>%s</title>" ($docTitle | htmlEscape)) | safeHTML -}}
   <body class="body">
     <script>
       /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
