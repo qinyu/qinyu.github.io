@@ -16,6 +16,8 @@
   const scrollKey = "site-bg-scroll";
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
+  const barKey = "site-nav-bar";
+  const leaveMs = 160;
   const baseScale = 1;
   const peakScale = 1.06;
   const bounceScaleIn = 0.035;
@@ -196,6 +198,7 @@
     }
     window.setTimeout(() => {
       root.classList.remove("is-nav-carry");
+      root.classList.remove("is-nav-arrive");
     }, 400);
   };
 
@@ -280,6 +283,91 @@
     }
   };
 
+  const navRoot = () => document.querySelector(".header .nav");
+
+  const activeNavLink = () =>
+    document.querySelector(".header .nav__list:not(.nav__list--end) a.nav__link--active");
+
+  const ensureUnderline = (nav) => {
+    let bar = nav.querySelector(".nav__underline");
+    if (!bar) {
+      bar = document.createElement("span");
+      bar.className = "nav__underline";
+      bar.setAttribute("aria-hidden", "true");
+      nav.appendChild(bar);
+    }
+    return bar;
+  };
+
+  const barMetrics = (nav, link) => {
+    const nr = nav.getBoundingClientRect();
+    const r = link.getBoundingClientRect();
+    return {
+      left: r.left - nr.left,
+      width: r.width,
+      top: r.bottom - nr.top - 1,
+    };
+  };
+
+  const applyBar = (bar, metrics, animate) => {
+    bar.style.transition = animate && !reduce.matches ? "" : "none";
+    bar.style.left = `${metrics.left.toFixed(2)}px`;
+    bar.style.width = `${metrics.width.toFixed(2)}px`;
+    bar.style.top = `${metrics.top.toFixed(2)}px`;
+    if (!animate) {
+      void bar.offsetWidth;
+    }
+  };
+
+  const persistBar = (metrics) => {
+    try {
+      sessionStorage.setItem(barKey, JSON.stringify(metrics));
+    } catch (_) {
+      /* private mode */
+    }
+  };
+
+  const readBar = () => {
+    try {
+      const raw = sessionStorage.getItem(barKey);
+      if (!raw) {
+        return null;
+      }
+      sessionStorage.removeItem(barKey);
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.left === "number") {
+        return parsed;
+      }
+    } catch (_) {
+      /* private mode */
+    }
+    return null;
+  };
+
+  const initNavMotion = () => {
+    const nav = navRoot();
+    const link = activeNavLink();
+    if (!nav || !link) {
+      return;
+    }
+    const bar = ensureUnderline(nav);
+    const dest = barMetrics(nav, link);
+    const from = arriving ? readBar() : null;
+    if (from && !reduce.matches) {
+      applyBar(bar, from, false);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => applyBar(bar, dest, true));
+      });
+    } else {
+      applyBar(bar, dest, false);
+    }
+    if (arriving && !reduce.matches) {
+      window.requestAnimationFrame(() => {
+        root.classList.add("is-nav-arrive");
+      });
+    }
+  };
+
   document.addEventListener(
     "click",
     (event) => {
@@ -315,6 +403,20 @@
         return;
       }
       markHandoff();
+      const nav = navRoot();
+      if (nav && nav.contains(link) && !reduce.matches) {
+        const dest = barMetrics(nav, link);
+        persistBar(dest);
+        applyBar(ensureUnderline(nav), dest, true);
+      }
+      const page = document.querySelector(".page-body");
+      if (page && !reduce.matches) {
+        event.preventDefault();
+        page.classList.add("is-page-leave");
+        window.setTimeout(() => {
+          window.location.href = next.href;
+        }, leaveMs);
+      }
     },
     true,
   );
@@ -377,6 +479,19 @@
   };
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
+
+  window.addEventListener(
+    "resize",
+    () => {
+      const nav = navRoot();
+      const link = activeNavLink();
+      if (!nav || !link) {
+        return;
+      }
+      applyBar(ensureUnderline(nav), barMetrics(nav, link), false);
+    },
+    { passive: true },
+  );
 
   window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener(
@@ -441,4 +556,5 @@
     apply();
     kick();
   }
+  initNavMotion();
 })();

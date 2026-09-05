@@ -11,7 +11,8 @@
   --sand-rgb: 196, 148, 90;
   --muted: #8a8478;
   --muted-dim: #5c574f;
-  --line: #2a2a2a;
+  /* Dark ochre rule, not neutral gray — sampled down from palette A. */
+  --line: #3d2a14;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
@@ -272,7 +273,7 @@ html,
     height: 100vh;
     height: 100lvh;
     margin: 0;
-    border-right: 1px solid rgba(var(--sand-rgb), 0.22);
+    border-right: 1px solid rgba(var(--sand-rgb), 0.38);
     margin-right: 0;
     display: flex;
     flex-direction: column;
@@ -317,7 +318,7 @@ html,
     margin: 0 -20px;
     padding: 0 20px;
     background-color: rgba(0, 0, 0, 0.42) !important;
-    border-bottom: 1px solid rgba(var(--sand-rgb), 0.28);
+    border-bottom: 1px solid rgba(var(--sand-rgb), 0.4);
   }
 
   /* No opaque upward shield — Mars + veil show through, like portrait. */
@@ -341,7 +342,7 @@ html,
   a.nav__link--active {
     color: var(--sand);
     padding-bottom: 6px;
-    border-bottom: 1px solid var(--sand);
+    border-bottom: none;
   }
 }
 
@@ -476,7 +477,38 @@ html.theme--light .nav__link--active,
 html .nav__link--active,
 a.nav__link--active {
   color: var(--sand);
-  border-bottom-color: var(--sand);
+  border-bottom: none;
+}
+
+.nav {
+  position: relative;
+}
+
+/* Slides left/right only. Never translate the header or page. */
+.nav__underline {
+  position: absolute;
+  height: 1px;
+  background-color: var(--sand);
+  pointer-events: none;
+  transition: left 0.28s ease, width 0.28s ease, top 0.28s ease;
+}
+
+.page-body {
+  transform: none;
+}
+
+html.is-nav-carry .page-body {
+  opacity: 0;
+}
+
+html.is-nav-carry.is-nav-arrive .page-body {
+  opacity: 1;
+  transition: opacity 0.32s ease;
+}
+
+.page-body.is-page-leave {
+  opacity: 0;
+  transition: opacity 0.16s ease;
 }
 
 .post {
@@ -485,7 +517,8 @@ a.nav__link--active {
   border-bottom: 1px solid var(--line);
 }
 
-.wrapper__main > .post:last-of-type {
+.wrapper__main > .post:last-of-type,
+.page-body > .post:last-of-type {
   border-bottom: none;
 }
 
@@ -717,7 +750,7 @@ html.theme--dark .post__content a:hover {
 .post__content pre,
 .post__content .chroma {
   background-color: var(--code-bg) !important;
-  border: 1px solid #333;
+  border: 1px solid var(--line);
   border-radius: 2px;
 }
 
@@ -1115,10 +1148,10 @@ html:not(.is-nav-carry) .series-grid__item:focus-visible .series-grid__cover img
 }
 
 /*
-  Section switches must have no enter/leave motion. Anatole fadeInDown
-  is translateY(-20px) → 0; 出版物 also flashed every cover at
-  scale(1.07) then settled. Kill both. is-nav-carry still holds the
-  parallax frame and freezes cover transforms for the first paint.
+  Nav-switch motion (final): underline may slide; page-body opacity
+  may fade. Forbidden: translate / fadeInDown / cover scale — those
+  are the jump. is-nav-carry holds parallax and freezes cover
+  transforms; do not zero page-body's opacity transition.
 */
 .animated,
 .fadeInDown,
@@ -1131,7 +1164,6 @@ html:not(.is-nav-carry) .series-grid__item:focus-visible .series-grid__cover img
 
 html.is-nav-carry .animated,
 html.is-nav-carry .fadeInDown,
-html.is-nav-carry .wrapper__main,
 html.is-nav-carry .post,
 html.is-nav-carry .post--cards,
 html.is-nav-carry .post-entry,
@@ -1179,10 +1211,45 @@ html.is-nav-carry .series-grid .medium-zoom-image {
     transition: none !important;
   }
 
+  .nav__underline,
+  .page-body,
+  html.is-nav-carry .page-body,
+  html.is-nav-carry.is-nav-arrive .page-body,
+  .page-body.is-page-leave {
+    opacity: 1;
+    transition: none;
+  }
+
   .bookshelf__cover::before,
   .post__content .bookshelf__cover img,
   .post__content .series-grid__cover img {
     transition: none;
+  }
+}
+
+/*
+  Portrait / narrow: Mars yellow fills the screen. Gray muted text
+  disappears on the plate and is dull on the veil. Secondary ink and
+  rules go to a brighter ochre tint — not gray, not high-contrast sand.
+  Primary links stay sand / sand-bright.
+*/
+@media screen and (max-width: 960px), (orientation: portrait) {
+  :root {
+    --muted: #d4b27c;
+    --muted-dim: #b89258;
+    --line: #8a6430;
+  }
+
+  html a.sidebar__tag,
+  html.theme--dark a.sidebar__tag,
+  html.theme--light a.sidebar__tag,
+  html .post__content a.post__tag-chip,
+  html.theme--dark .post__content a.post__tag-chip,
+  html.theme--light .post__content a.post__tag-chip,
+  html .post__footer a.tag,
+  html.theme--dark .post__footer a.tag,
+  html.theme--light .post__footer a.tag {
+    border-color: rgba(var(--sand-rgb), 0.88);
   }
 }
 
@@ -1294,7 +1361,7 @@ html.is-nav-carry .series-grid .medium-zoom-image {
   a.nav__link--active {
     color: var(--sand);
     padding-bottom: 4px;
-    border-bottom: 1px solid var(--sand);
+    border-bottom: none;
   }
 
   .wrapper__sidebar {
