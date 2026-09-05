@@ -1,9 +1,9 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // CSS layer stays 115% at rest (15% overflow buffer). Do not shrink
-  // that rest size. Intentional scroll zoom is ~3/5 of the 1.04 peak
-  // (1.00–1.024) so it is felt but does not track foreground scroll.
+  // CSS contains the complete plate at 64vh landscape / 72vh
+  // portrait. Do not enlarge rest scale enough to clip the limbs.
+  // Scroll zoom is ~3/5 of the 1.04 peak (1.00–1.024).
   // Top rubber-band still eases a milder scale-in. Translate stays ≤6vh.
   const maxTravel = 0.06;
   const ease = 0.16;
