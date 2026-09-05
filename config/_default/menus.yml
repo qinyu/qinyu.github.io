@@ -7,11 +7,11 @@ main:
     weight: 200
     identifier: translations
     url: /translations/
-  - name: 出版物
+  - name: 出版著作
     weight: 300
     identifier: books
     url: /books/
-  - name: 归档
+  - name: 文章全集
     weight: 400
     identifier: posts
     url: /post/
