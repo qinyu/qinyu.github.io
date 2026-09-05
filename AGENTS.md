@@ -33,7 +33,7 @@ hugo --minify
 - 文章写在 `content/post/<kebab-topic>/index.md`，图片和文章放在同一目录。站点级页面在 `content/` 根下（`about.md`、`books.md`、`courses.md`、`wechat.md`）。
 - `themes/anatole` 是 git submodule。改内容和 `config/`；用户没要求更新主题，就不要动主题目录，也不要换主题。Anatole 的 RSS 用站点里的 `layouts/_default/rss.xml` 覆盖（Hugo 0.158+ 去掉了 `.Site.Author`）。
 - `content/temp/` 已被 gitignore，也在 `config.yml` 的 `ignoreFiles` 里排除，是抓取/草稿暂存，不是站点内容。
-- 生产构建忽略 `draft: true`。没说「发布」，就保持草稿。架构编年史三篇和 Wardley Maps 第 7 章目前都是草稿。
+- 生产构建忽略 `draft: true`。没说「发布」，就保持草稿。Wardley Maps 第 7 章目前是草稿。软件架构编年史已发布。
 
 ## 文章约定
 
@@ -76,3 +76,4 @@ hugo new post/<kebab-topic>/index.md
 - 浅色模式正文用接近黑的颜色（中性 800 以上），不要用灰字配米色底。
 - 内容页配图靠左对齐，不要居中。微信二维码用 `figure` 的 `tiny`。
 - 二维码中心的微信图标按原始宽高比缩放，不要拉成正方形。
+- 系列整批上线时，首页最近更新只发一篇说明文作入口；不要把系列落地页做成首页卡片，也不要把各章铺进最近更新。
