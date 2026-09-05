@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2017/08/17/mvc-and-its-variants/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 创建可维护的应用始终是构建应用的真正的长期挑战。
 
@@ -42,7 +42,7 @@ MVC 模式将代码拆分成了三个概念单元：
 
 > 模型可以是单个对象(相当无趣)，也可以是对象组成的某种结构。——Trygve Reenskaug 1979, [MVC](http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)
 
-最初的 MVC 模式还有其它一些需要了解的的重要概念：
+最初的 MVC 模式还有其它一些需要了解的重要概念：
 
 1. View 直接使用 Model 数据对象来展示数据；
 2. 当 Model 发生变化时，会触发一个事件立即更新 View(记住，1979年还没有 HTTP)；

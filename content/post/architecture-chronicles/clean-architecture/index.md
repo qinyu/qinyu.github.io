@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2017/09/28/clean-architecture-standing-on-the-shoulders-of-giants/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 Robert C. Martin(大名鼎鼎的 Uncle Bob)于2012年在[他的一篇博客](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html)中发表了*整洁架构*的观点，并在一些会议上做了关于该架构的演讲。
 

@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2017/09/07/domain-driven-design/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 Eric Evans 于 2003 年出版了精采绝伦的《领域驱动设计：软件核心复杂性应对之道》，在书中他创造了*领域驱动设计*方法。Eric Evans 的这本著作十分重要，现今许多我们认为理所当然的软件开发概念都是在本书中被正式提出的。
 

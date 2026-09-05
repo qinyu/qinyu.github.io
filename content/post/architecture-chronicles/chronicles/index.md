@@ -30,7 +30,7 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
 
 在我向更好开发者前进的成长之路上，我浏览过许多文章，观看过许多会议演讲，也阅读过许多书籍。我尽可能地站在巨人的肩膀上！
 
-然而我一直有一个困惑，这些观点发展出其它许多观点，又继续发展出更多的观点...这就好比“传话游戏”，论文、文章或者书籍原本要表达的思想最后终会被扭曲。　
+然而我一直有一个困惑，这些观点发展出其它许多观点，又继续发展出更多的观点...这就好比“传话游戏”，论文、文章或者书籍原本要表达的思想最终会被扭曲。
 
 于是我开始在互联网上搜寻，寻找表达这些概念的原始论文、文章和书籍，我觉得它们是我工作中最重要的概念，我自己也时常思考它们。
 
@@ -46,32 +46,32 @@ _这是[软件架构系列](https://herbertograca.com/category/development/serie
 
 1. [软件架构编年史（译）]({{< ref "post/architecture-chronicles/chronicles" >}})  //[原文](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)
 2. [软件架构预述（译）]({{< ref "post/architecture-chronicles/premises" >}}) //[原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)
-3. [编程语言的演化(译)]({{< ref "post/architecture-chronicles/programming-language-evolution" >}}) //[原文](https://herbertograca.com/2017/07/10/programming-language-evolution/)  
-4. [架构风格 vs. 架构模式 vs. 设计模式(译)]({{< ref "post/architecture-chronicles/architecture-vs-design" >}}) //[原文](https://herbertograca.com/2017/07/28/architectural-styles-vs-architectural-patterns-vs-design-patterns/)  
-5. [单体架构(译)]({{< ref "post/architecture-chronicles/monolithic-architecture" >}}) //[原文](https://herbertograca.com/2017/07/31/monolithic-architecture/)  
-6. [分层架构(译)]({{< ref "post/architecture-chronicles/layered-architecture" >}}) //[原文](https://herbertograca.com/2017/08/03/layered-architecture/)  
-7. [MVC及其变种(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}}) //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/)  
-    * [1979 – Model-View-Controller(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-controller)
-    * [1987/2000 – PAC / Hierarchical Model-View-Controller(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#hierarchical-model-view-controller)
-    * [1996 – Model-View-Presenter(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter)
-    * [1998 –"Model 1" & "Model 2" (译)]({{< ref "post/architecture-chronicles/model-1-model-2" >}}) //[原文](https://herbertograca.com/2018/08/29/model-1-model-2/)
-    * [2005 – Model-View-ViewModel(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-view_model)
-    * [???? – Model-View-Presenter-ViewModel(译)]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter-view_model)
-    * [2008 – Resource-Method-Representation(译)]({{< ref "post/architecture-chronicles/resource-method-representation" >}}) //[原文](https://herbertograca.com/2018/08/31/resource-method-representation/)
-    * [2014 – Action-Domain-Responder(译)]({{< ref "post/architecture-chronicles/action-domain-responder" >}}) //[原文](https://herbertograca.com/2018/09/03/action-domain-responder/)
-8. [EBI架构(译)]({{< ref "post/architecture-chronicles/ebi-architecture" >}}) //[原文](https://herbertograca.com/2017/08/24/ebi-architecture/)
-9. [包与命名空间(译)]({{< ref "post/architecture-chronicles/packaging-and-namespaces" >}}) //[原文](https://herbertograca.com/2017/08/31/packaging-code/)  
-10. [领域驱动设计(译)]({{< ref "post/architecture-chronicles/domain-driven-design" >}}) //[原文](https://herbertograca.com/2017/09/07/domain-driven-design/)
-11. [端口和适配器架构(六边形架构)(译)]({{< ref "post/architecture-chronicles/ports-and-adapters" >}}) //[原文](https://herbertograca.com/2017/09/14/ports-adapters-architecture/)  
-12. [洋葱架构(译)]({{< ref "post/architecture-chronicles/onion-architecture" >}}) //[原文](https://herbertograca.com/2017/09/21/onion-architecture/)  
-13. [整洁架构(译)]({{< ref "post/architecture-chronicles/clean-architecture" >}}) //[原文](https://herbertograca.com/2017/09/28/clean-architecture-standing-on-the-shoulders-of-giants/)  
-14. [事件驱动的架构(译)]({{< ref "post/architecture-chronicles/event-driven-architecture" >}}) //[原文](https://herbertograca.com/2017/10/05/event-driven-architecture/)  
-15. [从CQS到CQRS(译)]({{< ref "post/architecture-chronicles/from-cqs-to-cqrs" >}}) //[原文](https://herbertograca.com/2017/10/19/from-cqs-to-cqrs/)  
-16. [面向服务的架构(SOA)(译)]({{< ref "post/architecture-chronicles/soa" >}}) //[原文](https://herbertograca.com/2017/11/09/service-oriented-architecture-soa/)  
+3. [编程语言的演化（译）]({{< ref "post/architecture-chronicles/programming-language-evolution" >}}) //[原文](https://herbertograca.com/2017/07/10/programming-language-evolution/)  
+4. [架构风格 vs. 架构模式 vs. 设计模式（译）]({{< ref "post/architecture-chronicles/architecture-vs-design" >}}) //[原文](https://herbertograca.com/2017/07/28/architectural-styles-vs-architectural-patterns-vs-design-patterns/)  
+5. [单体架构（译）]({{< ref "post/architecture-chronicles/monolithic-architecture" >}}) //[原文](https://herbertograca.com/2017/07/31/monolithic-architecture/)  
+6. [分层架构（译）]({{< ref "post/architecture-chronicles/layered-architecture" >}}) //[原文](https://herbertograca.com/2017/08/03/layered-architecture/)  
+7. [MVC及其变种（译）]({{< ref "post/architecture-chronicles/mvc-and-variants" >}}) //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/)  
+    * [1979 – Model-View-Controller（译）]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-controller)
+    * [1987/2000 – PAC / Hierarchical Model-View-Controller（译）]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#hierarchical-model-view-controller)
+    * [1996 – Model-View-Presenter（译）]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter)
+    * [1998 –"Model 1" & "Model 2"（译）]({{< ref "post/architecture-chronicles/model-1-model-2" >}}) //[原文](https://herbertograca.com/2018/08/29/model-1-model-2/)
+    * [2005 – Model-View-ViewModel（译）]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-view_model)
+    * [???? – Model-View-Presenter-ViewModel（译）]({{< ref "post/architecture-chronicles/mvc-and-variants" >}})  //[原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/#model-view-presenter-view_model)
+    * [2008 – Resource-Method-Representation（译）]({{< ref "post/architecture-chronicles/resource-method-representation" >}}) //[原文](https://herbertograca.com/2018/08/31/resource-method-representation/)
+    * [2014 – Action-Domain-Responder（译）]({{< ref "post/architecture-chronicles/action-domain-responder" >}}) //[原文](https://herbertograca.com/2018/09/03/action-domain-responder/)
+8. [EBI 架构（译）]({{< ref "post/architecture-chronicles/ebi-architecture" >}}) //[原文](https://herbertograca.com/2017/08/24/ebi-architecture/)
+9. [包和命名空间（译）]({{< ref "post/architecture-chronicles/packaging-and-namespaces" >}}) //[原文](https://herbertograca.com/2017/08/31/packaging-code/)  
+10. [领域驱动设计（译）]({{< ref "post/architecture-chronicles/domain-driven-design" >}}) //[原文](https://herbertograca.com/2017/09/07/domain-driven-design/)
+11. [端口和适配器架构(六边形架构)（译）]({{< ref "post/architecture-chronicles/ports-and-adapters" >}}) //[原文](https://herbertograca.com/2017/09/14/ports-adapters-architecture/)  
+12. [洋葱架构（译）]({{< ref "post/architecture-chronicles/onion-architecture" >}}) //[原文](https://herbertograca.com/2017/09/21/onion-architecture/)  
+13. [整洁架构（译）]({{< ref "post/architecture-chronicles/clean-architecture" >}}) //[原文](https://herbertograca.com/2017/09/28/clean-architecture-standing-on-the-shoulders-of-giants/)  
+14. [事件驱动的架构（译）]({{< ref "post/architecture-chronicles/event-driven-architecture" >}}) //[原文](https://herbertograca.com/2017/10/05/event-driven-architecture/)  
+15. [从 CQS 到 CQRS（译）]({{< ref "post/architecture-chronicles/from-cqs-to-cqrs" >}}) //[原文](https://herbertograca.com/2017/10/19/from-cqs-to-cqrs/)  
+16. [面向服务的架构(SOA)（译）]({{< ref "post/architecture-chronicles/soa" >}}) //[原文](https://herbertograca.com/2017/11/09/service-oriented-architecture-soa/)  
 17. [清晰架构(01)：融合DDD、洋葱架构、整洁架构、CQRS...（译）]({{< ref "post/architecture-chronicles/explicit-architecture" >}}) //[原文](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)  
-18. [清晰架构(02)：超越同心圆分层 (译)]({{< ref "post/architecture-chronicles/explicit-architecture-02" >}}) //[原文](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)  
-19. [清晰架构(03)：在代码中展现架构和领域 (译)]({{< ref "post/architecture-chronicles/reflecting-architecture-in-code" >}}) //[原文](https://herbertograca.com/2019/06/05/reflecting-architecture-and-domain-in-code/)
-20. [清晰架构(04)：用文档描述架构 (译)]({{< ref "post/architecture-chronicles/documenting-architecture" >}}) //[原文](https://herbertograca.com/2019/08/12/documenting-software-architecture/)
+18. [清晰架构(02)：超越同心圆分层（译）]({{< ref "post/architecture-chronicles/explicit-architecture-02" >}}) //[原文](https://herbertograca.com/2018/07/07/more-than-concentric-layers/)  
+19. [清晰架构(03)：在代码中展现架构和领域（译）]({{< ref "post/architecture-chronicles/reflecting-architecture-in-code" >}}) //[原文](https://herbertograca.com/2019/06/05/reflecting-architecture-and-domain-in-code/)
+20. [清晰架构(04)：用文档描述架构（译）]({{< ref "post/architecture-chronicles/documenting-architecture" >}}) //[原文](https://herbertograca.com/2019/08/12/documenting-software-architecture/)
 21. 一个项目的演进：从 MVP 到 P  
 22. 4 + 1 架构视图模型
 23. 架构的质量属性

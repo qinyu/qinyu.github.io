@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2018/09/03/action-domain-responder/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 MVC 诞生于 1979 年，它诞生于使用 CLI 用户界面的桌面应用上下文中，它暗示如果用户外部因素导致数据库变化，那么 UI 就应该自动地变化。同样的模式也可以完美地应用在稍后出现的 GUI 桌面应用上。
 

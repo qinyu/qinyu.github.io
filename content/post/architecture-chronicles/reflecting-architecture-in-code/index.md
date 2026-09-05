@@ -16,11 +16,11 @@ draft: false
 
 原文：<https://herbertograca.com/2019/06/05/reflecting-architecture-and-domain-in-code/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 在创建应用的时候，让它可以工作易如反掌。要让它在处理大量数据的情况下仍然保持性能，会有点困难。但是最难的挑战是构建一个真正可以维系多年（十年、二十年甚至一百年）的应用程序。
 
-我工作过的大多数公司都有每三到五年就重建应用的历史，有时甚至不到两年就要重建。这种做法成本极高，它将极大地影响应用程序的成功，进而极大地影响公司的成功，还会让开发人员在乱成一锅粥的代码库种凌乱，让他们想萌生辞职的想法。任何一家志向远大的正经公司，都无法承受任何经济上、时间上、声誉上、客户上、人才上的损失。
+我工作过的大多数公司都有每三到五年就重建应用的历史，有时甚至不到两年就要重建。这种做法成本极高，它将极大地影响应用程序的成功，进而极大地影响公司的成功，还会让开发人员在乱成一锅粥的代码库里凌乱，让他们萌生辞职的想法。任何一家志向远大的正经公司，都无法承受任何经济上、时间上、声誉上、客户上、人才上的损失。
 
 让应用程序保持可维护性的基石是让代码能够反映出架构和领域，这对防止所有棘手问题至关重要。
 

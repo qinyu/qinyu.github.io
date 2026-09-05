@@ -16,7 +16,7 @@ draft: false
 
 原文：<https://herbertograca.com/2017/11/09/service-oriented-architecture-soa/>
 
-*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的的内容将更有意义。*
+*这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
 SOA 风格在 20 世纪 80 年代末就已出现，它起源于 CORBA、DCOM、DCE 和其它一些概念。关于 SOA 的讨论太多了，也有一些不同的实现模式，但从本质上讲，SOA 并没有给出如何实现它们的处方，而是仅仅聚焦于一些概念：
 
@@ -251,7 +251,7 @@ ESB 的主要职责是：
   由于系统部件数量众多，想要理解系统的方方面面更加困难，所以我们需要成熟的监控工具，让我们掌握发生在系统每个角落里的细节，理解每一个连锁反应。
 
 {{< figure src="2010-microservices.jpg" class="medium" >}}
-> 微服务社区青睐另一种方法：**智能终端节点和哑管道**。基于微服务构建的应用以尽可能的解耦和内聚为目标 —— 它们拥有自己的领域逻辑，并且表现得更像经典 Unix 感觉得过滤器 —— 接收一个请求，酌情运用逻辑并生成一个响应。这些都使用简单的 REST 风格的协议进行编排，而不是类似 WS-Choreography 或 BPEL 或由中心工具编排的复杂协议。—— Martin Fowler 2014, [Microservices](https://martinfowler.com/articles/microservices.html)
+> 微服务社区青睐另一种方法：**智能终端节点和哑管道**。基于微服务构建的应用以尽可能地解耦和内聚为目标 —— 它们拥有自己的领域逻辑，并且表现得更像经典 Unix 意义上的过滤器 —— 接收一个请求，酌情运用逻辑并生成一个响应。这些都使用简单的 REST 风格的协议进行编排，而不是类似 WS-Choreography 或 BPEL 或由中心工具编排的复杂协议。—— Martin Fowler 2014, [Microservices](https://martinfowler.com/articles/microservices.html)
 
 ## 优点
 
