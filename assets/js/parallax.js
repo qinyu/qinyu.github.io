@@ -221,7 +221,9 @@
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
         return;
       }
-      const link = event.target.closest ? event.target.closest("a[href]") : null;
+      const rawTarget = event.target;
+      const from = rawTarget && rawTarget.nodeType === 1 ? rawTarget : rawTarget && rawTarget.parentElement;
+      const link = from && typeof from.closest === "function" ? from.closest("a[href]") : null;
       if (!link) {
         return;
       }
@@ -321,6 +323,12 @@
       arriving = false;
       holdFirstFrame = false;
       arriveScroll = 0;
+      navScrollY = 0;
+      applyScrollCarry();
+      root.classList.remove("is-nav-carry");
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "auto";
+      }
     }
     kick();
   });
