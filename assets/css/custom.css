@@ -18,18 +18,18 @@
     Source poster is 1229×1600 (walker ≈34% x, 84.45% y).
     Size is cover-width: 100% of source width → 100% of the layer width.
     Never use `cover` (that crops left/right on tall viewports).
-    Y is a length so the walker % of the image can sit at a different % of the box.
+    Portrait default hangs the *complete* poster below the stacked nav —
+    pinning the walker to 36vh was shifting the art up and clipping the
+    top-left crest, which reads as a left/right crop.
+    Landscape overrides --bg-pos-y to pin the walker under the sidebar avatar.
   */
   --bg-image: url("/images/bg/dune-poster.jpg");
   --bg-size: 100% auto;
   --poster-ratio: 1.30187144; /* 1600 / 1229 */
   --figure-y: 0.84445;
   --bg-box-top: -20vh;
-  --bg-figure-view: 36vh;
-  --bg-figure-in-box: calc(var(--bg-figure-view) - var(--bg-box-top));
-  --bg-pos-y: calc(
-    var(--bg-figure-in-box) - var(--figure-y) * var(--poster-ratio) * 100vw
-  );
+  --portrait-img-top: 8vh;
+  --bg-pos-y: calc(var(--portrait-img-top) - var(--bg-box-top));
   --bg-pos: 50% var(--bg-pos-y);
 }
 
@@ -89,9 +89,8 @@ html,
 }
 
 /*
-  Full source width (100% auto — no left/right crop). Height is +20% / 140%
-  so a ≤10% vertical parallax travel never shows void. --bg-pos-y pins the
-  walker under the stacked avatar; landscape overrides the box offset.
+  Full source width (100% auto — no left/right crop) in both orientations.
+  Height is +20% / 140% so a ≤10% vertical parallax travel never shows void.
 */
 .site-bg__poster {
   position: absolute;
@@ -119,6 +118,10 @@ html,
   :root {
     --bg-box-top: -32vh;
     --bg-figure-view: 47vh;
+    --bg-figure-in-box: calc(var(--bg-figure-view) - var(--bg-box-top));
+    --bg-pos-y: calc(
+      var(--bg-figure-in-box) - var(--figure-y) * var(--poster-ratio) * 100vw
+    );
   }
 
   .site-bg {
@@ -836,7 +839,7 @@ html.is-nav-carry .animated {
   html,
   .html,
   .site-bg__poster {
-    /* Same cover-width rule as landscape: never crop the poster’s left/right. */
+    /* Narrow and portrait: same cover-width as landscape — never crop sides. */
     --bg-size: 100% auto;
     background-size: 100% auto;
     background-position: var(--bg-pos);
