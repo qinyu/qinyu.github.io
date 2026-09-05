@@ -3,7 +3,7 @@ main:
     weight: 100
     identifier: home
     url: /
-  - name: 翻译系列
+  - name: 翻译作品
     weight: 200
     identifier: translations
     url: /translations/
@@ -15,7 +15,11 @@ main:
     weight: 400
     identifier: posts
     url: /post/
-  - name: 关于
+  - name: 标签
     weight: 500
+    identifier: tags
+    url: /tags/
+  - name: 关于
+    weight: 600
     identifier: about
     url: /about/

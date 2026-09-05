@@ -23,6 +23,8 @@
           {{ $active = or $active (strings.HasPrefix $url "/books/") }}
         {{ else if eq $menuItem.Identifier "posts" }}
           {{ $active = or (eq $url "/post/") (strings.HasPrefix $url "/post/page/") }}
+        {{ else if eq $menuItem.Identifier "tags" }}
+          {{ $active = or $active (strings.HasPrefix $url "/tags/") }}
         {{ else if eq $menuItem.Identifier "about" }}
           {{ $active = or $active (strings.HasPrefix $url "/about/") }}
         {{ end }}
