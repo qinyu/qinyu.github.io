@@ -10,7 +10,6 @@
   --muted-dim: #5c574f;
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
-  --ochre-wash: rgba(196, 165, 116, 0.12);
   --bg-image: url("/images/bg/dune-bg-composed.jpg");
 }
 
@@ -21,7 +20,7 @@ html,
   color-scheme: dark;
 }
 
-/* Static dune backdrop. Fixed layer is a still, not parallax. */
+/* Static dune backdrop. Subtle scroll parallax via --bg-parallax. */
 html {
   background-color: var(--void);
 }
@@ -29,7 +28,7 @@ html {
 html::before {
   content: "";
   position: fixed;
-  inset: 0;
+  inset: -18vh 0;
   z-index: -2;
   pointer-events: none;
   background-color: var(--void);
@@ -37,7 +36,9 @@ html::before {
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: left 8% bottom 4%;
-  background-size: 118% auto;
+  background-size: 82% auto;
+  transform: translate3d(0, var(--bg-parallax, 0px), 0);
+  will-change: transform;
 }
 
 html::after {
@@ -388,8 +389,8 @@ html.theme--dark .post__content a:hover {
   text-align: center;
   text-decoration: none;
   padding: 0.7rem 0.45rem 0.85rem;
-  border: 1px solid transparent;
-  border-radius: 0.4rem;
+  border: 0;
+  background: none;
   transform: none;
 }
 
@@ -400,10 +401,15 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item:hover,
 .bookshelf__item:focus,
+.bookshelf__item:focus-visible,
+.bookshelf__item:active,
 .series-grid__item:hover,
-.series-grid__item:focus {
-  background-color: var(--ochre-wash);
-  border-color: rgba(196, 165, 116, 0.7);
+.series-grid__item:focus,
+.series-grid__item:focus-visible,
+.series-grid__item:active {
+  background: none;
+  border: 0;
+  outline: none;
   transform: none;
 }
 
@@ -416,6 +422,7 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__cover,
 .series-grid__cover {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -426,6 +433,28 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__cover {
   aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+.bookshelf__cover::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 54%;
+  width: 92%;
+  height: 82%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(196, 165, 116, 0.5) 0%,
+    rgba(196, 165, 116, 0.26) 36%,
+    rgba(196, 165, 116, 0.08) 58%,
+    rgba(196, 165, 116, 0) 74%
+  );
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  transition: transform 0.22s ease;
 }
 
 .series-grid__cover {
@@ -436,6 +465,8 @@ html.theme--dark .post__content a:hover {
 
 .post__content .bookshelf__cover img,
 .post__content .series-grid__cover img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
@@ -443,10 +474,30 @@ html.theme--dark .post__content a:hover {
   object-fit: contain;
   pointer-events: none;
   transform: none;
+  transform-origin: center center;
+  transition: transform 0.22s ease;
 }
 
 .post__content .series-grid__cover img {
   object-fit: cover;
+}
+
+.bookshelf__item:hover .bookshelf__cover img,
+.bookshelf__item:focus .bookshelf__cover img,
+.bookshelf__item:focus-visible .bookshelf__cover img,
+.bookshelf__item:active .bookshelf__cover img,
+.series-grid__item:hover .series-grid__cover img,
+.series-grid__item:focus .series-grid__cover img,
+.series-grid__item:focus-visible .series-grid__cover img,
+.series-grid__item:active .series-grid__cover img {
+  transform: scale(1.07);
+}
+
+.bookshelf__item:hover .bookshelf__cover::before,
+.bookshelf__item:focus .bookshelf__cover::before,
+.bookshelf__item:focus-visible .bookshelf__cover::before,
+.bookshelf__item:active .bookshelf__cover::before {
+  transform: translate(-50%, -50%) scale(1.07);
 }
 
 .bookshelf__title,
@@ -471,10 +522,23 @@ html.theme--dark .post__content a:hover {
   background-color: #d8d2c8 !important;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html::before {
+    transform: none;
+    will-change: auto;
+  }
+
+  .bookshelf__cover::before,
+  .post__content .bookshelf__cover img,
+  .post__content .series-grid__cover img {
+    transition: none;
+  }
+}
+
 @media screen and (max-width: 960px) {
   html::before {
-    background-size: cover;
-    background-position: left center;
+    background-size: 85% auto;
+    background-position: left 4% bottom 8%;
   }
 
   .wrapper__main {
