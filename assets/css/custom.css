@@ -88,6 +88,21 @@ html,
   will-change: transform;
 }
 
+/*
+  Landscape only: extra poster + layer bleed so Chrome's collapsing URL bar
+  cannot flash void. Portrait stays at 20% / 140%. Travel is still ≤10vh.
+*/
+@media (orientation: landscape) {
+  .site-bg {
+    inset: -16vh 0;
+  }
+
+  .site-bg__poster {
+    top: -32%;
+    height: 164%;
+  }
+}
+
 .site-bg__veil {
   display: block;
   position: fixed;
@@ -390,6 +405,16 @@ html .archive__list-title:hover {
   color: var(--sand-bright);
 }
 
+html .archive a:visited,
+html .archive__list-title:visited,
+html.theme--dark .archive__list-title:visited,
+html.theme--light .archive__list-title:visited,
+html .post__content h3 a:visited,
+html.theme--dark .post__content h3 a:visited,
+html.theme--light .post__content h3 a:visited {
+  color: var(--sand);
+}
+
 .post-entry__date,
 .post__meta,
 .post__meta-text,
@@ -685,6 +710,12 @@ html.theme--dark .post__content a:hover {
   display: none !important;
 }
 
+/* In-site section switch: keep the outgoing parallax frame, skip fadeInDown snap. */
+html.is-nav-carry .animated {
+  animation: none !important;
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-bg__poster {
     transform: none;
@@ -693,6 +724,11 @@ html.theme--dark .post__content a:hover {
 
   .site-bg__veil {
     transform: none;
+  }
+
+  .animated {
+    animation: none !important;
+    transition: none !important;
   }
 
   .bookshelf__item::before,
@@ -745,7 +781,7 @@ html.theme--dark .post__content a:hover {
     padding-top: env(safe-area-inset-top, 0px);
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
-    background-color: transparent !important;
+    background-color: rgba(0, 0, 0, 0.36) !important;
     border-bottom: none;
   }
 
@@ -818,12 +854,13 @@ html.theme--dark .post__content a:hover {
   }
 
   .bookshelf {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1.2rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.4rem 0.55rem;
   }
 
   .series-grid {
-    grid-template-columns: 1fr;
-    row-gap: 28px;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 12px;
+    row-gap: 24px;
   }
 }

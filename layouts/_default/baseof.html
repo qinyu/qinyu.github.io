@@ -12,15 +12,26 @@
   {{- partial "head.html" . -}}
   <body class="body">
     <script>
+      /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
       try {
-        var duneParallax = sessionStorage.getItem("dune-bg-parallax");
-        if (duneParallax != null) {
-          document.documentElement.style.setProperty(
-            "--bg-parallax",
-            (parseFloat(duneParallax) || 0).toFixed(2) + "px",
-          );
+        var root = document.documentElement;
+        if (sessionStorage.getItem("dune-bg-handoff") === "1") {
+          root.classList.add("is-nav-carry");
         }
-      } catch (e) {}
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          root.style.setProperty("--bg-parallax", "0px");
+        } else {
+          var duneParallax = sessionStorage.getItem("dune-bg-parallax");
+          if (duneParallax != null) {
+            root.style.setProperty(
+              "--bg-parallax",
+              (parseFloat(duneParallax) || 0).toFixed(2) + "px",
+            );
+          }
+        }
+      } catch (e) {
+        /* private mode */
+      }
     </script>
     <div class="site-bg" aria-hidden="true">
       <div class="site-bg__poster"></div>
