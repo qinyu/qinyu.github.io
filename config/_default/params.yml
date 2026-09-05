@@ -14,7 +14,6 @@ customJs:
 googleAnalytics: false
 displayMode: dark
 disableThemeSwitcher: true
-doNotLoadAnimations: true
 disableTitleCapitalization: true
 indexDateFormat: "2006-01-02"
 singleDateFormat: "2006-01-02"
