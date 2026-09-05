@@ -7,8 +7,8 @@
   const ease = 0.16;
   const arriveEase = 0.08;
   const storageKey = "dune-bg-parallax";
-  const scaleKey = "dune-bg-scale";
   const scrollKey = "dune-bg-scroll";
+  const scaleKey = "dune-bg-scale";
   const handoffKey = "dune-bg-handoff";
   const edgeScale = 1;
   const midScale = 1.1;
@@ -93,21 +93,16 @@
     arriving = sessionStorage.getItem(handoffKey) === "1";
     if (arriving) {
       sessionStorage.removeItem(handoffKey);
-    }
-    const savedScroll = sessionStorage.getItem(scrollKey);
-    if (savedScroll != null) {
-      const parsedScroll = parseFloat(savedScroll);
-      if (!Number.isNaN(parsedScroll)) {
-        navScrollY = Math.max(0, parsedScroll);
+      const savedScroll = sessionStorage.getItem(scrollKey);
+      if (savedScroll != null) {
+        const parsedScroll = parseFloat(savedScroll);
+        if (!Number.isNaN(parsedScroll)) {
+          navScrollY = Math.max(0, parsedScroll);
+        }
       }
     }
   } catch (_) {
     /* private mode */
-  }
-
-  // Full page loads reset scrollY to 0 while the stored offset may still be mid-travel.
-  if (!arriving && Math.abs(current) > 0.5 && readScrollY() < 2) {
-    arriving = true;
   }
 
   if (arriving) {
@@ -187,7 +182,6 @@
     targetScale = edgeScale;
     holdFirstFrame = false;
     navScrollY = 0;
-    arriveScroll = 0;
     apply();
     applyScrollCarry();
     running = false;
@@ -207,7 +201,6 @@
       return;
     }
     target = computeTarget();
-    targetScale = computeScale();
     const step = arriving ? arriveEase : ease;
     if (arriving && !userTookScroll && arriveScroll > 0.5) {
       arriveScroll += (0 - arriveScroll) * step;
@@ -217,13 +210,10 @@
       navScrollY = arriveScroll;
       applyScrollCarry();
     }
+    targetScale = computeScale();
     const delta = target - current;
     const deltaScale = targetScale - currentScale;
-    if (
-      Math.abs(delta) < 0.08 &&
-      Math.abs(deltaScale) < 0.0008 &&
-      (!arriving || arriveScroll < 0.5 || userTookScroll)
-    ) {
+    if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
       current = target;
       currentScale = targetScale;
       apply();
@@ -256,7 +246,6 @@
     applyScrollCarry();
     root.classList.remove("is-nav-carry");
   };
-
   const markHandoff = () => {
     persistParallax();
     persistScroll(readScrollY());
@@ -314,7 +303,6 @@
   window.addEventListener(
     "touchstart",
     (event) => {
-      cancelScrollSettle();
       const touch = event.touches[0];
       if (!touch) {
         return;
@@ -352,26 +340,37 @@
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
 
-  window.addEventListener("wheel", cancelScrollSettle, { passive: true });
+  window.addEventListener("scroll", kick, { passive: true });
+  window.addEventListener(
+    "wheel",
+    () => {
+      if (arriving) {
+        cancelScrollSettle();
+      }
+      kick();
+    },
+    { passive: true },
+  );
   window.addEventListener(
     "keydown",
     (event) => {
       if (
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown" ||
-        event.key === "PageUp" ||
-        event.key === "PageDown" ||
-        event.key === "Home" ||
-        event.key === "End" ||
-        event.key === " "
+        arriving &&
+        (event.key === "PageDown" ||
+          event.key === "PageUp" ||
+          event.key === "ArrowDown" ||
+          event.key === "ArrowUp" ||
+          event.key === "Home" ||
+          event.key === "End" ||
+          event.key === " " ||
+          event.key === "Spacebar")
       ) {
         cancelScrollSettle();
       }
+      kick();
     },
-    { passive: true },
+    true,
   );
-
-  window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener("resize", kick, { passive: true });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
