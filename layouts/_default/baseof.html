@@ -15,18 +15,13 @@
       /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
       try {
         var root = document.documentElement;
-        var duneParallaxEarly = sessionStorage.getItem("dune-bg-parallax");
-        var duneScrollEarly = sessionStorage.getItem("dune-bg-scroll");
         var handoff = sessionStorage.getItem("dune-bg-handoff") === "1";
-        if (
-          handoff ||
-          (duneScrollEarly != null && Math.abs(parseFloat(duneScrollEarly) || 0) > 0.5) ||
-          (duneParallaxEarly != null && Math.abs(parseFloat(duneParallaxEarly) || 0) > 0.5)
-        ) {
+        if (handoff) {
           root.classList.add("is-nav-carry");
         }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           root.style.setProperty("--bg-parallax", "0px");
+          root.style.setProperty("--bg-scale", "1");
           root.style.setProperty("--nav-scroll-y", "0px");
         } else {
           var duneParallax = sessionStorage.getItem("dune-bg-parallax");
@@ -36,12 +31,21 @@
               (parseFloat(duneParallax) || 0).toFixed(2) + "px",
             );
           }
-          var duneScroll = sessionStorage.getItem("dune-bg-scroll");
-          if (duneScroll != null) {
-            root.style.setProperty(
-              "--nav-scroll-y",
-              (parseFloat(duneScroll) || 0).toFixed(2) + "px",
-            );
+          var duneScale = sessionStorage.getItem("dune-bg-scale");
+          if (duneScale != null) {
+            var parsedScale = parseFloat(duneScale);
+            if (!isNaN(parsedScale) && parsedScale > 0) {
+              root.style.setProperty("--bg-scale", parsedScale.toFixed(4));
+            }
+          }
+          if (handoff) {
+            var duneScroll = sessionStorage.getItem("dune-bg-scroll");
+            if (duneScroll != null) {
+              root.style.setProperty(
+                "--nav-scroll-y",
+                (parseFloat(duneScroll) || 0).toFixed(2) + "px",
+              );
+            }
           }
         }
       } catch (e) {
