@@ -692,9 +692,14 @@ html.theme--dark .post__content a:hover {
 
 .post__content pre,
 .post__content .chroma {
+  /* Solarized Dark tokens; site canvas stays --code-bg, not Chroma's #002b36. */
   background-color: var(--code-bg) !important;
   border: 1px solid var(--line);
   border-radius: 2px;
+}
+
+.post__content .chroma .bg {
+  background-color: var(--code-bg) !important;
 }
 
 .post__content ul li::marker,
@@ -1148,8 +1153,8 @@ html.is-nav-carry .series-grid .medium-zoom-image {
   .page-body,
   html.is-nav-carry .page-body,
   html.is-nav-carry.is-nav-arrive .page-body,
-  .page-body.is-page-leave {
-    opacity: 1;
+  .page-body.is-page-leave,
+  .header {
     transition: none;
   }
 
@@ -1237,6 +1242,14 @@ html.is-nav-carry .series-grid .medium-zoom-image {
     padding-right: env(safe-area-inset-right, 0px);
     background-color: rgba(0, 0, 0, 0.36) !important;
     border-bottom: none;
+    /* Hide without layout jump: only visible at scroll top. */
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  html.is-portrait-nav-away .header {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .header::before {

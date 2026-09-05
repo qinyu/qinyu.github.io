@@ -12,3 +12,9 @@ mainSections:
 defaultContentLanguage: zh-cn
 ignoreFiles:
   - content/temp/
+markup:
+  highlight:
+    style: solarized-dark
+    noClasses: false
+    codeFences: true
+    guessSyntax: true

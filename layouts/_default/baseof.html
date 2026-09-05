@@ -21,6 +21,12 @@
             root.classList.add("is-nav-arrive");
           }, 800);
         }
+        if (
+          (window.scrollY || 0) > 8 &&
+          window.matchMedia("(max-width: 960px)").matches
+        ) {
+          root.classList.add("is-portrait-nav-away");
+        }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           root.style.setProperty("--bg-parallax", "0px");
           root.style.setProperty("--bg-scale", "1");

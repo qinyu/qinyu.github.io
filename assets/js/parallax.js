@@ -235,6 +235,22 @@
     }
   };
 
+  const portraitNav = window.matchMedia("(max-width: 960px)");
+  const portraitNavSlop = 8;
+
+  const syncPortraitNav = () => {
+    if (!portraitNav.matches) {
+      root.classList.remove("is-portrait-nav-away");
+      return;
+    }
+    const y = window.scrollY || root.scrollTop || 0;
+    if (y > portraitNavSlop) {
+      root.classList.add("is-portrait-nav-away");
+    } else {
+      root.classList.remove("is-portrait-nav-away");
+    }
+  };
+
   const navRoot = () => document.querySelector(".header .nav");
 
   const activeNavLink = () =>
@@ -436,16 +452,31 @@
     { passive: true },
   );
 
-  window.addEventListener("scroll", kick, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      syncPortraitNav();
+      kick();
+    },
+    { passive: true },
+  );
   // Layout resize (rotate / desktop window) only. Do not subscribe to
   // visualViewport — Chrome URL-bar collapse fires those and would
   // re-kick scale against a changing visual height.
-  window.addEventListener("resize", kick, { passive: true });
+  window.addEventListener(
+    "resize",
+    () => {
+      syncPortraitNav();
+      kick();
+    },
+    { passive: true },
+  );
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       arriving = false;
       holdFirstFrame = false;
     }
+    syncPortraitNav();
     kick();
   });
   if (typeof reduce.addEventListener === "function") {
@@ -463,4 +494,5 @@
     kick();
   }
   initNavMotion();
+  syncPortraitNav();
 })();
