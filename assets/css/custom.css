@@ -136,7 +136,7 @@ html,
   box wider than the viewport shaved the left of the disk and
   jammed the planet against the right edge.
 */
-@media (orientation: portrait) {
+@media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
   }
@@ -1022,6 +1022,14 @@ html.theme--dark .post a.series-grid__item:active {
 .bookshelf__item,
 .series-grid__item {
   -webkit-tap-highlight-color: transparent;
+}
+
+.series-grid__item::before,
+.series-grid__item::after,
+.bookshelf__item::before,
+.bookshelf__item::after {
+  content: none;
+  background: none !important;
 }
 
 .bookshelf__item:hover,
