@@ -11,8 +11,10 @@
   --sand-rgb: 196, 148, 90;
   --muted: #8a8478;
   --muted-dim: #5c574f;
-  /* Dark ochre rule (kept from #32), not neutral gray. */
-  --line: #3d2a14;
+  /* Mid ochre rule: one token for post dividers and the landscape
+     sidebar/content rule. Brighter than #3d2a14 so it reads on both
+     the dark veil and the yellow Mars plate; not full --sand. */
+  --line: #8a6430;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
