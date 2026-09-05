@@ -1,6 +1,6 @@
 <div class="series-grid">
   {{ range hugo.Data.series }}
-    <a class="series-grid__item" href="{{ .url }}">
+    <a class="series-grid__item" href="{{ .url }}" draggable="false">
       <span class="series-grid__cover">
         <img src="{{ .cover }}" alt="{{ .title }}" />
       </span>

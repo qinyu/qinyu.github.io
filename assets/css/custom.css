@@ -14,7 +14,11 @@
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
-  --bg-image: url("/images/bg/dune-bg-composed.jpg");
+  /* Tall source poster: always paint the full width; never crop left/right. */
+  --bg-image: url("/images/bg/dune-poster.jpg");
+  --bg-size: 100% auto;
+  /* Figure sits ~86% down the poster; desktop rest parks it under the avatar. */
+  --bg-pos: 50% bottom 28vh;
 }
 
 html,
@@ -45,8 +49,8 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 6% 55%;
+  background-size: var(--bg-size);
+  background-position: var(--bg-pos);
   min-height: 100%;
   min-height: 100dvh;
   max-width: 100%;
@@ -73,8 +77,9 @@ html,
 }
 
 /*
-  Width fills the viewport. Height is +20% above and +20% below (140% tall)
-  so a ≤10% vertical parallax travel never shows void.
+  Full source width (100% auto — no left/right crop). Height is +20% / 140%
+  so a ≤10% vertical parallax travel never shows void. Vertical position
+  keeps the figure band under the sidebar avatar at rest.
 */
 .site-bg__poster {
   position: absolute;
@@ -88,8 +93,8 @@ html,
   background-image: var(--bg-image);
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-size: cover;
-  background-position: 6% 55%;
+  background-size: var(--bg-size);
+  background-position: var(--bg-pos);
   transform: translate3d(0, var(--bg-parallax, 0px), 0);
   will-change: transform;
 }
@@ -177,6 +182,11 @@ html,
 }
 
 @media screen and (min-width: 961px) {
+  :root {
+    /* Sidebar column: keep the walker under the avatar, not under the footer. */
+    --bg-pos: 50% bottom 36vh;
+  }
+
   .wrapper {
     justify-content: flex-start;
   }
@@ -588,6 +598,8 @@ html.theme--dark .post__content a:hover {
   overflow: visible;
   min-width: 0;
   max-width: 100%;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .series-grid__item {
@@ -693,6 +705,8 @@ html.theme--dark .post__content a:hover {
   min-width: 0;
   object-fit: contain;
   pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
   transform: none;
   transform-origin: center center;
   transition: transform 0.22s ease;
@@ -703,16 +717,16 @@ html.theme--dark .post__content a:hover {
   filter: none;
 }
 
-.bookshelf__item:hover .bookshelf__cover img,
-.bookshelf__item:focus .bookshelf__cover img,
-.bookshelf__item:focus-within .bookshelf__cover img,
+/* Scale only on real hover / keyboard — touch :active was leaving a ghost. */
+@media (hover: hover) and (pointer: fine) {
+  .bookshelf__item:hover .bookshelf__cover img,
+  .series-grid__item:hover .series-grid__cover img {
+    transform: scale(1.07);
+  }
+}
+
 .bookshelf__item:focus-visible .bookshelf__cover img,
-.bookshelf__item:active .bookshelf__cover img,
-.series-grid__item:hover .series-grid__cover img,
-.series-grid__item:focus .series-grid__cover img,
-.series-grid__item:focus-within .series-grid__cover img,
-.series-grid__item:focus-visible .series-grid__cover img,
-.series-grid__item:active .series-grid__cover img {
+.series-grid__item:focus-visible .series-grid__cover img {
   transform: scale(1.07);
 }
 
@@ -782,15 +796,19 @@ html.is-nav-carry .animated {
 
 @media screen and (max-width: 960px) {
   html,
+  .html,
+  .site-bg__poster {
+    /* Stacked avatar: keep full poster width; sit the figure band under it. */
+    --bg-pos: 50% 18vh;
+    background-size: var(--bg-size);
+    background-position: var(--bg-pos);
+  }
+
+  html,
   .html {
     background-image:
       linear-gradient(rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)),
       var(--bg-image);
-    background-position: 4% 58%;
-  }
-
-  .site-bg__poster {
-    background-position: 4% 58%;
   }
 
   /* Portrait veil: even wash, bleed past the viewport so overscroll stays covered. */

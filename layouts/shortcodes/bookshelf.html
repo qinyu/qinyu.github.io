@@ -1,6 +1,6 @@
 <div class="bookshelf">
   {{ range hugo.Data.books }}
-    <a class="bookshelf__item" href="{{ .url }}" rel="noopener noreferrer" target="_blank">
+    <a class="bookshelf__item" href="{{ .url }}" rel="noopener noreferrer" target="_blank" draggable="false">
       <span class="bookshelf__cover">
         <img src="{{ .cover }}" alt="{{ .title }}" />
       </span>
