@@ -1,5 +1,12 @@
 /* Site overlay on Anatole. Do not edit themes/anatole. */
 
+:root {
+  --ink: #262626;
+  --sand: #c4a574;
+  --sand-deep: #b8956a;
+  --parchment: #f7f1e8;
+}
+
 .post__content img {
   margin-left: 0;
   margin-right: auto;
@@ -14,7 +21,27 @@
 
 /* Light-mode body: near-black (neutral 800). Dark mode unchanged. */
 .theme--light .post__content {
-  color: #262626;
+  color: var(--ink);
+}
+
+/* Warm sand-ochre accents; do not retint the whole page. */
+.theme--light .post__content a {
+  color: var(--sand-deep);
+}
+
+.theme--light .post__content a:hover {
+  color: var(--sand);
+}
+
+.theme--light .sidebar__introduction-title a:hover,
+.theme--light .sidebar__list-item a:hover {
+  color: var(--sand-deep);
+}
+
+@media screen and (min-width: 961px) {
+  .theme--light .nav__link--active {
+    border-bottom-color: var(--sand-deep);
+  }
 }
 
 .bookshelf {
@@ -31,10 +58,16 @@
   align-items: center;
   text-align: center;
   text-decoration: none;
+  padding: 0.6rem 0.4rem;
+  border-radius: 0.4rem;
 }
 
-.post__content a.bookshelf__item,
-.post__content a.bookshelf__item:hover {
+.theme--light .bookshelf__item:hover {
+  background-color: var(--parchment);
+}
+
+.theme--light .post__content a.bookshelf__item,
+.theme--light .post__content a.bookshelf__item:hover {
   color: inherit;
 }
 
@@ -45,6 +78,11 @@
   box-sizing: border-box;
   width: 100%;
   height: 22rem;
+  border: 1px solid transparent;
+}
+
+.bookshelf__item:hover .bookshelf__cover {
+  border-color: var(--sand);
 }
 
 .post__content .bookshelf__cover img {
@@ -67,7 +105,7 @@
   font-size: 1.3rem;
   font-weight: 400;
   line-height: 1.4;
-  color: #6b7280;
+  color: #7a6a58;
 }
 
 @media screen and (max-width: 960px) {
