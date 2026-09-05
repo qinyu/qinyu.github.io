@@ -1,5 +1,12 @@
 {{ define "main" }}
-  {{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
+  {{ $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+  {{ $homePosts := slice }}
+  {{ range $posts }}
+    {{ if not (strings.Contains .RelPermalink "/architecture-chronicles/") }}
+      {{ $homePosts = $homePosts | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $paginator := .Paginate $homePosts }}
   {{ range $paginator.Pages }}
     <div
       class="post post-entry {{ with .Site.Params.doNotLoadAnimations }}

@@ -1,25 +1,21 @@
 main:
-  - name: 主页
+  - name: 最近更新
     weight: 100
     identifier: home
     url: /
-  - name: 文章
-    weight: 200
-    identifier: posts
-    url: /post/
-  - name: 标签
-    weight: 225
-    identifier: tags
-    url: /tags/
-  - name: 出版物
-    weight: 250
-    identifier: books
-    url: /books/
   - name: 翻译系列
-    weight: 300
+    weight: 200
     identifier: translations
     url: /translations/
-  - name: 关于
+  - name: 出版物
+    weight: 300
+    identifier: books
+    url: /books/
+  - name: 归档
     weight: 400
+    identifier: posts
+    url: /post/
+  - name: 关于
+    weight: 500
     identifier: about
     url: /about/
