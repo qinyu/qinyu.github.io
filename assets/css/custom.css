@@ -88,6 +88,21 @@ html,
   will-change: transform;
 }
 
+/*
+  Landscape only: extra poster + layer bleed so Chrome's collapsing URL bar
+  cannot flash void. Portrait stays at 20% / 140%. Travel is still ≤10vh.
+*/
+@media (orientation: landscape) {
+  .site-bg {
+    inset: -16vh 0;
+  }
+
+  .site-bg__poster {
+    top: -32%;
+    height: 164%;
+  }
+}
+
 .site-bg__veil {
   display: block;
   position: fixed;
@@ -766,7 +781,7 @@ html.is-nav-carry .animated {
     padding-top: env(safe-area-inset-top, 0px);
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
-    background-color: transparent !important;
+    background-color: rgba(0, 0, 0, 0.36) !important;
     border-bottom: none;
   }
 
@@ -839,12 +854,13 @@ html.is-nav-carry .animated {
   }
 
   .bookshelf {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1.2rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.4rem 0.55rem;
   }
 
   .series-grid {
-    grid-template-columns: 1fr;
-    row-gap: 28px;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 12px;
+    row-gap: 24px;
   }
 }
