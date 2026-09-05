@@ -1457,3 +1457,33 @@ html.is-nav-carry .wrapper__main {
     bottom: -56%;
   }
 }
+
+/*
+  Landscape nav: Mars shows through. Beats theme accent and the
+  max-width 960 scrim (that block is width-based, so it also hits
+  phone landscape). Portrait rules above stay as-is.
+*/
+@media (orientation: landscape) {
+  .header,
+  html .header,
+  html.theme--dark .header,
+  html.theme--light .header {
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none;
+  }
+
+  .header::before,
+  html .header::before {
+    content: none;
+    display: none;
+    background: none !important;
+  }
+
+  .nav,
+  .nav__list,
+  html .nav__list {
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+}
