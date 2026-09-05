@@ -11,6 +11,17 @@
 >
   {{- partial "head.html" . -}}
   <body class="body">
+    <script>
+      try {
+        var duneParallax = sessionStorage.getItem("dune-bg-parallax");
+        if (duneParallax != null) {
+          document.documentElement.style.setProperty(
+            "--bg-parallax",
+            (parseFloat(duneParallax) || 0).toFixed(2) + "px",
+          );
+        }
+      } catch (e) {}
+    </script>
     <div class="site-bg" aria-hidden="true">
       <div class="site-bg__poster"></div>
     </div>
