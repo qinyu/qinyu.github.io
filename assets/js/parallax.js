@@ -1,11 +1,14 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // CSS layer is already 115% (15% overflow buffer). That buffer is for
-  // rubber-band / overscroll — do not consume it with scroll zoom.
-  // Intentional zoom-in toward center uses ~8% (1.00–1.08), leftover ~7%+
-  // for bounce. Translate stays ≤6vh so it fits inside remaining overflow
-  // after that zoom. Do not peak at 1.15 on a 115% layer.
+  // Merged main: landscape layer 115%, --bg-scale 1.00–1.08.
+  // At scroll top, scale is the MIN (1.00), not max zoom-in.
+  // 115% × 1.00 still has ~15% overflow on paper — but bounce only
+  // drove translateY and clamped scale to 1.00, so the finger felt
+  // Y-only (easy to read as a "zoom-in limit").
+  // Now: rest width ~122%, intentional zoom 1.00–1.06 (peak ≈ 129%
+  // wide). Top overscroll eases scale UP a little (1.00 → ~1.035)
+  // so horizontal framing follows the pull. Never clamp to flush cover.
   const maxTravel = 0.06;
   const ease = 0.16;
   const arriveEase = 0.08;
@@ -14,7 +17,8 @@
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
   const baseScale = 1;
-  const peakScale = 1.08;
+  const peakScale = 1.06;
+  const bounceScaleIn = 0.035;
 
   let current = 0;
   let target = 0;
@@ -22,7 +26,8 @@
   let targetScale = baseScale;
   let running = false;
   let touchStartY = 0;
-  let touchPull = 0;
+  let touchPullTop = 0;
+  let touchPullBottom = 0;
   let touching = false;
   // After an in-site nav: keep the outgoing visual, ease to the new page's Y.
   let arriving = false;
@@ -33,14 +38,25 @@
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
-  const readScrollY = () => {
+  // Layout viewport only. window.innerHeight / visualViewport.height
+  // thrash when Chrome's URL bar collapses and would pop --bg-scale.
+  const layoutHeight = () => root.clientHeight || window.innerHeight || 1;
+
+  const readScrollY = () => window.scrollY || root.scrollTop || 0;
+
+  const maxScrollY = () => Math.max(0, root.scrollHeight - layoutHeight());
+
+  const topOverscrollPx = () => {
     const y = window.scrollY || root.scrollTop || 0;
-    const vv = window.visualViewport;
-    if (y <= 0 && vv && vv.offsetTop) {
-      return y + vv.offsetTop;
-    }
-    return y;
+    return Math.max(y < 0 ? -y : 0, touchPullTop);
   };
+
+  const bottomOverscrollPx = () => {
+    const y = window.scrollY || root.scrollTop || 0;
+    return Math.max(y > maxScrollY() ? y - maxScrollY() : 0, touchPullBottom);
+  };
+
+  const bounceT = (pull) => clamp(pull / (layoutHeight() * 0.18), 0, 1);
 
   const scaleFromProgress = (progress) => {
     // Zoom-in from rest (top = base) toward center; never returns to 1.00
@@ -124,8 +140,7 @@
 
   const pageProgress = () => {
     const y = readScrollY();
-    const vh = window.innerHeight || 1;
-    const maxScroll = Math.max(1, root.scrollHeight - vh);
+    const maxScroll = Math.max(1, maxScrollY());
     return clamp(y / maxScroll, 0, 1);
   };
 
@@ -133,12 +148,10 @@
     if (reduce.matches) {
       return 0;
     }
-    const y = readScrollY();
-    const vh = window.innerHeight || 1;
-    const maxPx = vh * maxTravel;
-    const pull = Math.max(y < 0 ? -y : 0, touchPull);
-    if (pull > 0) {
-      return clamp(pull * 0.22, 0, maxPx);
+    const maxPx = layoutHeight() * maxTravel;
+    const top = topOverscrollPx();
+    if (top > 0) {
+      return clamp(top * 0.22, 0, maxPx);
     }
     const progress = pageProgress();
     return clamp(-progress * maxPx, -maxPx, maxPx);
@@ -148,16 +161,20 @@
     if (reduce.matches) {
       return baseScale;
     }
-    const y = readScrollY();
-    const pull = Math.max(y < 0 ? -y : 0, touchPull);
-    if (pull > 0) {
-      return baseScale;
+    const top = topOverscrollPx();
+    if (top > 0) {
+      // Was Y-only (clamped to 1.00). Zoom-in with reserved width.
+      return baseScale + bounceScaleIn * bounceT(top);
+    }
+    const bottom = bottomOverscrollPx();
+    if (bottom > 0) {
+      return peakScale - bounceScaleIn * bounceT(bottom);
     }
     return scaleFromProgress(pageProgress());
   };
 
   const apply = () => {
-    const maxPx = (window.innerHeight || 1) * maxTravel;
+    const maxPx = layoutHeight() * maxTravel;
     current = clamp(current, -maxPx, maxPx);
     currentScale = clamp(currentScale, baseScale, peakScale);
     root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
@@ -177,6 +194,9 @@
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "auto";
     }
+    window.setTimeout(() => {
+      root.classList.remove("is-nav-carry");
+    }, 400);
   };
 
   const snapRest = () => {
@@ -317,7 +337,8 @@
       }
       touching = true;
       touchStartY = touch.clientY;
-      touchPull = 0;
+      touchPullTop = 0;
+      touchPullBottom = 0;
     },
     { passive: true },
   );
@@ -330,11 +351,19 @@
         return;
       }
       const dy = touch.clientY - touchStartY;
-      if (readScrollY() <= 0 && dy > 0) {
-        touchPull = dy;
+      const y = window.scrollY || root.scrollTop || 0;
+      const max = maxScrollY();
+      if (y <= 0 && dy > 0) {
+        touchPullTop = dy;
+        touchPullBottom = 0;
+        kick();
+      } else if (y >= max - 1 && dy < 0) {
+        touchPullBottom = -dy;
+        touchPullTop = 0;
         kick();
       } else {
-        touchPull = 0;
+        touchPullTop = 0;
+        touchPullBottom = 0;
       }
     },
     { passive: true },
@@ -342,7 +371,8 @@
 
   const endTouch = () => {
     touching = false;
-    touchPull = 0;
+    touchPullTop = 0;
+    touchPullBottom = 0;
     kick();
   };
   window.addEventListener("touchend", endTouch, { passive: true });
@@ -379,6 +409,9 @@
     },
     true,
   );
+  // Layout resize (rotate / desktop window) only. Do not subscribe to
+  // visualViewport — Chrome URL-bar collapse fires those and would
+  // re-kick scale against a changing visual height.
   window.addEventListener("resize", kick, { passive: true });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
@@ -394,10 +427,6 @@
     }
     kick();
   });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("scroll", kick, { passive: true });
-    window.visualViewport.addEventListener("resize", kick, { passive: true });
-  }
   if (typeof reduce.addEventListener === "function") {
     reduce.addEventListener("change", kick);
   } else if (typeof reduce.addListener === "function") {
