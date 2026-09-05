@@ -20,17 +20,18 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    The plate fills the photo’s full height — any size over 100vh
-    crops the top/bottom limbs. Rest at 86vh so the complete disk
-    (including the lower half-circle) stays in view; ~7vh void
-    above/below absorbs bounce instead of a 120% crop that still
-    clipped the limb. Width follows 16:9; pin left so cosmos
-    opens on the right and the planet reads smaller than a
-    height-cover zoom. Portrait uses the same 86vh contain, left-
-    anchored, 9:16 box. Scroll zoom stays 1.00–1.024.
+    The photo’s disk fills its frame height — scale >100vh clips
+    both limbs and the yellow face reads as full-screen. Landscape
+    rest is 64vh contain, left-pinned: upper and lower half-circles
+    sit inside the viewport; ~18vh void above/below is bounce
+    headroom (the file has no vertical cosmos). Width follows 16:9
+    so the disk stays left and the right-hand black is a wide
+    strip, not a sliver. Portrait: same contain idea at 72vh.
+    Scroll zoom stays 1.00–1.024.
   */
+  --mars-h: 64vh;
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
-  --bg-size: auto 86vh;
+  --bg-size: auto var(--mars-h);
   --bg-pos: left center;
   --bg-scale: 1;
 }
@@ -63,8 +64,8 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  /* Same complete-plate fallback as the poster (86vh, left). */
-  background-size: auto 86vh;
+  /* Same complete-plate fallback as the poster. */
+  background-size: auto var(--mars-h);
   background-position: left center;
   min-height: 100%;
   min-height: 100dvh;
@@ -96,19 +97,19 @@ html,
 }
 
 /*
-  Landscape: contain the full 16:9 plate at 86vh, pinned left.
-  Do not use cover / min-height 120% — those crop the lower limb
-  and 6vh scroll travel cannot reveal it. Void around the plate
-  covers bounce. Scroll scale 1.00–1.024.
+  Landscape: full 16:9 plate at --mars-h (64vh), pinned left.
+  Both limbs stay in view; void around the plate covers bounce.
+  Do not use cover / min-height 120% / 86vh-near-full-bleed —
+  those make the disk fill the screen and clip the circle.
 */
 .site-bg__poster {
   position: absolute;
   left: 0;
   top: 50%;
-  width: calc(86vh * 16 / 9);
+  width: calc(var(--mars-h) * 16 / 9);
   min-width: 0;
   max-width: none;
-  height: 86vh;
+  height: var(--mars-h);
   min-height: 0;
   aspect-ratio: 16 / 9;
   pointer-events: none;
@@ -125,26 +126,27 @@ html,
 }
 
 /*
-  Portrait: same complete-plate contain (86vh), 9:16 box, left
-  pin. cover + 120% height clipped the disk the same way.
+  Portrait: same contain + left pin; 72vh so the full disk stays
+  readable without matching landscape’s tighter 64vh.
 */
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
-    --bg-size: auto 86vh;
+    --mars-h: 72vh;
+    --bg-size: auto var(--mars-h);
   }
 
   html,
   .html {
-    background-size: auto 86vh;
+    background-size: auto var(--mars-h);
     background-position: left center;
   }
 
   .site-bg__poster {
-    width: calc(86vh * 9 / 16);
+    width: calc(var(--mars-h) * 9 / 16);
     min-width: 0;
     max-width: none;
-    height: 86vh;
+    height: var(--mars-h);
     aspect-ratio: 9 / 16;
     left: 0;
     top: 50%;
@@ -1300,7 +1302,7 @@ html.is-nav-carry .wrapper__main {
 
 @media screen and (max-width: 960px) {
   .site-bg__poster {
-    /* Narrow screens keep the 86vh contain + left limb. */
+    /* Narrow screens keep contain + left limb (--mars-h). */
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
   }
