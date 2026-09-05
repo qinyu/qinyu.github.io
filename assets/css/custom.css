@@ -196,12 +196,17 @@ html.theme--light .sidebar__list-item a {
   color: #ddd8ce;
 }
 
-.footer,
-.footer a,
-.footer__item,
-.footer__sidebar,
-.footer__base {
-  color: #fff;
+html .footer,
+html .footer a,
+html .footer__item,
+html .sidebar .footer,
+html .sidebar .footer__item,
+html .footer.footer__sidebar,
+html .footer.footer__base,
+html .footer.footer__sidebar .footer__item,
+html .footer.footer__base .footer__item {
+  color: #fff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .nav__list-item {
