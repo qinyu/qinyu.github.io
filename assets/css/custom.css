@@ -590,10 +590,12 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item:hover .bookshelf__cover img,
 .bookshelf__item:focus .bookshelf__cover img,
+.bookshelf__item:focus-within .bookshelf__cover img,
 .bookshelf__item:focus-visible .bookshelf__cover img,
 .bookshelf__item:active .bookshelf__cover img,
 .series-grid__item:hover .series-grid__cover img,
 .series-grid__item:focus .series-grid__cover img,
+.series-grid__item:focus-within .series-grid__cover img,
 .series-grid__item:focus-visible .series-grid__cover img,
 .series-grid__item:active .series-grid__cover img {
   transform: scale(1.07);
@@ -601,6 +603,7 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf__item:hover::before,
 .bookshelf__item:focus::before,
+.bookshelf__item:focus-within::before,
 .bookshelf__item:focus-visible::before,
 .bookshelf__item:active::before {
   opacity: 1;
