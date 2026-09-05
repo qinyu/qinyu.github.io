@@ -20,25 +20,19 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    20% zoom-out is an overflow buffer for rubber-band / overscroll —
-    not a zoom budget to fully consume. Landscape: layer ≈ 120% of
-    the viewport in both axes (zoom-out by width; min-height 120%
-    so 4:3 iPad landscape still has top/bottom headroom — 120% of
-    a 16:9 width is shorter than a 4:3 viewport, so width-only
-    overflow left the image flush and flashed a hard limb edge).
-    Portrait: layer height ≈ 120% of the viewport (zoom-out by
-    height), width grows as needed to cover; pin the image left
-    so the limb stays visible (do not center-crop it away).
-    Scroll zoom-in uses a small slice of that 20% (JS --bg-scale
-    1.00–1.024, not the pre-#32 1.08). Leftover overflow absorbs
-    bounce. Never rest at exact cover (100% layer).
-    Rest layer size is 120% of a viewport-sized .site-bg (inset:0
-    in both orientations). Portrait pins the plate left so the
-    disk is not center-cropped toward the right. Do not size the
-    poster as 120% of an lvh-bloated site-bg.
+    Landscape sizes the 16:9 plate by HEIGHT (auto 120vh) and pins
+    it left — not cover-on-a-centered-120%-box, which cropped the
+    limb and zoomed into the face. Image height 120vh keeps top
+    and bottom bounce inside the photo; width follows 16:9 so the
+    lit disk reads smaller and more of the right-hand cosmos stays
+    in frame. On viewports wider than 120vh×16/9 the plate does
+    not span the screen; black void opens on the right.
+    Portrait: 120% by height, cover, left-anchored.
+    Scroll zoom stays 1.00–1.024. Never rest at exact cover.
+    Do not size the poster as 120% of an lvh-bloated site-bg.
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
-  --bg-size: cover;
+  --bg-size: auto 120vh;
   --bg-pos: left center;
   --bg-scale: 1;
 }
@@ -106,19 +100,19 @@ html,
 }
 
 /*
-  Landscape rest: 20% zoom-out (layer ≈ 120% of a viewport-sized
-  site-bg). Width 120%; min-height 120% so 4:3 landscape keeps
-  top/bottom bounce inside the image (16:9-at-120%-width is still
-  shorter than the viewport). Layer is centered so leftover
-  overflow sits on both ends; the image stays left-anchored.
+  Landscape rest: 16:9 plate at auto 120vh, pinned left.
+  Width is 120vh×16/9 (min 120%) so cover cannot inflate the
+  disk past that height. Limb stays on the left; cosmos opens
+  to the right — and past the plate on wide viewports.
   Scroll scale is 1.00–1.024 (kept from #34; not pre-#32 1.08).
 */
 .site-bg__poster {
   position: absolute;
-  left: 50%;
+  left: 0;
   top: 50%;
-  width: 120%;
-  max-width: 120%;
+  width: calc(120vh * 16 / 9);
+  min-width: 120%;
+  max-width: none;
   height: auto;
   min-height: 120%;
   aspect-ratio: 16 / 9;
@@ -129,34 +123,10 @@ html,
   background-attachment: scroll;
   background-size: var(--bg-size);
   background-position: var(--bg-pos);
-  transform-origin: center center;
-  transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
+  transform-origin: left center;
+  transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
     scale(var(--bg-scale, 1));
   will-change: transform;
-}
-
-/*
-  Wide desktop: 120vw of 1440–1920+ makes the left-limb disk read
-  too wide vs iPad landscape. Cap the plate at iPad-Pro-landscape
-  120% (~1366×1.20 ≈ 1640px) and pin left so the limb stays put.
-  Tablet landscape (below 1440) keeps the 120% rest above.
-  min-height 120% still comes from the base rule so the cap does
-  not flush the image to the viewport top/bottom.
-*/
-@media (orientation: landscape) and (min-width: 1440px) {
-  html,
-  .html {
-    background-size: 1640px auto;
-    background-position: left center;
-  }
-
-  .site-bg__poster {
-    width: 1640px;
-    max-width: 1640px;
-    left: 0;
-    transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
-      scale(var(--bg-scale, 1));
-  }
 }
 
 /*
@@ -168,6 +138,7 @@ html,
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
+    --bg-size: cover;
   }
 
   html,
