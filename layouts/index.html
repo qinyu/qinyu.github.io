@@ -21,4 +21,9 @@
       </div>
     </div>
   {{ end }}
+  {{ with site.GetPage "/post" }}
+    <p class="home-more">
+      <a href="{{ .RelPermalink }}">查看文章全集</a>
+    </p>
+  {{ end }}
 {{ end }}
