@@ -1300,7 +1300,7 @@ html.is-nav-carry .wrapper__main {
 
 @media screen and (max-width: 960px) {
   .site-bg__poster {
-    /* Narrow screens keep cover + left limb; do not revert to 100% auto. */
+    /* Narrow screens keep the 86vh contain + left limb. */
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
   }
