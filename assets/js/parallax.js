@@ -269,9 +269,7 @@
   const cancelScrollSettle = () => {
     userTookScroll = true;
     arriveScroll = 0;
-    navScrollY = 0;
-    applyScrollCarry();
-    root.classList.remove("is-nav-carry");
+    finishArrive();
   };
   const markHandoff = () => {
     persistParallax();
