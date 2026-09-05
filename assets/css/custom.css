@@ -14,11 +14,23 @@
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
-  /* Full source width. Walker is painted at 48% of the composed canvas
-     so the same % on the 164% landscape poster box lands under the avatar. */
-  --bg-image: url("/images/bg/dune-bg-composed.jpg");
+  /*
+    Source poster is 1229×1600 (walker ≈34% x, 84.45% y).
+    Size is cover-width: 100% of source width → 100% of the layer width.
+    Never use `cover` (that crops left/right on tall viewports).
+    Y is a length so the walker % of the image can sit at a different % of the box.
+  */
+  --bg-image: url("/images/bg/dune-poster.jpg");
   --bg-size: 100% auto;
-  --bg-pos: 50% 48%;
+  --poster-ratio: 1.30187144; /* 1600 / 1229 */
+  --figure-y: 0.84445;
+  --bg-box-top: -20vh;
+  --bg-figure-view: 36vh;
+  --bg-figure-in-box: calc(var(--bg-figure-view) - var(--bg-box-top));
+  --bg-pos-y: calc(
+    var(--bg-figure-in-box) - var(--figure-y) * var(--poster-ratio) * 100vw
+  );
+  --bg-pos: 50% var(--bg-pos-y);
 }
 
 html,
@@ -78,8 +90,8 @@ html,
 
 /*
   Full source width (100% auto — no left/right crop). Height is +20% / 140%
-  so a ≤10% vertical parallax travel never shows void. Vertical position
-  keeps the figure band under the sidebar avatar at rest.
+  so a ≤10% vertical parallax travel never shows void. --bg-pos-y pins the
+  walker under the stacked avatar; landscape overrides the box offset.
 */
 .site-bg__poster {
   position: absolute;
@@ -104,6 +116,11 @@ html,
   cannot flash void. Portrait stays at 20% / 140%. Travel is still ≤10vh.
 */
 @media (orientation: landscape) {
+  :root {
+    --bg-box-top: -32vh;
+    --bg-figure-view: 47vh;
+  }
+
   .site-bg {
     inset: -16vh 0;
   }
@@ -182,11 +199,6 @@ html,
 }
 
 @media screen and (min-width: 961px) {
-  :root {
-    /* Same 48%: landscape bleed is already baked into the composed figure %. */
-    --bg-pos: 50% 48%;
-  }
-
   .wrapper {
     justify-content: flex-start;
   }
@@ -824,10 +836,9 @@ html.is-nav-carry .animated {
   html,
   .html,
   .site-bg__poster {
-    /* Same rule as landscape: full source width, never crop left/right. */
+    /* Same cover-width rule as landscape: never crop the poster’s left/right. */
     --bg-size: 100% auto;
-    --bg-pos: 50% 36%;
-    background-size: var(--bg-size);
+    background-size: 100% auto;
     background-position: var(--bg-pos);
   }
 
