@@ -1,10 +1,11 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // CSS contains the complete plate at 64vh landscape / 72vh
-  // portrait. Do not enlarge rest scale enough to clip the limbs.
-  // Scroll zoom is ~3/5 of the 1.04 peak (1.00–1.024).
-  // Top rubber-band still eases a milder scale-in. Translate stays ≤6vh.
+  // CSS layer stays oversized at rest (landscape 115% cover,
+  // portrait ~20% smaller painted disk, still covering). Do not
+  // shrink that rest size below cover. Scroll zoom is ~3/5 of the
+  // 1.04 peak (1.00–1.024). Top rubber-band still eases a milder
+  // scale-in. Translate stays ≤6vh.
   const maxTravel = 0.06;
   const ease = 0.16;
   const arriveEase = 0.08;

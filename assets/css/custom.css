@@ -20,18 +20,20 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    The photo’s disk fills its frame height — scale >100vh clips
-    both limbs and the yellow face reads as full-screen. Landscape
-    rest is 64vh contain, left-pinned: upper and lower half-circles
-    sit inside the viewport; ~18vh void above/below is bounce
-    headroom (the file has no vertical cosmos). Width follows 16:9
-    so the disk stays left and the right-hand black is a wide
-    strip, not a sliver. Portrait: same contain idea at 72vh.
-    Scroll zoom stays 1.00–1.024.
+    15% zoom-out is an overflow buffer for rubber-band / overscroll —
+    not a zoom budget to fully consume. Landscape: layer width ≈ 115%
+    of the viewport (zoom-out by width), height grows as needed to
+    still cover — min-height 115% so 4:3 iPad does not sit the plate
+    edges on the viewport (the file has no vertical cosmos). Portrait:
+    ~20% smaller painted disk than #36 cover-stretch, still fill the
+    viewport, pin left so leftover scale is right-hand cosmos.
+    Scroll zoom-in uses a small slice of the overflow (JS --bg-scale
+    1.00–1.024). Never rest at exact cover or contain/fixed-vh.
+    Rest layer size is of a viewport-sized .site-bg (inset:0).
+    Do not size the poster as 115% of an lvh-bloated site-bg.
   */
-  --mars-h: 64vh;
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
-  --bg-size: auto var(--mars-h);
+  --bg-size: cover;
   --bg-pos: left center;
   --bg-scale: 1;
 }
@@ -64,9 +66,10 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  /* Same complete-plate fallback as the poster. */
-  background-size: auto var(--mars-h);
-  background-position: left center;
+  /* Viewport-sized fallback (not document-tall cover) so overscroll
+     still shows the 15% width buffer instead of a void band. */
+  background-size: 115vw auto;
+  background-position: left top;
   min-height: 100%;
   min-height: 100dvh;
   max-width: 100%;
@@ -97,20 +100,22 @@ html,
 }
 
 /*
-  Landscape: full 16:9 plate at --mars-h (64vh), pinned left.
-  Both limbs stay in view; void around the plate covers bounce.
-  Do not use cover / min-height 120% / 86vh-near-full-bleed —
-  those make the disk fill the screen and clip the circle.
+  Landscape rest (pre-#32 / #36): 15% zoom-out by WIDTH (layer ≈
+  115vw of a viewport-tall site-bg). Height follows 16:9 then grows
+  to still cover. #36 used min-height:100%, which on 4:3 iPad sat the
+  plate’s hard top/bottom edges on the viewport. min-height:115%
+  keeps leftover overflow so bounce stays inside the image.
+  Layer is centered so bounce has leftover overflow; the image
+  stays left-anchored. Scroll scale is 1.00–1.024.
 */
 .site-bg__poster {
   position: absolute;
-  left: 0;
+  left: 50%;
   top: 50%;
-  width: calc(var(--mars-h) * 16 / 9);
-  min-width: 0;
-  max-width: none;
-  height: var(--mars-h);
-  min-height: 0;
+  width: 115%;
+  max-width: 115%;
+  height: auto;
+  min-height: 115%;
   aspect-ratio: 16 / 9;
   pointer-events: none;
   background-color: var(--void);
@@ -119,34 +124,59 @@ html,
   background-attachment: scroll;
   background-size: var(--bg-size);
   background-position: var(--bg-pos);
-  transform-origin: left center;
-  transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
+  transform-origin: center center;
+  transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
     scale(var(--bg-scale, 1));
   will-change: transform;
 }
 
 /*
-  Portrait: same contain + left pin; 72vh so the full disk stays
-  readable without matching landscape’s tighter 64vh.
+  Wide desktop: 115vw of 1440–1920+ makes the left-limb disk read
+  too wide vs iPad landscape. Cap the plate at iPad-Pro-landscape
+  115% (~1366×1.15) and pin left so the limb stays put. Tablet
+  landscape (below 1440) keeps the 115% rest above.
+*/
+@media (orientation: landscape) and (min-width: 1440px) {
+  html,
+  .html {
+    background-size: 1570px auto;
+    background-position: left top;
+  }
+
+  .site-bg__poster {
+    width: 1570px;
+    max-width: 1570px;
+    left: 0;
+    transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
+      scale(var(--bg-scale, 1));
+  }
+}
+
+/*
+  Portrait: layer still covers (min-width 100%, height 115% overflow)
+  — never contain / smaller-than-viewport letterbox. #36 used cover,
+  which on 3:4 iPad width-stretched the 9:16 plate and ate the right
+  cosmos. Paint at auto 92% of that 115% box (~20% smaller disk than
+  #36’s cover-stretch) and pin left so the leftover is right-hand
+  black. The portrait file already has cosmos above/below the disk.
 */
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
-    --mars-h: 72vh;
-    --bg-size: auto var(--mars-h);
+    --bg-size: auto 92%;
   }
 
   html,
   .html {
-    background-size: auto var(--mars-h);
-    background-position: left center;
+    background-size: auto 106vh;
+    background-position: left top;
   }
 
   .site-bg__poster {
-    width: calc(var(--mars-h) * 9 / 16);
-    min-width: 0;
+    width: auto;
+    min-width: 100%;
     max-width: none;
-    height: var(--mars-h);
+    height: 115%;
     aspect-ratio: 9 / 16;
     left: 0;
     top: 50%;
@@ -1337,7 +1367,7 @@ html.is-nav-carry .wrapper__main {
 
 @media screen and (max-width: 960px) {
   .site-bg__poster {
-    /* Narrow screens keep contain + left limb (--mars-h). */
+    /* Narrow screens keep cover + left limb; do not revert to 100% auto. */
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
   }
