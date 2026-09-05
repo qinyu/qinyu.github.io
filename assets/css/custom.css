@@ -15,7 +15,8 @@
      sidebar/content rule. Brighter than #3d2a14 so it reads on both
      the dark veil and the yellow Mars plate; not full --sand. */
   --line: #8a6430;
-  --code-bg: #1a1a1a;
+  /* Solarized Light base3 — light code panel on the dark canvas. */
+  --code-bg: #fdf6e3;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
@@ -127,6 +128,28 @@ html,
   transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
     scale(var(--bg-scale, 1));
   will-change: transform;
+}
+
+/*
+  Wide desktop: 115vw of 1440–1920+ makes the left-limb disk read
+  too wide vs iPad landscape. Cap the plate at iPad-Pro-landscape
+  115% (~1366×1.15) and pin left so the limb stays put. Tablet
+  landscape (below 1440) keeps the 115% rest above.
+*/
+@media (orientation: landscape) and (min-width: 1440px) {
+  html,
+  .html {
+    background-size: 1570px auto;
+    background-position: left top;
+  }
+
+  .site-bg__poster {
+    width: 1570px;
+    max-width: 1570px;
+    left: 0;
+    transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
+      scale(var(--bg-scale, 1));
+  }
 }
 
 /*
@@ -752,14 +775,17 @@ html.theme--dark .post__content a:hover {
 
 .post__content pre,
 .post__content .chroma {
-  /* Solarized Dark tokens; site canvas stays --code-bg, not Chroma's #002b36. */
+  /* Solarized Light panel (#fdf6e3) so Light tokens stay readable
+     on the dark site canvas. Border is Solarized base2. */
   background-color: var(--code-bg) !important;
-  border: 1px solid var(--line);
+  color: #657b83;
+  border: 1px solid #eee8d5;
   border-radius: 2px;
 }
 
 .post__content .chroma .bg {
   background-color: var(--code-bg) !important;
+  color: #657b83;
 }
 
 .post__content ul li::marker,
