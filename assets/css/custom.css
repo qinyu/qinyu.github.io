@@ -21,12 +21,12 @@
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
     Cover + overflow only — never contain / fixed-vh letterbox.
-    Bounce budget (per side, matches parallax.js):
-      rest_overflow ≥ bounce (6%) + peakZoom/2 (1.2%) + safety (2%)
-                    ≥ 9.2%  →  layer ≥ 118.4%
-    --bg-rest is 120% so leftover overflow stays ≥ bounce after
-    the small scroll zoom. JS peakScale is computed from the
-    measured leftover, not hardcoded 1.024.
+    Bounce budget (per side; parallax.js measures the poster):
+      max_scale ≤ 1 + (rest_overflow_frac − bounce 6% − safety 2%)
+      rest_overflow_frac = (layer − viewport) / 2 / viewport
+    --bg-rest 120% ⇒ frac 10% ⇒ max_scale 1.02 on a matching axis.
+    Leftover after bounce+zoom stays ≥ bounce on the tightest axis
+    (4:3 iPad height). Do not hardcode 1.024.
     Landscape: 115% width (#36 composition) + --bg-rest min-height
     so 4:3 iPad does not sit plate edges on the viewport (the file
     has no vertical cosmos). Portrait: same cover fill; ~20% more
