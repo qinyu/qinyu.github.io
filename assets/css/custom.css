@@ -120,7 +120,7 @@ html,
 
 /*
   Landscape: extra site-bg bleed so Chrome's collapsing URL bar cannot
-  flash void. Travel stays inside leftover overflow after the 8% zoom-in.
+  flash void. Travel stays inside leftover overflow after the small zoom-in.
 */
 @media (orientation: landscape) {
   .site-bg {
@@ -130,7 +130,7 @@ html,
 
 /*
   Portrait rest: 15% zoom-out by HEIGHT (layer ≈ 115vh). Width grows as
-  needed to cover.   Keep the Mars limb on the left — do not center-crop
+  needed to cover. Keep the Mars limb on the left — do not center-crop
   the landscape plate. Same 1.00–1.024 scroll zoom-in budget.
 */
 @media (orientation: portrait) {
