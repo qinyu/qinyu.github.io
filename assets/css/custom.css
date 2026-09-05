@@ -444,10 +444,13 @@ html.theme--dark .post__content a:hover {
   color: var(--sand);
 }
 
-/* Theme .post / animation stacking must not clip the book glow. */
-.post,
-.post.animated,
-.post__content {
+/* Only posts containing shelf/grid cards need visible overflow for glow. */
+.post:has(.bookshelf),
+.post:has(.series-grid),
+.post.animated:has(.bookshelf),
+.post.animated:has(.series-grid),
+.post__content:has(.bookshelf),
+.post__content:has(.series-grid) {
   overflow: visible;
 }
 
