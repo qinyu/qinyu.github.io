@@ -17,6 +17,9 @@
         var root = document.documentElement;
         if (sessionStorage.getItem("site-bg-handoff") === "1") {
           root.classList.add("is-nav-carry");
+          window.setTimeout(function () {
+            root.classList.add("is-nav-arrive");
+          }, 800);
         }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           root.style.setProperty("--bg-parallax", "0px");
@@ -63,7 +66,9 @@
         {{ end }}
       >
         <header class="header">{{ partial "navbar.html" . }}</header>
-        {{- block "main" . }}{{- end }}
+        <div class="page-body">
+          {{- block "main" . }}{{- end }}
+        </div>
       </main>
     </div>
 
