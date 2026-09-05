@@ -146,7 +146,7 @@ draft: false
 
 尖叫架构是 Robert C. Martin 的想法，它基本上表明了这样一个观点，架构应该清楚地告诉我们系统是做什么的：即它的主要领域。那么源代码文件夹里出现的第一级目录自然就应该和领域概念有关，即最顶层的限界上下文(例如，患者、医生、预约等)。它们应该和系统使用的工具(例如，Doctrine、MySQL、Symfony、Redis 等)无关，和系统的功能块(例如，资源库、制图、控制器等)无关，和传达机制无关(HTTP、控制台等)。
 
-> 你的架构应该呈现给人的应该是系统，而不是系统使用的框架。如果你构建的是一个医疗保健系统，那么新程序员看到源代码仓库后的第一映像应该是：“哦，这是一个医疗保健系统”。—— Robert C. Martin 2011, [Screaming Architecture](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)
+> 你的架构应该呈现给人的应该是系统，而不是系统使用的框架。如果你构建的是一个医疗保健系统，那么新程序员看到源代码仓库后的第一印象应该是：“哦，这是一个医疗保健系统”。—— Robert C. Martin 2011, [Screaming Architecture](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)
 
 这实际上是一种更简单地理解他十五年前发表的包划分原则的方法，这些原则之前我已经阐述过了。这种分包的风格又叫做“按特性分包”。
 

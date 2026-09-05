@@ -79,7 +79,7 @@ MVC 模式给当时的编程范式注入了一剂强心针。然而，随着应�
 - 数据的变化不会直接触发 View 的更新：它始终要通过 Presenter，由 Presenter 来更新 View。这样在更新视图之前 Controller(Presenter) 还可以执行一些和展现相关的额外逻辑。例如，同时更新另一些数据，它们和数据库中发生变化的数据有关；
 - 每个 View 对应一个 Presenter。
 
-这更接近我所见到的现在的请求/响应范式：**数据流始终要经过 Controller/Presenter**。不过，Presenter 仍然不会主动更新视图，它始终需要执行一次新的请求才能让变化可见，。
+这更接近我所见到的现在的请求/响应范式：**数据流始终要经过 Controller/Presenter**。不过，Presenter 仍然不会主动更新视图，它始终需要执行一次新的请求才能让变化可见。
 
 MVP 中的 Presenter 又被称为 [Supervisor Controller](https://martinfowler.com/eaaDev/SupervisingPresenter.html)。
 
@@ -108,7 +108,7 @@ MVVM 背后的思想是:
 
 {{< figure src="m-v-p-vm1.png" class="medium" >}}
 
-当构建云原生的复杂企业应用时，我倾向于将应用的 UI 结构合理地设计成 M-V-P-VM，这里的 View Model 是 Martin Fowler 在 2004 年提出的 [Presentation Model](https://martinfowler.com/eaaDev/PresentationModel.html),。
+当构建云原生的复杂企业应用时，我倾向于将应用的 UI 结构合理地设计成 M-V-P-VM，这里的 View Model 是 Martin Fowler 在 2004 年提出的 [Presentation Model](https://martinfowler.com/eaaDev/PresentationModel.html)。
 
 - **Model**
 
@@ -118,7 +118,7 @@ MVVM 背后的思想是:
   一个模板，模板引擎用它来生成 HTML；
 - **ViewModel(又叫做 [Presentation Model](https://martinfowler.com/eaaDev/PresentationModel.html))**
 
-  从查询中接收(或者从 Model 实体中提取)原始数据，持有这些会模板会用到的数据。它还要封装复杂的展现逻辑，来简化模板。我发现运用 ViewModel 十分重要，因为我们绝不会想在模板中使用实体。这样我们才能将 View 和 Model 完全隔离开：
+  从查询中接收(或者从 Model 实体中提取)原始数据，持有模板会用到的数据。它还要封装复杂的展现逻辑，来简化模板。我发现运用 ViewModel 十分重要，因为我们绝不会想在模板中使用实体。这样我们才能将 View 和 Model 完全隔离开：
 
   - Model 中的变化(比如实体结构的变化)会上升并影响 ViewModel，但不会影响模板；
   - 复杂的展现逻辑被封装到了 ViewModel 之中，因此不会被泄露(例如，在业务实体中创建一些只和展现逻辑有关的方法)到领域之中；
@@ -244,7 +244,7 @@ final class DetailsViewModel implements TemplateViewModelInterface
 
 # 总结
 
-在网上，我们还能找到其它 MVC 的变种。但是，这里列出是我觉得更有意义和/或与我的工作有关的一些模式。
+在网上，我们还能找到其它 MVC 的变种。但是，这里列出的是我觉得更有意义和/或与我的工作有关的一些模式。
 
 然而，我在本文中引用的这些模式是为桌面应用程序和/或富客户端的上下文创建的，因此它们不是总能和请求/响应范式百分之百的匹配。
 

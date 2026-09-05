@@ -59,7 +59,7 @@ JSP 是这样一种技术，它是可以与 PHP、ASP 或是 Python 比肩的脚
 话虽如此，我认为现在的 Web 企业应用需要更好的方法。
 我发现这两种模式共同的毛病是它们都没有遵守单一职责原则。
 
-当谈到 “Model 1” 时，我希望每个人都清楚的看到被混在一起的关注点：我们会把模板逻辑和用例逻辑混在一起。
+当谈到 “Model 1” 时，我希望每个人都清楚地看到被混在一起的关注点：我们会把模板逻辑和用例逻辑混在一起。
 
 关于 “Model 2”，我发现 View 和 Controller 都属于展现层，可是Govind Seshadri 却说得很清楚：“*[Model 2 架构应该导致所有的处理逻辑都集中在控制器 Servlet 之中](https://www.javaworld.com/article/2076557/java-web-development/understanding-javaserver-pages-model-2-architecture.html?page=2)*”，尽管领域逻辑确实是放在外部的 Java 对象和 EJB 之中。
 
