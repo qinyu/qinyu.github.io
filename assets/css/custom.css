@@ -522,6 +522,23 @@ html.is-nav-carry.is-nav-arrive .page-body {
   border-bottom: none;
 }
 
+.home-more {
+  margin: 0.4rem 0 0;
+}
+
+html .home-more a,
+html.theme--dark .home-more a,
+html.theme--light .home-more a,
+html .home-more a:visited,
+html.theme--dark .home-more a:visited {
+  color: var(--sand);
+}
+
+html .home-more a:hover,
+html.theme--dark .home-more a:hover {
+  color: var(--sand-bright);
+}
+
 .post__content {
   color: var(--ink);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
