@@ -540,7 +540,7 @@ html.theme--dark .home-more a,
 html.theme--light .home-more a,
 html .home-more a:visited,
 html.theme--dark .home-more a:visited {
-  color: var(--sand);
+  color: #c4945a;
 }
 
 html .home-more a:hover,
@@ -824,7 +824,8 @@ html.theme--light a:visited:hover {
 html a:visited,
 html.theme--dark a:visited,
 html.theme--light a:visited {
-  color: var(--sand);
+  /* Literal hex: Chrome drops var() on :visited and falls back to UA blue. */
+  color: #c4945a;
 }
 
 html a:focus-visible {
@@ -913,7 +914,7 @@ html .nav__list-item .optionswitch__label:visited {
 html .nav__link--active:visited,
 html.theme--dark .nav__link--active:visited,
 html.theme--light .nav__link--active:visited {
-  color: var(--sand);
+  color: #c4945a;
 }
 
 html .footer a:visited,
@@ -924,7 +925,7 @@ html .sidebar .footer a:visited {
 html .post__content a.post__tag-chip:visited,
 html .post__footer a.tag:visited,
 html a.sidebar__tag:visited {
-  color: var(--sand);
+  color: #c4945a;
 }
 
 html .post__content a.post__tag-chip:hover,
