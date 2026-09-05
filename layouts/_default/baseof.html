@@ -15,23 +15,23 @@
       /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
       try {
         var root = document.documentElement;
-        if (sessionStorage.getItem("dune-bg-handoff") === "1") {
+        if (sessionStorage.getItem("site-bg-handoff") === "1") {
           root.classList.add("is-nav-carry");
         }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           root.style.setProperty("--bg-parallax", "0px");
           root.style.setProperty("--bg-scale", "1");
         } else {
-          var duneParallax = sessionStorage.getItem("dune-bg-parallax");
-          if (duneParallax != null) {
+          var siteParallax = sessionStorage.getItem("site-bg-parallax");
+          if (siteParallax != null) {
             root.style.setProperty(
               "--bg-parallax",
-              (parseFloat(duneParallax) || 0).toFixed(2) + "px",
+              (parseFloat(siteParallax) || 0).toFixed(2) + "px",
             );
           }
-          var duneScale = sessionStorage.getItem("dune-bg-scale");
-          if (duneScale != null) {
-            var parsedScale = parseFloat(duneScale);
+          var siteScale = sessionStorage.getItem("site-bg-scale");
+          if (siteScale != null) {
+            var parsedScale = parseFloat(siteScale);
             if (!isNaN(parsedScale) && parsedScale > 0) {
               root.style.setProperty("--bg-scale", parsedScale.toFixed(4));
             }
