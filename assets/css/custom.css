@@ -25,6 +25,7 @@
   --bg-image: url("/images/bg/dune-poster.jpg");
   --bg-size: 100% auto;
   --bg-pos: center center;
+  --bg-scale: 1;
 }
 
 html,
@@ -100,7 +101,8 @@ html,
   background-attachment: scroll;
   background-size: var(--bg-size);
   background-position: var(--bg-pos);
-  transform: translate3d(0, var(--bg-parallax, 0px), 0);
+  transform-origin: center center;
+  transform: translate3d(0, var(--bg-parallax, 0px), 0) scale(var(--bg-scale, 1));
   will-change: transform;
 }
 
@@ -199,10 +201,10 @@ html,
 
   .wrapper__main {
     box-sizing: border-box;
-    width: 720px;
-    max-width: 720px;
-    flex: 0 0 720px;
-    padding: 0 36px 48px;
+    width: 800px;
+    max-width: 800px;
+    flex: 0 0 800px;
+    padding: 0 20px 48px;
     background-color: transparent !important;
   }
 
@@ -230,8 +232,8 @@ html,
     position: sticky;
     top: 0;
     z-index: 10;
-    margin: 0 -36px;
-    padding: 0 36px;
+    margin: 0 -20px;
+    padding: 0 20px;
     background-color: var(--void) !important;
     border-bottom: 1px solid rgba(var(--sand-rgb), 0.35);
   }
@@ -275,8 +277,8 @@ html,
   }
 
   .wrapper__main {
-    width: 720px;
-    max-width: 720px;
+    width: 800px;
+    max-width: 800px;
   }
 }
 
@@ -547,6 +549,89 @@ html.theme--dark .post__content a:hover {
   color: var(--sand);
 }
 
+/*
+  Kill Anatole $info blue (#6086b4) and UA visited/focus blues.
+  Theme leftover: `.theme--dark a:hover { color: #6086b4 }`.
+*/
+html a:hover,
+html a:focus,
+html a:focus-visible,
+html a:active,
+html.theme--dark a:hover,
+html.theme--dark a:focus,
+html.theme--dark a:focus-visible,
+html.theme--dark a:active,
+html.theme--light a:hover,
+html.theme--light a:focus,
+html.theme--light a:focus-visible,
+html.theme--light a:active,
+html a:visited:hover,
+html.theme--dark a:visited:hover,
+html.theme--light a:visited:hover {
+  color: var(--sand-bright);
+}
+
+html a:visited,
+html.theme--dark a:visited,
+html.theme--light a:visited {
+  color: var(--sand);
+}
+
+html a:focus-visible {
+  outline: 1px solid var(--sand);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(var(--sand-rgb), 0.35);
+  color: var(--ink);
+}
+
+#TableOfContents a,
+#TableOfContents li a {
+  color: var(--sand);
+}
+
+#TableOfContents a:hover,
+#TableOfContents li a:hover {
+  color: var(--sand-bright);
+}
+
+html .sidebar__introduction-title a:visited {
+  color: #fff;
+}
+
+html .nav__list-item a:visited,
+html .nav__list-item .optionswitch__label:visited {
+  color: #d8d2c8;
+}
+
+html .nav__link--active:visited,
+html.theme--dark .nav__link--active:visited,
+html.theme--light .nav__link--active:visited {
+  color: var(--sand);
+}
+
+html .footer a:visited,
+html .sidebar .footer a:visited {
+  color: var(--ink) !important;
+}
+
+html .post__content a.post__tag-chip:visited,
+html .post__footer a.tag:visited,
+html a.sidebar__tag:visited {
+  color: var(--sand);
+}
+
+html .post__content a.post__tag-chip:hover,
+html.theme--dark .post__content a.post__tag-chip:hover,
+html .post__footer a.tag:hover,
+html.theme--dark .post__footer a.tag:hover,
+html a.sidebar__tag:hover,
+html.theme--dark a.sidebar__tag:hover {
+  color: #1a1610;
+}
+
 /* #18 isolates .body; keep that stack, but do not clip the shelf glow. */
 .post--cards,
 .post__content--cards,
@@ -572,12 +657,12 @@ html.theme--dark .post__content a:hover {
 
 .bookshelf {
   grid-template-columns: repeat(5, 1fr);
-  gap: 3rem 1.2rem;
+  gap: 3rem 0.7rem;
 }
 
 .series-grid {
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 28px;
+  column-gap: 16px;
   row-gap: 40px;
 }
 
@@ -589,7 +674,7 @@ html.theme--dark .post__content a:hover {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  padding: 2.4rem 0.45rem 1.2rem;
+  padding: 2.4rem 0.2rem 1.2rem;
   border: 0;
   background: none;
   transform: none;

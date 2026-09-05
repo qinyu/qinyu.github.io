@@ -5,10 +5,15 @@
   const maxTravel = 0.1;
   const ease = 0.16;
   const storageKey = "dune-bg-parallax";
+  const scaleKey = "dune-bg-scale";
   const handoffKey = "dune-bg-handoff";
+  const edgeScale = 1;
+  const midScale = 1.1;
 
   let current = 0;
   let target = 0;
+  let currentScale = edgeScale;
+  let targetScale = edgeScale;
   let running = false;
   let touchStartY = 0;
   let touchPull = 0;
@@ -30,9 +35,15 @@
     return y;
   };
 
+  const scaleFromProgress = (progress) => {
+    const fromMid = Math.abs(progress - 0.5) * 2;
+    return midScale + (edgeScale - midScale) * fromMid;
+  };
+
   const persistParallax = () => {
     try {
       sessionStorage.setItem(storageKey, String(current));
+      sessionStorage.setItem(scaleKey, String(currentScale));
     } catch (_) {
       /* private mode */
     }
@@ -49,6 +60,18 @@
       const existing = parseFloat(getComputedStyle(root).getPropertyValue("--bg-parallax"));
       if (!Number.isNaN(existing)) {
         current = existing;
+      }
+    }
+    const savedScale = sessionStorage.getItem(scaleKey);
+    if (savedScale != null) {
+      const parsedScale = parseFloat(savedScale);
+      if (!Number.isNaN(parsedScale)) {
+        currentScale = parsedScale;
+      }
+    } else {
+      const existingScale = parseFloat(getComputedStyle(root).getPropertyValue("--bg-scale"));
+      if (!Number.isNaN(existingScale) && existingScale > 0) {
+        currentScale = existingScale;
       }
     }
     arriving = sessionStorage.getItem(handoffKey) === "1";
@@ -72,8 +95,18 @@
     }
   }
 
+  const pageProgress = () => {
+    const y = readScrollY();
+    const vh = window.innerHeight || 1;
+    const maxScroll = Math.max(1, root.scrollHeight - vh);
+    return clamp(y / maxScroll, 0, 1);
+  };
+
   const computeTarget = () => {
-    if (reduce.matches || arriving) {
+    if (reduce.matches) {
+      return 0;
+    }
+    if (arriving) {
       return 0;
     }
     const y = readScrollY();
@@ -83,15 +116,31 @@
     if (pull > 0) {
       return clamp(pull * 0.22, 0, maxPx);
     }
-    const maxScroll = Math.max(1, root.scrollHeight - vh);
-    const progress = clamp(y / maxScroll, 0, 1);
+    const progress = pageProgress();
     return clamp(-progress * maxPx, -maxPx, maxPx);
+  };
+
+  const computeScale = () => {
+    if (reduce.matches) {
+      return edgeScale;
+    }
+    if (arriving) {
+      return scaleFromProgress(pageProgress());
+    }
+    const y = readScrollY();
+    const pull = Math.max(y < 0 ? -y : 0, touchPull);
+    if (pull > 0) {
+      return edgeScale;
+    }
+    return scaleFromProgress(pageProgress());
   };
 
   const apply = () => {
     const maxPx = (window.innerHeight || 1) * maxTravel;
     current = clamp(current, -maxPx, maxPx);
+    currentScale = clamp(currentScale, edgeScale, midScale);
     root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
+    root.style.setProperty("--bg-scale", currentScale.toFixed(4));
     persistParallax();
   };
 
@@ -109,6 +158,8 @@
   const snapRest = () => {
     current = 0;
     target = 0;
+    currentScale = edgeScale;
+    targetScale = edgeScale;
     holdFirstFrame = false;
     apply();
     running = false;
@@ -131,6 +182,7 @@
       return;
     }
     target = computeTarget();
+    targetScale = computeScale();
     if (arriving && !userTookScroll && arriveScroll > 0.5) {
       arriveScroll += (0 - arriveScroll) * ease;
       if (arriveScroll < 0.5) {
@@ -139,14 +191,21 @@
       window.scrollTo(0, arriveScroll);
     }
     const delta = target - current;
-    if (Math.abs(delta) < 0.08 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
+    const deltaScale = targetScale - currentScale;
+    if (
+      Math.abs(delta) < 0.08 &&
+      Math.abs(deltaScale) < 0.0008 &&
+      (!arriving || arriveScroll < 0.5 || userTookScroll)
+    ) {
       current = target;
+      currentScale = targetScale;
       apply();
       running = false;
       finishArrive();
       return;
     }
     current += delta * ease;
+    currentScale += deltaScale * ease;
     apply();
     running = true;
     window.requestAnimationFrame(tick);
@@ -300,7 +359,7 @@
     snapRest();
   } else {
     // Paint the carried offset first, then ease to rest. Never snap to 0 then animate.
-    holdFirstFrame = arriving || Math.abs(current) > 0.08;
+    holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - edgeScale) > 0.0008;
     apply();
     kick();
   }
