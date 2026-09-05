@@ -220,19 +220,22 @@ html.theme--light .sidebar__list-item a {
 .sidebar__tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem;
-  margin: 1.4rem 1.1rem 0;
+  justify-content: flex-start;
+  gap: 0.4rem 0.45rem;
+  box-sizing: border-box;
+  margin: 1.6rem 2.8rem 0;
+  padding: 0 0.4rem;
 }
 
 html a.sidebar__tag,
 html.theme--dark a.sidebar__tag,
 html.theme--light a.sidebar__tag {
   display: inline-block;
+  flex: 0 0 auto;
   padding: 0.1rem 0.65rem;
-  border: 1px solid rgba(196, 191, 180, 0.7);
+  border: 1px solid rgba(196, 165, 116, 0.75);
   border-radius: 999px;
-  color: #ddd8ce;
+  color: var(--sand);
   background-color: transparent;
   font-size: 1.2rem;
   line-height: 1.7;
@@ -242,8 +245,9 @@ html.theme--light a.sidebar__tag {
 html a.sidebar__tag:hover,
 html.theme--dark a.sidebar__tag:hover,
 html.theme--light a.sidebar__tag:hover {
-  color: #f3efe6;
-  border-color: #d8d2c8;
+  color: #1a1610;
+  background-color: var(--sand);
+  border-color: var(--sand);
 }
 
 .footer,
