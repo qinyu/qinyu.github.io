@@ -16,6 +16,8 @@
   // After an in-site nav: keep the outgoing visual, ease to rest. Never snap.
   let arriving = false;
   let arriveScroll = 0;
+  let holdFirstFrame = false;
+  let userTookScroll = false;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -28,10 +30,26 @@
     return y;
   };
 
+  const persistParallax = () => {
+    try {
+      sessionStorage.setItem(storageKey, String(current));
+    } catch (_) {
+      /* private mode */
+    }
+  };
+
   try {
     const saved = sessionStorage.getItem(storageKey);
     if (saved != null) {
-      current = parseFloat(saved) || 0;
+      const parsed = parseFloat(saved);
+      if (!Number.isNaN(parsed)) {
+        current = parsed;
+      }
+    } else {
+      const existing = parseFloat(getComputedStyle(root).getPropertyValue("--bg-parallax"));
+      if (!Number.isNaN(existing)) {
+        current = existing;
+      }
     }
     arriving = sessionStorage.getItem(handoffKey) === "1";
     if (arriving) {
@@ -47,6 +65,7 @@
   }
 
   if (arriving) {
+    root.classList.add("is-nav-carry");
     arriveScroll = readScrollY();
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
@@ -73,11 +92,7 @@
     const maxPx = (window.innerHeight || 1) * maxTravel;
     current = clamp(current, -maxPx, maxPx);
     root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
-    try {
-      sessionStorage.setItem(storageKey, String(current));
-    } catch (_) {
-      /* private mode */
-    }
+    persistParallax();
   };
 
   const finishArrive = () => {
@@ -91,9 +106,32 @@
     }
   };
 
+  const snapRest = () => {
+    current = 0;
+    target = 0;
+    holdFirstFrame = false;
+    apply();
+    running = false;
+    if (arriving && readScrollY() !== 0) {
+      window.scrollTo(0, 0);
+    }
+    finishArrive();
+  };
+
   const tick = () => {
+    if (reduce.matches) {
+      snapRest();
+      return;
+    }
+    if (holdFirstFrame) {
+      holdFirstFrame = false;
+      apply();
+      running = true;
+      window.requestAnimationFrame(tick);
+      return;
+    }
     target = computeTarget();
-    if (arriving && arriveScroll > 0.5) {
+    if (arriving && !userTookScroll && arriveScroll > 0.5) {
       arriveScroll += (0 - arriveScroll) * ease;
       if (arriveScroll < 0.5) {
         arriveScroll = 0;
@@ -101,7 +139,7 @@
       window.scrollTo(0, arriveScroll);
     }
     const delta = target - current;
-    if (Math.abs(delta) < 0.08 && (!arriving || arriveScroll < 0.5)) {
+    if (Math.abs(delta) < 0.08 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
       current = target;
       apply();
       running = false;
@@ -116,12 +154,7 @@
 
   const kick = () => {
     if (reduce.matches) {
-      current = 0;
-      target = 0;
-      arriving = false;
-      arriveScroll = 0;
-      apply();
-      running = false;
+      snapRest();
       return;
     }
     if (!running) {
@@ -130,9 +163,14 @@
     }
   };
 
+  const cancelScrollSettle = () => {
+    userTookScroll = true;
+    arriveScroll = 0;
+  };
+
   const markHandoff = () => {
+    persistParallax();
     try {
-      sessionStorage.setItem(storageKey, String(current));
       sessionStorage.setItem(handoffKey, "1");
     } catch (_) {
       /* private mode */
@@ -148,12 +186,15 @@
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
         return;
       }
-      const link = event.target.closest("a[href]");
+      const link = event.target.closest ? event.target.closest("a[href]") : null;
       if (!link) {
         return;
       }
       const href = link.getAttribute("href");
-      if (!href || href.startsWith("#")) {
+      if (!href || href.startsWith("#") || link.hasAttribute("download")) {
+        return;
+      }
+      if (link.target && link.target !== "_self") {
         return;
       }
       let next;
@@ -173,17 +214,12 @@
     true,
   );
 
-  window.addEventListener("pagehide", () => {
-    try {
-      sessionStorage.setItem(storageKey, String(current));
-    } catch (_) {
-      /* private mode */
-    }
-  });
+  window.addEventListener("pagehide", persistParallax);
 
   window.addEventListener(
     "touchstart",
     (event) => {
+      cancelScrollSettle();
       const touch = event.touches[0];
       if (!touch) {
         return;
@@ -221,11 +257,32 @@
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
 
+  window.addEventListener("wheel", cancelScrollSettle, { passive: true });
+  window.addEventListener(
+    "keydown",
+    (event) => {
+      if (
+        event.key === "ArrowUp" ||
+        event.key === "ArrowDown" ||
+        event.key === "PageUp" ||
+        event.key === "PageDown" ||
+        event.key === "Home" ||
+        event.key === "End" ||
+        event.key === " "
+      ) {
+        cancelScrollSettle();
+      }
+    },
+    { passive: true },
+  );
+
   window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener("resize", kick, { passive: true });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       arriving = false;
+      holdFirstFrame = false;
+      arriveScroll = 0;
     }
     kick();
   });
@@ -239,6 +296,12 @@
     reduce.addListener(kick);
   }
 
-  apply();
-  kick();
+  if (reduce.matches) {
+    snapRest();
+  } else {
+    // Paint the carried offset first, then ease to rest. Never snap to 0 then animate.
+    holdFirstFrame = arriving || Math.abs(current) > 0.08;
+    apply();
+    kick();
+  }
 })();

@@ -390,6 +390,16 @@ html .archive__list-title:hover {
   color: var(--sand-bright);
 }
 
+html .archive a:visited,
+html .archive__list-title:visited,
+html.theme--dark .archive__list-title:visited,
+html.theme--light .archive__list-title:visited,
+html .post__content h3 a:visited,
+html.theme--dark .post__content h3 a:visited,
+html.theme--light .post__content h3 a:visited {
+  color: var(--sand);
+}
+
 .post-entry__date,
 .post__meta,
 .post__meta-text,
@@ -685,6 +695,12 @@ html.theme--dark .post__content a:hover {
   display: none !important;
 }
 
+/* In-site section switch: keep the outgoing parallax frame, skip fadeInDown snap. */
+html.is-nav-carry .animated {
+  animation: none !important;
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-bg__poster {
     transform: none;
@@ -693,6 +709,11 @@ html.theme--dark .post__content a:hover {
 
   .site-bg__veil {
     transform: none;
+  }
+
+  .animated {
+    animation: none !important;
+    transition: none !important;
   }
 
   .bookshelf__item::before,
