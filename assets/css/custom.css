@@ -16,15 +16,17 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    15% zoom-out is an overflow buffer for rubber-band / overscroll —
-    not a zoom budget to fully consume. Landscape: layer width ≈ 115%
+    22% zoom-out is an overflow buffer for rubber-band / overscroll —
+    not a zoom budget to fully consume. Landscape: layer width ≈ 122%
     of the viewport (zoom-out by width), height grows as needed to
-    still cover. Portrait: layer height ≈ 115% of the viewport
+    still cover. Portrait: layer height ≈ 122% of the viewport
     (zoom-out by height), width grows as needed to cover; pin the
     image left so the limb stays visible (do not center-crop it away).
-    Scroll zoom-in uses only part of that 15% (JS --bg-scale 1.00–1.08).
-    Leftover overflow absorbs bounce; translate travel stays inside
-    the remainder. Never rest at exact cover (100% layer / scale 1).
+    Scroll zoom-in uses only part of that 22% (JS --bg-scale 1.00–1.06).
+    Top rest is scale 1.00 (zoom-in MIN), not max — leftover ~22%
+    is reserved so top bounce can ease scale up without going flush.
+    Peak leftover stays unused (122% × 1.06 ≈ 129%). Translate
+    travel stays inside the remainder.
   */
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
@@ -48,24 +50,17 @@ html,
 */
 html,
 .html {
-  /* Overscroll gutter paints this, not a void band. Viewport layers sit on top. */
+  /* Overscroll gutter: plate only. A second veil gradient here fights
+     the fixed wash when Chrome's chrome resizes (hard mask-edge jump).
+     The .site-bg__veil is the one mask. */
   background-color: var(--void);
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.28) 0,
-      rgba(0, 0, 0, 0.42) 28%,
-      rgba(0, 0, 0, 0.72) 46%,
-      rgba(0, 0, 0, 0.88) 100%
-    ),
-    var(--bg-image);
+  background-image: var(--bg-image);
   background-repeat: no-repeat;
-  /* Viewport-sized fallback (not document-tall cover) so overscroll
-     still shows the 15% width buffer instead of a void band. */
-  background-size: 115vw auto;
+  background-size: 122vw auto;
   background-position: left top;
   min-height: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: 100lvh;
   max-width: 100%;
   overflow-x: hidden;
   transform: none;
@@ -82,7 +77,10 @@ html,
 
 .site-bg {
   position: fixed;
-  inset: 0;
+  /* Bleed past the layout viewport. Use lvh so this box does not
+     resize with Chrome's URL bar; do not chase visualViewport. */
+  inset: -50vh 0;
+  inset: -50lvh 0;
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
@@ -90,17 +88,19 @@ html,
 }
 
 /*
-  Landscape rest: 15% zoom-out by WIDTH (layer ≈ 115vw). Height follows
+  Landscape rest: 22% zoom-out by WIDTH (layer ≈ 122vw). Height follows
   16:9 then grows to still cover. Layer is centered so bounce has leftover
   overflow on both sides; the image itself stays left-anchored.
-  Scroll scale is 1.00–1.08 (not 1.15) so intentional zoom leaves headroom
-  inside the 15% buffer. Extra min-height covers ≤6vh translate + rubber-band.
+  Scroll scale is 1.00–1.06 so intentional zoom leaves unused margin
+  at peak (122% × 1.06 ≈ 129% wide). Top overscroll was Y-only on
+  main (scale clamped to 1.00); reserved width + a little scale-in
+  keep horizontal framing 跟手. Never flush with the viewport.
 */
 .site-bg__poster {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 115%;
+  width: 122%;
   height: auto;
   min-height: 100%;
   aspect-ratio: 16 / 9;
@@ -119,18 +119,22 @@ html,
 
 /*
   Landscape: extra site-bg bleed so Chrome's collapsing URL bar cannot
-  flash void. Travel stays inside leftover overflow after the 8% zoom-in.
+  flash void. Veil bleeds further still; this layer only needs to keep
+  the plate under that wash. Travel stays inside leftover overflow
+  after the 6% zoom-in.
 */
 @media (orientation: landscape) {
   .site-bg {
-    inset: -16vh 0;
+    inset: -70vh 0;
+    inset: -70lvh 0;
   }
 }
 
 /*
-  Portrait rest: 15% zoom-out by HEIGHT (layer ≈ 115vh). Width grows as
+  Portrait rest: 22% zoom-out by HEIGHT (layer ≈ 122vh). Width grows as
   needed to cover. Keep the Mars limb on the left — do not center-crop
-  the landscape plate. Same 1.00–1.08 scroll zoom-in budget.
+  the landscape plate. Same 1.00–1.06 scroll zoom-in budget; leftover
+  height buffer is not fully consumed.
 */
 @media (orientation: portrait) {
   :root {
@@ -139,14 +143,14 @@ html,
 
   html,
   .html {
-    background-size: auto 115vh;
+    background-size: auto 122vh;
     background-position: left top;
   }
 
   .site-bg__poster {
     width: auto;
     min-width: 100%;
-    height: 115%;
+    height: 122%;
     aspect-ratio: 9 / 16;
     left: 50%;
     top: 50%;
@@ -158,11 +162,20 @@ html,
 .site-bg__veil {
   display: block;
   position: fixed;
-  /* Inset only — do not lock height to 100dvh (leaves a void gap on overscroll). */
-  inset: -28vh 0;
+  /* Oversized, no transform, no JS resize. Bleed covers the top
+     chrome flash; some bottom peek when Chrome's bar collapses is
+     inherent if fixed layers track the visual viewport — do not
+     chase every chrome-resize frame. lvh keeps the box stable. */
+  top: -100vh;
+  top: -100lvh;
+  right: 0;
+  bottom: auto;
+  left: 0;
   width: 100%;
-  height: auto;
-  min-height: 0;
+  height: 300vh;
+  height: 300lvh;
+  min-height: 300vh;
+  min-height: 300lvh;
   z-index: -1;
   pointer-events: none;
   transform: none;
@@ -190,7 +203,8 @@ html,
 
 .body {
   min-height: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: 100lvh;
 }
 
 .wrapper,
@@ -231,6 +245,9 @@ html,
     width: 300px;
     max-width: 300px;
     flex: 0 0 300px;
+    align-self: flex-start;
+    height: 100vh;
+    height: 100lvh;
   }
 
   .wrapper__main {
@@ -242,17 +259,48 @@ html,
     background-color: transparent !important;
   }
 
+  /*
+    Viewport-fixed column. Height is the screen, not the stretching
+    main column — nav switches / fadeInDown must not reflow this stack.
+  */
   .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    max-width: 300px;
+    height: 100vh;
+    height: 100lvh;
+    margin: 0;
     border-right: 1px solid rgba(var(--sand-rgb), 0.22);
     margin-right: 0;
-    animation: none;
-    transform: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: none !important;
+    transform: none !important;
   }
 
-  /* Pin the avatar stack; do not re-center when main-column height changes. */
+  /*
+    Avatar → intro → tags: true vertical center of the screen.
+    Footer is taken out of flow so it cannot shove this block.
+  */
   .sidebar__content {
+    flex-grow: 0;
+    flex-shrink: 0;
     justify-content: flex-start;
-    padding-top: 6.5vh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .footer.footer__sidebar,
+  html .footer.footer__sidebar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
   }
 
   .sidebar__introduction-title h1 {
@@ -268,21 +316,18 @@ html,
     z-index: 10;
     margin: 0 -20px;
     padding: 0 20px;
-    background-color: var(--void) !important;
-    border-bottom: 1px solid rgba(var(--sand-rgb), 0.35);
+    background-color: rgba(0, 0, 0, 0.42) !important;
+    border-bottom: 1px solid rgba(var(--sand-rgb), 0.28);
   }
 
-  /* Desktop only: opaque bar + upward shield. Portrait keeps the veil through the nav. */
+  /* No opaque upward shield — Mars + veil show through, like portrait. */
   .header::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 100%;
-    height: 100vh;
-    height: 100dvh;
-    background-color: var(--void);
-    pointer-events: none;
+    content: none;
+    display: none;
+  }
+
+  .nav__list-item a {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
   }
 
   .nav__list {
@@ -946,6 +991,7 @@ html.theme--dark a.sidebar__tag:hover {
 .post__content .series-grid .medium-zoom-image {
   cursor: default;
   z-index: 1;
+  transform: none !important;
   transition: none !important;
   will-change: auto;
 }
@@ -956,21 +1002,22 @@ html.theme--dark a.sidebar__tag:hover {
   filter: none;
 }
 
-/* Scale only on real hover / keyboard — touch :active was leaving a ghost. */
+/*
+  Hover scale only on a real fine-pointer hover — never on page
+  entry. Do not put transition on the img at rest: a first-paint
+  scale(1.07) → 1 (or medium-zoom's transform 300ms) was flashing
+  every cover on 出版物.
+*/
 @media (hover: hover) and (pointer: fine) {
-  .post__content .bookshelf__cover img,
-  .post__content .series-grid__cover img {
-    transition: transform 0.22s ease;
-  }
-
-  .bookshelf__item:hover .bookshelf__cover img,
-  .series-grid__item:hover .series-grid__cover img {
+  html:not(.is-nav-carry) .bookshelf__item:hover .bookshelf__cover img,
+  html:not(.is-nav-carry) .series-grid__item:hover .series-grid__cover img {
     transform: scale(1.07);
+    transition: transform 0.22s ease;
   }
 }
 
-.bookshelf__item:focus-visible .bookshelf__cover img,
-.series-grid__item:focus-visible .series-grid__cover img {
+html:not(.is-nav-carry) .bookshelf__item:focus-visible .bookshelf__cover img,
+html:not(.is-nav-carry) .series-grid__item:focus-visible .series-grid__cover img {
   transform: scale(1.07);
 }
 
@@ -1010,15 +1057,44 @@ html.theme--dark a.sidebar__tag:hover {
   display: none !important;
 }
 
-/* In-site section switch: keep the outgoing parallax frame, skip fadeInDown snap. */
-html.is-nav-carry .animated {
+/*
+  Section switches must have no enter/leave motion. Anatole fadeInDown
+  is translateY(-20px) → 0; 出版物 also flashed every cover at
+  scale(1.07) then settled. Kill both. is-nav-carry still holds the
+  parallax frame and freezes cover transforms for the first paint.
+*/
+.animated,
+.fadeInDown,
+.sidebar.animated,
+.sidebar.fadeInDown,
+.post--cards,
+.post--cards.animated {
+  animation: none !important;
+}
+
+html.is-nav-carry .animated,
+html.is-nav-carry .fadeInDown,
+html.is-nav-carry .wrapper__main,
+html.is-nav-carry .post,
+html.is-nav-carry .post--cards,
+html.is-nav-carry .post-entry,
+html.is-nav-carry .bookshelf,
+html.is-nav-carry .bookshelf__item,
+html.is-nav-carry .bookshelf__cover,
+html.is-nav-carry .bookshelf__cover img,
+html.is-nav-carry .series-grid,
+html.is-nav-carry .series-grid__item,
+html.is-nav-carry .series-grid__cover img,
+html.is-nav-carry .medium-zoom-image {
   animation: none !important;
   transition: none !important;
 }
 
-/* fadeInDown's translateY creates a containing block that square-clips glow. */
-.post--cards.animated {
-  animation: none;
+html.is-nav-carry .bookshelf__cover img,
+html.is-nav-carry .series-grid__cover img,
+html.is-nav-carry .bookshelf .medium-zoom-image,
+html.is-nav-carry .series-grid .medium-zoom-image {
+  transform: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1052,19 +1128,24 @@ html.is-nav-carry .animated {
 
   html,
   .html {
-    background-image:
-      linear-gradient(rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)),
-      var(--bg-image);
+    /* Plate only — the even wash lives on .site-bg__veil, not here. */
+    background-image: var(--bg-image);
   }
 
-  /* Portrait veil: even wash, bleed past the viewport so overscroll stays covered. */
+  /* Portrait veil: even wash; same oversized, chrome-stable bleed. */
   .site-bg__veil {
     display: block;
     position: fixed;
-    inset: -28vh 0;
+    top: -100vh;
+    top: -100lvh;
+    right: 0;
+    bottom: auto;
+    left: 0;
     width: 100%;
-    height: auto;
-    min-height: 0;
+    height: 300vh;
+    height: 300lvh;
+    min-height: 300vh;
+    min-height: 300lvh;
     transform: none;
     background: rgba(0, 0, 0, 0.46);
   }
@@ -1151,10 +1232,31 @@ html.is-nav-carry .animated {
 
   .wrapper__sidebar {
     padding-top: 4.6rem;
+    height: auto;
+    align-self: auto;
   }
 
   .sidebar {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    max-width: none;
+    height: auto;
     margin-top: 0.6rem;
+    justify-content: flex-start;
+    transform: none;
+  }
+
+  .sidebar__content {
+    flex-grow: 0;
+    padding-top: 0;
+  }
+
+  .footer.footer__sidebar,
+  html .footer.footer__sidebar {
+    position: relative;
+    bottom: auto;
   }
 
   .sidebar__tags {
