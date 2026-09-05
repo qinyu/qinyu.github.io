@@ -14,10 +14,11 @@
   --line: #2a2a2a;
   --code-bg: #1a1a1a;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
-  /* Full source width, tall canvas, figure in the mid-lower band. */
+  /* Full source width. Walker is painted at 48% of the composed canvas
+     so the same % on the 164% landscape poster box lands under the avatar. */
   --bg-image: url("/images/bg/dune-bg-composed.jpg");
   --bg-size: 100% auto;
-  --bg-pos: 50% 58%;
+  --bg-pos: 50% 48%;
 }
 
 html,
@@ -182,8 +183,8 @@ html,
 
 @media screen and (min-width: 961px) {
   :root {
-    /* Sidebar column: keep the walker under the avatar, not under the footer. */
-    --bg-pos: 50% 56%;
+    /* Same 48%: landscape bleed is already baked into the composed figure %. */
+    --bg-pos: 50% 48%;
   }
 
   .wrapper {
@@ -806,7 +807,7 @@ html.is-nav-carry .animated {
   .html,
   .site-bg__poster {
     /* Stacked avatar: keep full poster width; sit the figure band under it. */
-    --bg-pos: 50% 40%;
+    --bg-pos: 50% 36%;
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
   }
