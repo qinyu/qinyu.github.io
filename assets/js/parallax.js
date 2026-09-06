@@ -1,11 +1,15 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  // CSS contains the complete plate at 64vh landscape / 72vh
-  // portrait. Do not enlarge rest scale enough to clip the limbs.
-  // Scroll zoom is ~3/5 of the 1.04 peak (1.00–1.024).
-  // Top rubber-band still eases a milder scale-in. Translate stays ≤6vh.
+  // Cover + overflow only. peakScale is computed, not 1.024:
+  //   max_scale ≤ 1 + (rest_overflow_frac − bounce_reserve − safety)
+  // rest_overflow_frac = per-side extra / viewport, from the poster's
+  // layout box (or --bg-rest if the node is not ready). Bounce
+  // consumes Y (tightest on 4:3 iPad height); leftover must stay
+  // ≥ bounce travel. Translate ≤ bounceReserve. Never scale < 1.
   const maxTravel = 0.06;
+  const bounceReserve = maxTravel;
+  const safetyMargin = 0.02;
   const ease = 0.16;
   const arriveEase = 0.08;
   const storageKey = "site-bg-parallax";
@@ -13,8 +17,8 @@
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
   const baseScale = 1;
-  const peakScale = 1.024;
-  const bouncePeak = 1.012;
+  let peakScale = baseScale;
+  let bouncePeak = baseScale;
 
   let current = 0;
   let target = 0;
@@ -32,6 +36,31 @@
   let navScrollY = 0;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+
+  const restFromCss = () => {
+    const raw = parseFloat(getComputedStyle(root).getPropertyValue("--bg-rest"));
+    const rest = Number.isFinite(raw) && raw > 0 ? raw / 100 : 1.2;
+    return Math.max(0, (rest - 1) / 2);
+  };
+
+  const measureOverflowFrac = () => {
+    const el = document.querySelector(".site-bg__poster");
+    // Layout viewport only — not visualViewport.height (pinch / URL bar).
+    const vh = root.clientHeight || window.innerHeight || 1;
+    if (!el || el.offsetHeight < 1) {
+      return restFromCss();
+    }
+    // Layout px, before translate/scale. Bounce travels on Y, so
+    // rest_overflow_frac is the per-side height leftover (4:3 iPad
+    // is the tight height case). X is cover-only; we do not pan.
+    return Math.max(0, (el.offsetHeight - vh) / 2 / vh);
+  };
+
+  const syncPeakScale = () => {
+    const overflowFrac = measureOverflowFrac();
+    peakScale = Math.max(baseScale, 1 + overflowFrac - bounceReserve - safetyMargin);
+    bouncePeak = baseScale + (peakScale - baseScale) / 2;
+  };
 
   const readScrollY = () => {
     const y = window.scrollY || root.scrollTop || 0;
@@ -407,6 +436,7 @@
   window.addEventListener(
     "resize",
     () => {
+      syncPeakScale();
       syncPortraitNav();
       kick();
     },
@@ -436,6 +466,8 @@
   } else if (typeof reduce.addListener === "function") {
     reduce.addListener(kick);
   }
+
+  syncPeakScale();
 
   if (reduce.matches) {
     snapRest();

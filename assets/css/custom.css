@@ -20,18 +20,23 @@
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-    The photo’s disk fills its frame height — scale >100vh clips
-    both limbs and the yellow face reads as full-screen. Landscape
-    rest is 64vh contain, left-pinned: upper and lower half-circles
-    sit inside the viewport; ~18vh void above/below is bounce
-    headroom (the file has no vertical cosmos). Width follows 16:9
-    so the disk stays left and the right-hand black is a wide
-    strip, not a sliver. Portrait: same contain idea at 72vh.
-    Scroll zoom stays 1.00–1.024.
+    Cover + overflow only — never contain / fixed-vh letterbox.
+    Bounce budget (per side; parallax.js measures the poster):
+      max_scale ≤ 1 + (rest_overflow_frac − bounce 6% − safety 2%)
+      rest_overflow_frac = (layer − viewport) / 2 / viewport
+    --bg-rest 120% ⇒ frac 10% ⇒ max_scale 1.02 on a matching axis.
+    Leftover after bounce+zoom stays ≥ bounce on the tightest axis
+    (4:3 iPad height). Do not hardcode 1.024.
+    Landscape: 115% width (#36 composition) + --bg-rest min-height
+    so 4:3 iPad does not sit plate edges on the viewport (the file
+    has no vertical cosmos). Portrait: same cover fill; ~20% more
+    right-hand cosmos is position inside this still-covering plate
+    (--bg-pos left), not a layer smaller than the viewport.
+    Rest layer is of a viewport-sized .site-bg (inset:0).
   */
-  --mars-h: 64vh;
+  --bg-rest: 120%;
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
-  --bg-size: auto var(--mars-h);
+  --bg-size: cover;
   --bg-pos: left center;
   --bg-scale: 1;
 }
@@ -64,9 +69,10 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  /* Same complete-plate fallback as the poster. */
-  background-size: auto var(--mars-h);
-  background-position: left center;
+  /* Overscroll gutter: cover the layout viewport plus --bg-rest,
+     never a 16:9-by-width slice that letterboxes 4:3 iPad. */
+  background-size: max(120vw, calc(120vh * 16 / 9)) auto;
+  background-position: left top;
   min-height: 100%;
   min-height: 100dvh;
   max-width: 100%;
@@ -97,20 +103,19 @@ html,
 }
 
 /*
-  Landscape: full 16:9 plate at --mars-h (64vh), pinned left.
-  Both limbs stay in view; void around the plate covers bounce.
-  Do not use cover / min-height 120% / 86vh-near-full-bleed —
-  those make the disk fill the screen and clip the circle.
+  Landscape rest (pre-#32 / #36 cover): 15% zoom-out by WIDTH
+  (layer ≈ 115vw). Height follows 16:9 then grows to --bg-rest
+  (120%) so 4:3 iPad bounce/zoom never exposes the plate edge.
+  Layer is centered; the image stays left-anchored.
 */
 .site-bg__poster {
   position: absolute;
-  left: 0;
+  left: 50%;
   top: 50%;
-  width: calc(var(--mars-h) * 16 / 9);
-  min-width: 0;
-  max-width: none;
-  height: var(--mars-h);
-  min-height: 0;
+  width: 115%;
+  max-width: 115%;
+  height: auto;
+  min-height: var(--bg-rest);
   aspect-ratio: 16 / 9;
   pointer-events: none;
   background-color: var(--void);
@@ -119,37 +124,39 @@ html,
   background-attachment: scroll;
   background-size: var(--bg-size);
   background-position: var(--bg-pos);
-  transform-origin: left center;
-  transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
+  transform-origin: center center;
+  transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
     scale(var(--bg-scale, 1));
   will-change: transform;
 }
 
 /*
-  Portrait: same contain + left pin; 72vh so the full disk stays
-  readable without matching landscape’s tighter 64vh.
+  Portrait: cover + --bg-rest overflow, pin left. The 9:16 file
+  already has ~19% cosmos on the right; left-anchor keeps the limb
+  and lets that cosmos read in-frame. Do not paint smaller than
+  cover (auto 92% / contain) — that opens a --void gap on a side.
+  Layer min-width 100% so the box itself still spans the viewport.
 */
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
-    --mars-h: 72vh;
-    --bg-size: auto var(--mars-h);
   }
 
   html,
   .html {
-    background-size: auto var(--mars-h);
-    background-position: left center;
+    background-size: max(120vw, calc(120vh * 9 / 16)) auto;
+    background-position: left top;
   }
 
   .site-bg__poster {
-    width: calc(var(--mars-h) * 9 / 16);
-    min-width: 0;
+    width: auto;
+    min-width: 100%;
     max-width: none;
-    height: var(--mars-h);
+    height: var(--bg-rest);
     aspect-ratio: 9 / 16;
     left: 0;
     top: 50%;
+    transform-origin: left center;
     transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
       scale(var(--bg-scale, 1));
   }
@@ -1337,7 +1344,7 @@ html.is-nav-carry .wrapper__main {
 
 @media screen and (max-width: 960px) {
   .site-bg__poster {
-    /* Narrow screens keep contain + left limb (--mars-h). */
+    /* Narrow screens keep cover + left limb; do not revert to 100% auto. */
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
   }
