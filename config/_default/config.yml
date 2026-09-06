@@ -14,7 +14,7 @@ ignoreFiles:
   - content/temp/
 markup:
   highlight:
-    style: solarized-light
+    style: gruvbox
     noClasses: false
     codeFences: true
     guessSyntax: true

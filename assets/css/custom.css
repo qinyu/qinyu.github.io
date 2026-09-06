@@ -15,8 +15,6 @@
      sidebar/content rule. Brighter than #3d2a14 so it reads on both
      the dark veil and the yellow Mars plate; not full --sand. */
   --line: #8a6430;
-  /* Solarized Light base3 — light code panel on the dark canvas. */
-  --code-bg: #fdf6e3;
   --ochre-wash: rgba(var(--sand-rgb), 0.12);
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
@@ -807,17 +805,22 @@ html.theme--dark .post__content a:hover {
 
 .post__content pre,
 .post__content .chroma {
-  /* Solarized Light panel (#fdf6e3) so Light tokens stay readable
-     on the dark site canvas. Border is Solarized base2. */
-  background-color: var(--code-bg) !important;
-  color: #657b83;
-  border: 1px solid #eee8d5;
+  /* Radius / overflow only. Do not force a cream Solarized panel. */
   border-radius: 2px;
+  overflow-x: auto;
 }
 
-.post__content .chroma .bg {
-  background-color: var(--code-bg) !important;
-  color: #657b83;
+/*
+  Beat Anatole `.theme--dark .post__content .chroma` primary-lighter
+  (#464646) so Chroma gruvbox's own #282828 panel shows.
+*/
+html .post__content pre,
+html .post__content .chroma,
+html .post__content .chroma .bg,
+html.theme--dark .post__content pre,
+html.theme--dark .post__content .chroma,
+html.theme--dark .post__content .chroma .bg {
+  background-color: #282828;
 }
 
 .post__content ul li::marker,
