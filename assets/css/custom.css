@@ -19,12 +19,12 @@
   /*
     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
     Cover + overflow only — never contain / fixed-vh letterbox.
-    Bounce budget (per side; parallax.js measures the poster):
-      max_scale ≤ 1 + (rest_overflow_frac − bounce 6% − safety 2%)
-      rest_overflow_frac = (layer − viewport) / 2 / viewport
-    --bg-rest 120% ⇒ frac 10% ⇒ max_scale 1.02 on a matching axis.
-    Leftover after bounce+zoom stays ≥ bounce on the tightest axis
-    (4:3 iPad height). Do not hardcode 1.024.
+    Bounce and scroll-zoom are separate (parallax.js, layout vh):
+      bounce translate ≤ 6%; safety leftover at scale 1 ≥ 2%
+      --bg-rest 120% ⇒ frac 10% ⇒ leftover 2% at rest (unchanged)
+      zoomTravel 0.03 ⇒ peakScale 1.03 (was ~1.02 leftover math)
+    Zoom-in grows the plate, so it does not spend bounce leftover.
+    Tightest cover is still 4:3 iPad height at scale 1.
     Landscape: 115% width (#36 composition) + --bg-rest min-height
     so 4:3 iPad does not sit plate edges on the viewport (the file
     has no vertical cosmos). Portrait: same cover fill; ~20% more
@@ -250,6 +250,37 @@ html,
   min-width: 0;
 }
 
+/*
+  Pin the avatar stack on every section, including 关于 / 文章全集.
+  Anatole centers .sidebar__content on desktop and only then does
+  our 6.5vh inset apply — on a short main column the stack first
+  paints flush to the top, then jumps down. Own the flex alignment
+  outside the desktop block so first paint already has the inset.
+*/
+.sidebar,
+html .sidebar {
+  animation: none;
+  transform: none;
+}
+
+.sidebar__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.sidebar__introduction-profileimage {
+  width: 127px;
+  height: 127px;
+}
+
+.sidebar__introduction-title h1 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
 .header {
   background-image: none;
   z-index: 10;
@@ -337,13 +368,6 @@ html,
   .sidebar__content {
     justify-content: flex-start;
     padding-top: 6.5vh;
-  }
-
-  .sidebar__introduction-title h1 {
-    margin: 0;
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
   }
 
   .header,

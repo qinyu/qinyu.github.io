@@ -79,6 +79,31 @@
       </style>
     </noscript>
     <div class="site-bg__veil" aria-hidden="true"></div>
+    <style>
+      /* First-paint pin: Anatole's later desktop rule centers the
+         sidebar stack. This block is in the body, after theme CSS,
+         so 关于 / 文章全集 get the inset before the avatar paints. */
+      .sidebar,
+      html .sidebar {
+        animation: none;
+        transform: none;
+      }
+      .sidebar__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      @media screen and (min-width: 961px) {
+        .sidebar__content {
+          padding-top: 6.5vh;
+        }
+      }
+      @media screen and (max-width: 960px) {
+        .wrapper__sidebar {
+          padding-top: 8rem;
+        }
+      }
+    </style>
     <div class="wrapper">
       <aside
         {{ if (and (or (eq .Site.Params.hidesidebar true) (eq .Params.hidesidebar true)) (not .IsHome)) }}
