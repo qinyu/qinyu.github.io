@@ -79,6 +79,31 @@
       </style>
     </noscript>
     <div class="site-bg__veil" aria-hidden="true"></div>
+    <style>
+      /* First-paint pin: Anatole's later desktop rule centers the
+         sidebar stack. This block is in the body, after theme CSS,
+         so 关于 / 文章全集 get the inset before the avatar paints. */
+      .sidebar,
+      html .sidebar {
+        animation: none;
+        transform: none;
+      }
+      .sidebar__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      @media screen and (min-width: 961px) {
+        .sidebar__content {
+          padding-top: 6.5vh;
+        }
+      }
+      @media screen and (max-width: 960px) {
+        .wrapper__sidebar {
+          padding-top: 8rem;
+        }
+      }
+    </style>
     <div class="wrapper">
       <aside
         {{ if (and (or (eq .Site.Params.hidesidebar true) (eq .Params.hidesidebar true)) (not .IsHome)) }}
@@ -103,7 +128,17 @@
 
     {{- partial "footer.html" (dict "context" . "footerClassModifier" "base") -}}
 
-<<<<<<< HEAD
+    {{- /* End of body so .site-bg__poster exists before handoff is consumed. */ -}}
+    {{- $parallax := resources.Get "js/parallax.js" -}}
+    {{- if $parallax -}}
+      {{- $secureParallax := $parallax | resources.Minify | resources.Fingerprint -}}
+      <script
+        src="{{ $secureParallax.RelPermalink }}"
+        integrity="{{ $secureParallax.Data.Integrity }}"
+        crossorigin="anonymous"
+      ></script>
+    {{- end -}}
+
     {{- /* After medium-zoom's cover clone. Not in customJs: Anatole concats
          every extra file onto js/custom.js and the second Concat is cached. */ -}}
     {{- $reveal := resources.Get "js/img-reveal.js" -}}
@@ -112,15 +147,6 @@
       <script
         src="{{ $secureReveal.RelPermalink }}"
         integrity="{{ $secureReveal.Data.Integrity }}"
-=======
-    {{- /* End of body so .site-bg__poster exists before handoff is consumed. */ -}}
-    {{- $parallax := resources.Get "js/parallax.js" -}}
-    {{- if $parallax -}}
-      {{- $secureParallax := $parallax | resources.Minify | resources.Fingerprint -}}
-      <script
-        src="{{ $secureParallax.RelPermalink }}"
-        integrity="{{ $secureParallax.Data.Integrity }}"
->>>>>>> origin/main
         crossorigin="anonymous"
       ></script>
     {{- end -}}

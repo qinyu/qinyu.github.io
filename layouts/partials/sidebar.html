@@ -5,18 +5,14 @@
         class="sidebar__introduction-profileimage"
         src="{{ .Site.Params.profilePicture | relURL }}"
         alt="profile picture"
+        width="127"
+        height="127"
       />
-      {{ if .IsHome }}
-        <div class="sidebar__introduction-title">
-          <h1>
-            <a href="{{ .Site.BaseURL | relLangURL }}">{{ .Site.Params.Title }}</a>
-          </h1>
-        </div>
-      {{ else }}
-        <div class="sidebar__introduction-title">
-          <a href="{{ .Site.BaseURL | relLangURL }}">{{ .Site.Params.Title }}</a>
-        </div>
-      {{ end }}
+      <div class="sidebar__introduction-title">
+        {{ if .IsHome }}<h1>{{ end }}
+        <a href="{{ .Site.BaseURL | relLangURL }}">{{ .Site.Params.Title }}</a>
+        {{ if .IsHome }}</h1>{{ end }}
+      </div>
       <p class="sidebar__introduction-subtitle">Qin Yu is writing</p>
       <div class="sidebar__introduction-description">
         <p>{{ replace .Site.Params.description "\n" "<br />" | safeHTML }}</p>

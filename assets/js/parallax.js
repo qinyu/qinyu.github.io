@@ -4,15 +4,18 @@
   const plateQuery = window.matchMedia(
     "(orientation: portrait), (max-aspect-ratio: 1 / 1)",
   );
-  // Cover + overflow only. peakScale is computed, not 1.024:
-  //   max_scale ≤ 1 + (rest_overflow_frac − bounce_reserve − safety)
-  // rest_overflow_frac = per-side extra / viewport, from the poster's
-  // layout box (or --bg-rest if the node is not ready). Bounce
-  // consumes Y (tightest on 4:3 iPad height); leftover must stay
-  // ≥ bounce travel. Translate ≤ bounceReserve. Never scale < 1.
+  // Cover + overflow only. Bounce and scroll-zoom are separate:
+  //   bounce: translate ≤ 6% of layout vh. At scale 1, leftover
+  //           overflow must stay ≥ safety 2%. --bg-rest 120% ⇒
+  //           10% per-side ⇒ leftover 2% at rest. Unchanged.
+  //   zoom:   rest→end scale delta is zoomTravel (0.03 ⇒ peak 1.03).
+  //           Was ~0.02 from leftover math (peak 1.02). Zoom-in
+  //           grows the plate, so it does not spend bounce leftover.
+  // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
   const safetyMargin = 0.02;
+  const zoomTravel = 0.03;
   const ease = 0.16;
   const arriveEase = 0.08;
   const storageKey = "site-bg-parallax";
@@ -69,7 +72,10 @@
 
   const syncPeakScale = () => {
     const overflowFrac = measureOverflowFrac();
-    peakScale = Math.max(baseScale, 1 + overflowFrac - bounceReserve - safetyMargin);
+    // Bounce/cover still use rest overflow at scale 1 (tightest).
+    // Do not let a short plate raise zoom; do not spend leftover on zoom.
+    const leftoverAtBase = overflowFrac - bounceReserve - safetyMargin;
+    peakScale = leftoverAtBase < 0 ? baseScale : baseScale + zoomTravel;
     bouncePeak = baseScale + (peakScale - baseScale) / 2;
   };
 
