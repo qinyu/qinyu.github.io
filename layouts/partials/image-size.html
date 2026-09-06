@@ -1,0 +1,13 @@
+{{- /*
+  Read PNG/JPEG pixel size from static/. Returns dict w h.
+  Paths in data files are site-root URLs like /images/books/….
+*/ -}}
+{{- $src := . -}}
+{{- $rel := strings.TrimPrefix "/" $src -}}
+{{- $file := printf "static/%s" $rel -}}
+{{- $out := dict "w" 0 "h" 0 -}}
+{{- if fileExists $file -}}
+  {{- $cfg := imageConfig $file -}}
+  {{- $out = dict "w" $cfg.Width "h" $cfg.Height -}}
+{{- end -}}
+{{- return $out -}}

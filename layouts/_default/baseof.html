@@ -26,6 +26,7 @@
          Carry parallax/scale only — never a main-column scroll translate. */
       try {
         var root = document.documentElement;
+        root.classList.add("js");
         var handoff = sessionStorage.getItem("site-bg-handoff") === "1";
         if (handoff) {
           root.classList.add("is-nav-carry");
@@ -65,9 +66,18 @@
     </script>
     <div class="site-bg" aria-hidden="true">
       <div class="site-bg__frame">
-        <div class="site-bg__poster"></div>
+        <div class="site-bg__poster loading"></div>
       </div>
     </div>
+    <noscript>
+      <style>
+        .bookshelf__cover.loading img,
+        .series-grid__cover.loading img,
+        .site-bg__poster.loading {
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
     <div class="site-bg__veil" aria-hidden="true"></div>
     <div class="wrapper">
       <aside
@@ -93,6 +103,16 @@
 
     {{- partial "footer.html" (dict "context" . "footerClassModifier" "base") -}}
 
+<<<<<<< HEAD
+    {{- /* After medium-zoom's cover clone. Not in customJs: Anatole concats
+         every extra file onto js/custom.js and the second Concat is cached. */ -}}
+    {{- $reveal := resources.Get "js/img-reveal.js" -}}
+    {{- if $reveal -}}
+      {{- $secureReveal := $reveal | resources.Minify | resources.Fingerprint -}}
+      <script
+        src="{{ $secureReveal.RelPermalink }}"
+        integrity="{{ $secureReveal.Data.Integrity }}"
+=======
     {{- /* End of body so .site-bg__poster exists before handoff is consumed. */ -}}
     {{- $parallax := resources.Get "js/parallax.js" -}}
     {{- if $parallax -}}
@@ -100,6 +120,7 @@
       <script
         src="{{ $secureParallax.RelPermalink }}"
         integrity="{{ $secureParallax.Data.Integrity }}"
+>>>>>>> origin/main
         crossorigin="anonymous"
       ></script>
     {{- end -}}

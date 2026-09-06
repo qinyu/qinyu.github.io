@@ -152,7 +152,12 @@ html,
   aspect-ratio: 16 / 9;
   pointer-events: none;
   /* Transparent until the Mars file decodes so html's fallback plate
+<<<<<<< HEAD
+     shows through — opaque --void here is the section-switch black flash.
+     Opacity 0→1 is a reveal only; do not change this box's size. */
+=======
      shows through — opaque --void here is the section-switch black flash. */
+>>>>>>> origin/main
   background-color: transparent;
   background-image: var(--bg-image);
   background-repeat: no-repeat;
@@ -1138,7 +1143,8 @@ html.theme--dark .post a.series-grid__item:active {
   isolation: auto;
   contain: none;
   z-index: 0;
-  /* Follow the PNG (≈3:4), not a 1/1 square — aspect-ratio boxes clip glow. */
+  /* Follow the PNG (≈3:4). Do not put aspect-ratio on this glow host —
+     that box clipped ::before bloom. Reserve on the img instead. */
   aspect-ratio: auto;
   padding: 0;
   overflow: visible;
@@ -1179,6 +1185,7 @@ html.theme--dark .post a.series-grid__item:active {
 }
 
 .series-grid__cover {
+  display: block;
   overflow: hidden;
   border-radius: 6px;
   aspect-ratio: 4 / 3;
@@ -1203,6 +1210,31 @@ html.theme--dark .post a.series-grid__item:active {
   will-change: auto;
 }
 
+/* HTML width/height + this ratio reserve the slot before decode.
+   Glow stays on the overflow:visible parent, not this box. */
+.post__content .bookshelf__cover img {
+  aspect-ratio: var(--cover-ratio, 3 / 4);
+}
+
+html.js .bookshelf__cover.loading:not(.is-loaded) img,
+html.js .series-grid__cover.loading:not(.is-loaded) img {
+  opacity: 0;
+}
+
+html.js .bookshelf__cover.is-loaded img,
+html.js .series-grid__cover.is-loaded img {
+  opacity: 1;
+}
+
+html.js .site-bg__poster.loading:not(.is-loaded) {
+  opacity: 0;
+}
+
+html.js .site-bg__poster.is-loaded {
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
 /* Theme medium-zoom stamps this class on every post img (transform ghost). */
 .post__content .bookshelf .medium-zoom-image,
 .post__content .series-grid .medium-zoom-image {
@@ -1217,7 +1249,7 @@ html.theme--dark .post a.series-grid__item:active {
   object-fit: cover;
   filter: none;
   transform: none;
-  transition: none;
+  transition: opacity 0.35s ease;
 }
 
 /*
@@ -1234,7 +1266,7 @@ html.theme--dark .post a.series-grid__item:active {
 
 .post__content .bookshelf__cover img {
   transform-origin: center center;
-  transition: transform 0.22s ease;
+  transition: transform 0.22s ease, opacity 0.35s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1343,6 +1375,13 @@ html.is-nav-carry .animated {
   .site-bg__poster {
     transform: none;
     will-change: auto;
+  }
+
+  html.js .bookshelf__cover.loading img,
+  html.js .series-grid__cover.loading img,
+  html.js .site-bg__poster.loading {
+    opacity: 1;
+    transition: none;
   }
 
   .site-bg__veil {

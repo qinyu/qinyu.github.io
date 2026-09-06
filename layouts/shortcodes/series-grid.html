@@ -1,8 +1,18 @@
 <div class="series-grid">
   {{ range hugo.Data.series }}
+    {{- $size := partial "image-size.html" .cover -}}
+    {{- $w := cond (gt $size.w 0) $size.w 4 -}}
+    {{- $h := cond (gt $size.h 0) $size.h 3 -}}
     <a class="series-grid__item" href="{{ .url }}" draggable="false">
-      <span class="series-grid__cover">
-        <img src="{{ .cover }}" alt="{{ .title }}" draggable="false" />
+      <span class="series-grid__cover loading">
+        <img
+          src="{{ .cover }}"
+          alt="{{ .title }}"
+          width="{{ $w }}"
+          height="{{ $h }}"
+          draggable="false"
+          decoding="async"
+        />
       </span>
       <span class="series-grid__title">{{ .title }}</span>
       <span class="series-grid__meta">{{ .source }}</span>
