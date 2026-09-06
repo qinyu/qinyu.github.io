@@ -248,6 +248,13 @@ html,
     box-shadow: none;
   }
 
+  /*
+    One shared main measure for every section page (prose and cards):
+      ≥961         800
+      ≥1440        960
+      ≥1800 / 1921 1000
+    1921 re-asserts vs Anatole widescreen centering.
+  */
   .wrapper__main {
     box-sizing: border-box;
     width: 800px;
@@ -257,26 +264,6 @@ html,
     background-color: transparent !important;
     border: none;
     box-shadow: none;
-  }
-
-  /*
-    Wide-desktop column scale (sidebar stays 330px; Mars unchanged):
-
-      viewport     prose main    cards main               cards right gutter
-      ≥961         800           min(1120, leftover)      0 (fill leftover)
-      ≥1280        800           min(1120, leftover−72)   72
-      ≥1440        960           min(1200, leftover−88)   88
-      ≥1800 / 1921 1000          min(1280, leftover−104)  104
-
-    Below 1280 a fixed gutter would make cards narrower than 800px prose
-    (e.g. 1190 → 788). Cards stay wider than prose; on wide screens they
-    stop full-bleed. 1921 re-asserts vs Anatole widescreen centering.
-  */
-  .wrapper__main:has(.post--cards) {
-    width: auto;
-    max-width: 1120px;
-    flex: 1 1 auto;
-    min-width: 0;
   }
 
   .sidebar,
@@ -360,29 +347,11 @@ html,
   }
 }
 
-@media screen and (min-width: 1280px) {
-  .wrapper__main:has(.post--cards) {
-    width: auto;
-    max-width: 1120px;
-    flex: 1 1 auto;
-    min-width: 0;
-    margin-right: 72px;
-  }
-}
-
 @media screen and (min-width: 1440px) {
   .wrapper__main {
     width: 960px;
     max-width: 960px;
     flex: 0 0 960px;
-  }
-
-  .wrapper__main:has(.post--cards) {
-    width: auto;
-    max-width: 1200px;
-    flex: 1 1 auto;
-    min-width: 0;
-    margin-right: 88px;
   }
 }
 
@@ -391,14 +360,6 @@ html,
     width: 1000px;
     max-width: 1000px;
     flex: 0 0 1000px;
-  }
-
-  .wrapper__main:has(.post--cards) {
-    width: auto;
-    max-width: 1280px;
-    flex: 1 1 auto;
-    min-width: 0;
-    margin-right: 104px;
   }
 }
 
@@ -416,14 +377,6 @@ html,
     width: 1000px;
     max-width: 1000px;
     flex: 0 0 1000px;
-  }
-
-  .wrapper__main:has(.post--cards) {
-    width: auto;
-    max-width: 1280px;
-    flex: 1 1 auto;
-    min-width: 0;
-    margin-right: 104px;
   }
 }
 
@@ -1008,9 +961,8 @@ html.theme--dark a.sidebar__tag:hover {
   max-width: 100%;
   min-width: 0;
   margin: 0;
-  /* No extra top band — share .post’s 2.6rem with text pages.
-     Side inset matches .post / .archive. */
-  padding: 0 1.8rem 0.4rem;
+  /* Fill the shared .post box — no extra side inset on top of 1.8rem. */
+  padding: 0 0 0.4rem;
   overflow: visible;
 }
 
@@ -1027,12 +979,10 @@ html.theme--dark a.sidebar__tag:hover {
 }
 
 /*
-  Wide desktop: 5 books is the primary large layout.
-  ≥1280 catches 13" Mac / HD laptop; iPad 11" landscape (1194) stays 4.
-  Drop the 1800 6-col — covers looked tiny once the card column is capped.
-  翻译作品 steps later and only once (3 → 4 at 1600); do not match books.
+  Equal 1fr columns inside the shared .wrapper__main measure.
+  Books: 4, then 5 when the column grows to 960. Translations: 3 → 4 later.
 */
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1440px) {
   .bookshelf {
     grid-template-columns: repeat(5, 1fr);
   }
@@ -1527,7 +1477,8 @@ html.is-nav-carry .wrapper__main {
 
   .bookshelf,
   .series-grid {
-    padding: 0 0.8rem 0.4rem;
+    /* Portrait .post already uses 0.8rem sides. */
+    padding: 0 0 0.4rem;
   }
 
   .bookshelf {
