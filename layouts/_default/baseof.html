@@ -103,6 +103,18 @@
 
     {{- partial "footer.html" (dict "context" . "footerClassModifier" "base") -}}
 
+    {{- /* After medium-zoom's cover clone. Not in customJs: Anatole concats
+         every extra file onto js/custom.js and the second Concat is cached. */ -}}
+    {{- $reveal := resources.Get "js/img-reveal.js" -}}
+    {{- if $reveal -}}
+      {{- $secureReveal := $reveal | resources.Minify | resources.Fingerprint -}}
+      <script
+        src="{{ $secureReveal.RelPermalink }}"
+        integrity="{{ $secureReveal.Data.Integrity }}"
+        crossorigin="anonymous"
+      ></script>
+    {{- end -}}
+
     {{- if (eq .Site.Params.simpleAnalytics.enable true) -}}
       {{- partial "analytics/simpleanalytics.html" . -}}
     {{- end -}}

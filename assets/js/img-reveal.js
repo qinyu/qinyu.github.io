@@ -1,6 +1,7 @@
 (() => {
   /* Reserve-then-reveal for shelf covers and the Mars poster.
-     Do not resize .site-bg__poster here — parallax.js owns rest framing. */
+     Use load/complete, not decode() — decode can hang and leave opacity 0.
+     Do not resize .site-bg__poster; parallax.js owns rest framing. */
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const markLoaded = (el) => {
@@ -9,23 +10,16 @@
     }
   };
 
-  const whenDecoded = (img, done) => {
+  const whenReady = (img, done) => {
     if (!img) {
       done();
       return;
     }
-    const finish = () => {
-      if (typeof img.decode === "function") {
-        img.decode().then(done).catch(done);
-      } else {
-        done();
-      }
-    };
-    if (img.complete && img.naturalWidth > 0) {
-      finish();
+    if (img.complete) {
+      done();
       return;
     }
-    img.addEventListener("load", finish, { once: true });
+    img.addEventListener("load", done, { once: true });
     img.addEventListener("error", done, { once: true });
   };
 
@@ -34,7 +28,7 @@
       if (cover.classList.contains("is-loaded")) {
         return;
       }
-      whenDecoded(cover.querySelector("img"), () => markLoaded(cover));
+      whenReady(cover.querySelector("img"), () => markLoaded(cover));
     });
   };
 
@@ -44,9 +38,8 @@
     return match ? match[2] : "";
   };
 
-  /* Start Mars decode as soon as this head bundle runs. */
+  /* Start Mars fetch as soon as this head bundle runs. */
   const mars = new Image();
-  mars.decoding = "async";
   const marsSrc = posterUrl();
   if (marsSrc) {
     mars.src = marsSrc;
@@ -57,15 +50,11 @@
     if (!poster || poster.classList.contains("is-loaded")) {
       return;
     }
-    if (reduce.matches) {
+    if (reduce.matches || !marsSrc) {
       markLoaded(poster);
       return;
     }
-    if (!marsSrc) {
-      markLoaded(poster);
-      return;
-    }
-    whenDecoded(mars, () => markLoaded(poster));
+    whenReady(mars, () => markLoaded(poster));
   };
 
   const boot = () => {
@@ -73,10 +62,9 @@
     revealPoster();
   };
 
+  boot();
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot, { once: true });
-  } else {
-    boot();
   }
   document.addEventListener("cover-imgs-reset", scanCovers);
   window.addEventListener("load", boot);

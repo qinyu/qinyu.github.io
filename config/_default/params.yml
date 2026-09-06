@@ -12,7 +12,6 @@ customCss:
 customJs:
   - js/parallax.js
   - js/shelf-interact.js
-  - js/img-reveal.js
 googleAnalytics: false
 displayMode: dark
 disableThemeSwitcher: true
