@@ -16,7 +16,6 @@
   const ease = 0.16;
   const arriveEase = 0.08;
   const storageKey = "site-bg-parallax";
-  const scrollKey = "site-bg-scroll";
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
   const baseScale = 1;
@@ -32,12 +31,11 @@
   let touchStartY = 0;
   let touchPull = 0;
   let touching = false;
-  // After an in-site nav: keep the outgoing visual, ease to the new page's Y.
+  // After an in-site nav: keep the outgoing parallax/scale, ease to this page.
   let arriving = false;
-  let arriveScroll = 0;
   let holdFirstFrame = false;
   let userTookScroll = false;
-  let navScrollY = 0;
+  let booted = false;
 
   // Layout cache — resize / load only. Scroll must not measure.
   let poster = null;
@@ -134,18 +132,6 @@
     }
   };
 
-  const persistScroll = (y) => {
-    try {
-      sessionStorage.setItem(scrollKey, String(y));
-    } catch (_) {
-      /* private mode */
-    }
-  };
-
-  const applyScrollCarry = () => {
-    root.style.setProperty("--nav-scroll-y", `${navScrollY.toFixed(2)}px`);
-  };
-
   try {
     const saved = sessionStorage.getItem(storageKey);
     if (saved != null) {
@@ -171,32 +157,9 @@
         currentScale = existingScale;
       }
     }
-    arriving = sessionStorage.getItem(handoffKey) === "1";
-    if (arriving) {
-      sessionStorage.removeItem(handoffKey);
-      const savedScroll = sessionStorage.getItem(scrollKey);
-      if (savedScroll != null) {
-        const parsedScroll = parseFloat(savedScroll);
-        if (!Number.isNaN(parsedScroll)) {
-          navScrollY = Math.max(0, parsedScroll);
-        }
-      }
-    }
+    /* Handoff is consumed in boot() after .site-bg__poster exists. */
   } catch (_) {
     /* private mode */
-  }
-
-  if (arriving) {
-    root.classList.add("is-nav-carry");
-    const maxScroll = Math.max(0, root.scrollHeight - (root.clientHeight || window.innerHeight || 0));
-    if (maxScroll > 0) {
-      navScrollY = clamp(navScrollY, 0, maxScroll);
-    }
-    arriveScroll = navScrollY;
-    applyScrollCarry();
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
   }
 
   const pageProgress = () => {
@@ -252,13 +215,10 @@
       return;
     }
     arriving = false;
-    arriveScroll = 0;
-    navScrollY = 0;
-    applyScrollCarry();
     root.classList.remove("is-nav-carry");
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "auto";
-    }
+    /* Keep history.scrollRestoration = "manual" for in-site nav.
+       Flipping to auto here lets the browser restore a stale Y
+       while image-heavy pages (出版著作) are still growing. */
   };
 
   const snapRest = () => {
@@ -268,13 +228,11 @@
     targetScale = baseScale;
     holdFirstFrame = false;
     lerpUntilSettled = false;
-    navScrollY = 0;
     if (poster) {
       poster.style.transform = "";
     }
     root.style.setProperty("--bg-parallax", "0px");
     root.style.setProperty("--bg-scale", "1");
-    applyScrollCarry();
     rafPending = false;
     finishArrive();
   };
@@ -308,17 +266,9 @@
     }
 
     const step = arriving ? arriveEase : ease;
-    if (arriving && !userTookScroll && arriveScroll > 0.5) {
-      arriveScroll += (0 - arriveScroll) * step;
-      if (arriveScroll < 0.5) {
-        arriveScroll = 0;
-      }
-      navScrollY = arriveScroll;
-      applyScrollCarry();
-    }
     const delta = target - current;
     const deltaScale = targetScale - currentScale;
-    if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
+    if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008) {
       current = target;
       currentScale = targetScale;
       apply();
@@ -333,6 +283,9 @@
   };
 
   const requestTick = (lerp) => {
+    if (!booted) {
+      return;
+    }
     if (reduce.matches) {
       snapRest();
       return;
@@ -349,11 +302,8 @@
 
   const cancelScrollSettle = () => {
     userTookScroll = true;
-    arriveScroll = 0;
-    navScrollY = 0;
     lerpUntilSettled = false;
-    applyScrollCarry();
-    root.classList.remove("is-nav-carry");
+    finishArrive();
   };
   const portraitNav = window.matchMedia("(max-width: 960px)");
   const portraitNavSlop = 8;
@@ -373,7 +323,6 @@
 
   const markHandoff = () => {
     persistParallax();
-    persistScroll(readScrollY());
     try {
       sessionStorage.setItem(handoffKey, "1");
     } catch (_) {
@@ -422,11 +371,6 @@
 
   window.addEventListener("pagehide", () => {
     persistParallax();
-    // Unload often reports scrollY=0; do not clobber a handoff offset.
-    const y = readScrollY();
-    if (y > 0.5) {
-      persistScroll(y);
-    }
   });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") {
@@ -526,10 +470,7 @@
     if (event.persisted) {
       arriving = false;
       holdFirstFrame = false;
-      arriveScroll = 0;
-      navScrollY = 0;
       lerpUntilSettled = false;
-      applyScrollCarry();
       root.classList.remove("is-nav-carry");
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "auto";
@@ -571,20 +512,55 @@
     });
   }
 
-  cacheMetrics();
+  const consumeHandoff = () => {
+    try {
+      arriving = sessionStorage.getItem(handoffKey) === "1";
+      if (arriving) {
+        sessionStorage.removeItem(handoffKey);
+      }
+    } catch (_) {
+      arriving = false;
+    }
+    if (!arriving) {
+      return;
+    }
+    root.classList.add("is-nav-carry");
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  };
 
-  if (reduce.matches) {
-    snapRest();
-  } else {
-    // Paint the carried frame first, then ease to this page's Y. Never snap.
-    holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - baseScale) > 0.0008;
-    apply();
-    requestTick(arriving || holdFirstFrame);
-  }
-  if (typeof portraitNav.addEventListener === "function") {
-    portraitNav.addEventListener("change", syncPortraitNav);
-  } else if (typeof portraitNav.addListener === "function") {
-    portraitNav.addListener(syncPortraitNav);
-  }
-  syncPortraitNav();
+  const boot = () => {
+    poster = document.querySelector(".site-bg__poster");
+    if (!poster) {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot, { once: true });
+        return;
+      }
+      window.requestAnimationFrame(boot);
+      return;
+    }
+
+    consumeHandoff();
+    cacheMetrics();
+    booted = true;
+
+    if (reduce.matches) {
+      snapRest();
+    } else {
+      // Paint the carried parallax/scale first, then ease. Never snap.
+      holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - baseScale) > 0.0008;
+      apply();
+      requestTick(arriving || holdFirstFrame);
+    }
+    if (typeof portraitNav.addEventListener === "function") {
+      portraitNav.addEventListener("change", syncPortraitNav);
+    } else if (typeof portraitNav.addListener === "function") {
+      portraitNav.addListener(syncPortraitNav);
+    }
+    syncPortraitNav();
+  };
+
+  boot();
 })();

@@ -152,8 +152,12 @@ html,
   aspect-ratio: 16 / 9;
   pointer-events: none;
   /* Transparent until the Mars file decodes so html's fallback plate
+<<<<<<< HEAD
      shows through — opaque --void here is the section-switch black flash.
      Opacity 0→1 is a reveal only; do not change this box's size. */
+=======
+     shows through — opaque --void here is the section-switch black flash. */
+>>>>>>> origin/main
   background-color: transparent;
   background-image: var(--bg-image);
   background-repeat: no-repeat;
@@ -1348,20 +1352,23 @@ html.js .site-bg__poster.is-loaded {
   display: none !important;
 }
 
-/* In-site section switch: keep the outgoing parallax frame, skip fadeInDown snap. */
+/* In-site section switch: keep the outgoing parallax/scale frame only.
+   Do not translate .wrapper__main — the sticky/fixed header lives inside
+   it, and a carried Y eases the chrome off the page (f70a5f4). */
 html.is-nav-carry .animated {
   animation: none !important;
   transition: none !important;
 }
 
-/* Carry the outgoing main-column scroll as a transform so first paint is not at y=0. */
-html.is-nav-carry .wrapper__main {
-  transform: translate3d(0, calc(var(--nav-scroll-y, 0px) * -1), 0);
-}
-
-/* fadeInDown's translateY creates a containing block that square-clips glow. */
-.post--cards.animated {
-  animation: none;
+/* Kill Anatole fadeInDown on every section surface. Handoff must not
+   be the only guard — a missed carry still must not drop content from above.
+   fadeInDown's translateY also creates a containing block that square-clips glow. */
+.animated.fadeInDown,
+.post.animated,
+.post-entry.animated,
+.post--cards.animated,
+.archive.animated {
+  animation: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
