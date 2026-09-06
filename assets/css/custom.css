@@ -152,12 +152,8 @@ html,
   aspect-ratio: 16 / 9;
   pointer-events: none;
   /* Transparent until the Mars file decodes so html's fallback plate
-<<<<<<< HEAD
      shows through — opaque --void here is the section-switch black flash.
      Opacity 0→1 is a reveal only; do not change this box's size. */
-=======
-     shows through — opaque --void here is the section-switch black flash. */
->>>>>>> origin/main
   background-color: transparent;
   background-image: var(--bg-image);
   background-repeat: no-repeat;
@@ -1328,6 +1324,26 @@ html.js .site-bg__poster.is-loaded {
   font-size: 1.15rem;
 }
 
+/*
+  Book cards: title + meta stay one line in every orientation.
+  Slightly tighter type on the 4-col narrow grid; ellipsis only if
+  a title still overflows after that shrink (e.g. 云原生安全与DevOps保障).
+*/
+.bookshelf__title,
+.post__content .bookshelf__title {
+  overflow: hidden;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.bookshelf__title--tight,
+.post__content .bookshelf__title--tight {
+  font-size: 1.1rem;
+}
+
 .bookshelf__meta,
 .series-grid__meta,
 .post__content .bookshelf__meta,
@@ -1346,6 +1362,16 @@ html.js .site-bg__poster.is-loaded {
   color: var(--muted);
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.bookshelf__meta,
+.post__content .bookshelf__meta {
+  overflow: hidden;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1.25;
 }
 
 .navbar-burger {
@@ -1560,7 +1586,28 @@ html.is-nav-carry .animated {
   }
 
   .bookshelf__item {
-    padding: 0.2rem 0.4rem 0.7rem;
+    width: 100%;
+    padding: 0.2rem 0.2rem 0.7rem;
+  }
+
+  /* 4-col landscape / tablet: shrink title so long names stay one line. */
+  .bookshelf__title,
+  .post__content .bookshelf__title {
+    font-size: 1.15rem;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+  }
+
+  .bookshelf__title--tight,
+  .post__content .bookshelf__title--tight {
+    font-size: 1.02rem;
+  }
+
+  .bookshelf__meta,
+  .post__content .bookshelf__meta {
+    font-size: 1.1rem;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
   }
 
   .bookshelf__cover::before {
@@ -1568,6 +1615,35 @@ html.is-nav-carry .animated {
     right: -51%;
     top: -49%;
     bottom: -56%;
+  }
+}
+
+/*
+  Phone / narrow portrait only. Landscape keeps the 4 / 3 grids above.
+  Books: 2 equal columns. Translations: one card per row.
+*/
+@media screen and (max-width: 960px) and (orientation: portrait) {
+  .bookshelf {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1.1rem;
+    row-gap: 1.5rem;
+  }
+
+  .series-grid {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 2.2rem;
+  }
+
+  /* 2-col is wider than 4-col landscape — restore a bit of title size. */
+  .bookshelf__title,
+  .post__content .bookshelf__title {
+    font-size: 1.2rem;
+  }
+
+  .bookshelf__title--tight,
+  .post__content .bookshelf__title--tight {
+    font-size: 1.08rem;
   }
 }
 
