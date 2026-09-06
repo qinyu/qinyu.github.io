@@ -72,6 +72,9 @@
         {{- partial "mermaid.html" . -}}
       {{- end -}}
     </div>
+    <div class="post__footer">
+      {{ partial "taxonomy/tag-chips.html" . }}
+    </div>
 
     {{ if and (or (eq .Type "post") (eq .Type .Site.Params.postSectionName)) (ne .Page.Params.disableComments true) }}
       {{- if .Site.Config.Services.Disqus.Shortname -}}

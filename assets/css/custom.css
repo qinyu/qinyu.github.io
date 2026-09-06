@@ -728,9 +728,16 @@ html.theme--light .archive__list-title:hover {
   margin: 0.15rem 0 1.35rem;
 }
 
+.post__footer .post__tag-chips {
+  margin: 1.2rem 0 0;
+}
+
 html .post__content a.post__tag-chip,
 html.theme--dark .post__content a.post__tag-chip,
-html.theme--light .post__content a.post__tag-chip {
+html.theme--light .post__content a.post__tag-chip,
+html .post__footer a.post__tag-chip,
+html.theme--dark .post__footer a.post__tag-chip,
+html.theme--light .post__footer a.post__tag-chip {
   display: inline-block;
   margin: 0;
   padding: 0.12rem 0.75rem;
@@ -746,7 +753,10 @@ html.theme--light .post__content a.post__tag-chip {
 
 html .post__content a.post__tag-chip:hover,
 html.theme--dark .post__content a.post__tag-chip:hover,
-html.theme--light .post__content a.post__tag-chip:hover {
+html.theme--light .post__content a.post__tag-chip:hover,
+html .post__footer a.post__tag-chip:hover,
+html.theme--dark .post__footer a.post__tag-chip:hover,
+html.theme--light .post__footer a.post__tag-chip:hover {
   color: #1a1610;
   background-color: var(--sand);
   border-color: var(--sand);
@@ -947,7 +957,8 @@ html .sidebar .footer a:visited {
   color: var(--ink) !important;
 }
 
-html .post__content a.post__tag-chip:visited {
+html .post__content a.post__tag-chip:visited,
+html .post__footer a.post__tag-chip:visited {
   color: var(--sand);
 }
 
@@ -959,6 +970,8 @@ html.theme--light a.sidebar__tag:visited {
 
 html .post__content a.post__tag-chip:hover,
 html.theme--dark .post__content a.post__tag-chip:hover,
+html .post__footer a.post__tag-chip:hover,
+html.theme--dark .post__footer a.post__tag-chip:hover,
 html a.sidebar__tag:hover,
 html.theme--dark a.sidebar__tag:hover {
   color: #1a1610;
