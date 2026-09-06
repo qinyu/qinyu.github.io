@@ -81,7 +81,11 @@ html,
   min-height: 100vh;
   min-height: 100lvh;
   max-width: 100%;
-  overflow-x: hidden;
+  /* clip, not hidden: hidden + overflow-y:visible computes to auto and
+     can lock iPad document scroll (only the first book row reachable).
+     clip keeps the glow from sideways bleed without a scrollport. */
+  overflow-x: clip;
+  overflow-y: visible;
   transform: none;
 }
 
@@ -89,9 +93,11 @@ html,
   isolation: isolate;
   transform: none;
   max-width: 100%;
-  /* Hidden x only: overflow:hidden would square-clip the shelf glow. */
-  overflow-x: hidden;
+  /* Hidden x only: overflow:hidden would square-clip the shelf glow
+     and, on iPad, trap vertical pan on this box. */
+  overflow-x: clip;
   overflow-y: visible;
+  height: auto;
 }
 
 .site-bg {
@@ -263,10 +269,13 @@ html .sidebar {
   transform: none;
 }
 
+html .sidebar .sidebar__content,
 .sidebar__content {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  /* Do not grow with the main column — that re-centers / jumps the avatar. */
+  flex-grow: 0;
 }
 
 .sidebar__introduction-profileimage {
@@ -305,12 +314,17 @@ html .sidebar {
 @media screen and (min-width: 961px) {
   .wrapper {
     justify-content: flex-start;
+    /* Stretching the aside to the main column is what made the
+       in-flow sidebar (and a briefly un-fixed avatar) jump. */
+    align-items: flex-start;
   }
 
   .wrapper__sidebar {
     width: 330px;
     max-width: 330px;
     flex: 0 0 330px;
+    align-self: flex-start;
+    height: auto;
     border: none;
     box-shadow: none;
   }
@@ -339,8 +353,10 @@ html .sidebar {
   html.theme--light .sidebar {
     position: fixed;
     top: 0;
+    /* svh, not dvh/vh: iPad Chrome toolbar show/hide was resizing
+       the sidebar and snapping the avatar on section switch. */
     height: 100%;
-    height: 100dvh;
+    height: 100svh;
     border: none;
     border-right: none;
     border-left: none;
@@ -365,9 +381,12 @@ html .sidebar {
   }
 
   /* Pin the avatar stack; do not re-center when main-column height changes. */
+  html .sidebar .sidebar__content,
   .sidebar__content {
     justify-content: flex-start;
+    flex-grow: 0;
     padding-top: 6.5vh;
+    padding-top: 6.5svh;
   }
 
   .header,
@@ -1204,6 +1223,17 @@ html.theme--dark .post a.series-grid__item:active {
   transition: none;
 }
 
+/* Empty reserved slot: no yellow halo until the cover img is visible. */
+html.js .bookshelf__cover.loading:not(.is-loaded)::before {
+  opacity: 0;
+  visibility: hidden;
+}
+
+html.js .bookshelf__cover.is-loaded::before {
+  opacity: 0.76;
+  visibility: visible;
+}
+
 .series-grid__cover {
   display: block;
   overflow: hidden;
@@ -1246,13 +1276,13 @@ html.js .series-grid__cover.is-loaded img {
   opacity: 1;
 }
 
-html.js .site-bg__poster.loading:not(.is-loaded) {
-  opacity: 0;
-}
-
+/* Poster is already the same Mars file as html's plate and is
+   preloaded / cached across in-site nav. Never opacity 0→1. */
+html.js .site-bg__poster,
+html.js .site-bg__poster.loading,
 html.js .site-bg__poster.is-loaded {
   opacity: 1;
-  transition: opacity 0.45s ease;
+  transition: none;
 }
 
 /* Theme medium-zoom stamps this class on every post img (transform ghost). */
@@ -1429,8 +1459,10 @@ html.is-nav-carry .animated {
 
   html.js .bookshelf__cover.loading img,
   html.js .series-grid__cover.loading img,
+  html.js .bookshelf__cover.loading:not(.is-loaded)::before,
   html.js .site-bg__poster.loading {
     opacity: 1;
+    visibility: visible;
     transition: none;
   }
 
@@ -1463,6 +1495,19 @@ html.is-nav-carry .animated {
 }
 
 @media screen and (max-width: 960px) {
+  /* Document stays the scroller. A 100dvh / overflow lock here is
+     what left iPad portrait on the first book row. */
+  html,
+  .html,
+  .body,
+  .wrapper,
+  .wrapper__main {
+    height: auto;
+    max-height: none;
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
   .site-bg__poster {
     /* Narrow screens keep cover + left limb; do not revert to 100% auto. */
     background-size: var(--bg-size);
@@ -1643,10 +1688,40 @@ html.is-nav-carry .animated {
 }
 
 /*
-  Phone / narrow portrait only. Landscape keeps the 4 / 3 grids above.
-  Books: 2 equal columns. Translations: one card per row.
+  Phone portrait only — not iPad / tablet.
+
+  #46 used (max-width: 960px) and (orientation: portrait). That also
+  matches iPad portrait (CSS width is typically 768–834, still ≤960)
+  and forced books 2-col / translations 1-col, and the denser 2-col
+  cards plus overflow-x:hidden locked vertical scroll.
+
+  Detection is width + input, not a single magic px and not UA:
+    max-width: 600px  — phones (~390) hit this; iPad portrait does not
+    orientation: portrait
+    hover: none + pointer: coarse — phones; a narrow desktop window
+      with a mouse keeps the dense 4 / 3 from the 960 block
+
+  Example viewports:
+    iPhone 14/15 portrait     ~390×844   → 2 / 1
+    iPhone landscape          ~844×390   → 4 / 3 (960 block, not this)
+    iPad Mini/Air/Pro port.   ~768–834   → 4 / 3 (960 block)
+    iPad landscape            ~1024–1194 → 4 / 3 (desktop ≥961)
+    desktop 1280              4 / 3
+    desktop 1440 / 1600       5 / 3 then 5 / 4
 */
-@media screen and (max-width: 960px) and (orientation: portrait) {
+/* iPad / tablet portrait: keep the dense 960-block grids (4 / 3).
+   Re-assert here so a leftover 960+portrait phone rule cannot win. */
+@media screen and (min-width: 601px) and (max-width: 960px) and (orientation: portrait) {
+  .bookshelf {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .series-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) and (orientation: portrait) and (hover: none) and (pointer: coarse) {
   .bookshelf {
     grid-template-columns: repeat(2, 1fr);
     column-gap: 1.1rem;

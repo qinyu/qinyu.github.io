@@ -66,15 +66,16 @@
     </script>
     <div class="site-bg" aria-hidden="true">
       <div class="site-bg__frame">
-        <div class="site-bg__poster loading"></div>
+        <div class="site-bg__poster"></div>
       </div>
     </div>
     <noscript>
       <style>
         .bookshelf__cover.loading img,
         .series-grid__cover.loading img,
-        .site-bg__poster.loading {
+        .bookshelf__cover.loading::before {
           opacity: 1 !important;
+          visibility: visible !important;
         }
       </style>
     </noscript>
@@ -82,26 +83,44 @@
     <style>
       /* First-paint pin: Anatole's later desktop rule centers the
          sidebar stack. This block is in the body, after theme CSS,
-         so 关于 / 文章全集 get the inset before the avatar paints. */
+         so 关于 / 文章全集 get the inset before the avatar paints.
+         svh so iPad Chrome toolbar show/hide does not snap the stack. */
       .sidebar,
       html .sidebar {
         animation: none;
         transform: none;
       }
+      html .sidebar .sidebar__content,
       .sidebar__content {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+        flex-grow: 0;
       }
       @media screen and (min-width: 961px) {
+        html .sidebar .sidebar__content,
         .sidebar__content {
           padding-top: 6.5vh;
+          padding-top: 6.5svh;
         }
       }
       @media screen and (max-width: 960px) {
         .wrapper__sidebar {
           padding-top: 8rem;
         }
+        html,
+        .html,
+        .body,
+        .wrapper,
+        .wrapper__main {
+          height: auto;
+          max-height: none;
+          overflow-x: clip;
+          overflow-y: visible;
+        }
+      }
+      html.js .site-bg__poster {
+        opacity: 1;
       }
     </style>
     <div class="wrapper">
