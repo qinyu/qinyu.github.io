@@ -262,20 +262,21 @@ html,
   /*
     Wide-desktop column scale (sidebar stays 330px; Mars unchanged):
 
-      viewport     prose main    cards main              cards right gutter
-      ≥961         800           min(1120, leftover−72)  72
-      ≥1440        960           min(1200, leftover−88)  88
-      ≥1800 / 1921 1000          min(1280, leftover−104) 104
+      viewport     prose main    cards main               cards right gutter
+      ≥961         800           min(1120, leftover)      0 (fill leftover)
+      ≥1280        800           min(1120, leftover−72)   72
+      ≥1440        960           min(1200, leftover−88)   88
+      ≥1800 / 1921 1000          min(1280, leftover−104)  104
 
-    Cards stay wider than prose (less right void) but never full-bleed.
-    1921 re-asserts so Anatole’s widescreen centering does not win.
+    Below 1280 a fixed gutter would make cards narrower than 800px prose
+    (e.g. 1190 → 788). Cards stay wider than prose; on wide screens they
+    stop full-bleed. 1921 re-asserts vs Anatole widescreen centering.
   */
   .wrapper__main:has(.post--cards) {
     width: auto;
     max-width: 1120px;
     flex: 1 1 auto;
     min-width: 0;
-    margin-right: 72px;
   }
 
   .sidebar,
@@ -356,6 +357,16 @@ html,
     color: var(--sand);
     padding-bottom: 6px;
     border-bottom: 1px solid var(--sand);
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .wrapper__main:has(.post--cards) {
+    width: auto;
+    max-width: 1120px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-right: 72px;
   }
 }
 
