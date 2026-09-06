@@ -72,15 +72,6 @@
         {{- partial "mermaid.html" . -}}
       {{- end -}}
     </div>
-    <div class="post__footer">
-      {{ with .Page.Params.Categories }}
-        {{ partial "taxonomy/categories.html" . }}
-      {{ end }}
-
-      {{ with .Page.Params.Tags }}
-        {{ partial "taxonomy/tags.html" . }}
-      {{ end }}
-    </div>
 
     {{ if and (or (eq .Type "post") (eq .Type .Site.Params.postSectionName)) (ne .Page.Params.disableComments true) }}
       {{- if .Site.Config.Services.Disqus.Shortname -}}
