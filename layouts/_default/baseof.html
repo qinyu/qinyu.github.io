@@ -103,7 +103,17 @@
 
     {{- partial "footer.html" (dict "context" . "footerClassModifier" "base") -}}
 
-<<<<<<< HEAD
+    {{- /* End of body so .site-bg__poster exists before handoff is consumed. */ -}}
+    {{- $parallax := resources.Get "js/parallax.js" -}}
+    {{- if $parallax -}}
+      {{- $secureParallax := $parallax | resources.Minify | resources.Fingerprint -}}
+      <script
+        src="{{ $secureParallax.RelPermalink }}"
+        integrity="{{ $secureParallax.Data.Integrity }}"
+        crossorigin="anonymous"
+      ></script>
+    {{- end -}}
+
     {{- /* After medium-zoom's cover clone. Not in customJs: Anatole concats
          every extra file onto js/custom.js and the second Concat is cached. */ -}}
     {{- $reveal := resources.Get "js/img-reveal.js" -}}
@@ -112,15 +122,6 @@
       <script
         src="{{ $secureReveal.RelPermalink }}"
         integrity="{{ $secureReveal.Data.Integrity }}"
-=======
-    {{- /* End of body so .site-bg__poster exists before handoff is consumed. */ -}}
-    {{- $parallax := resources.Get "js/parallax.js" -}}
-    {{- if $parallax -}}
-      {{- $secureParallax := $parallax | resources.Minify | resources.Fingerprint -}}
-      <script
-        src="{{ $secureParallax.RelPermalink }}"
-        integrity="{{ $secureParallax.Data.Integrity }}"
->>>>>>> origin/main
         crossorigin="anonymous"
       ></script>
     {{- end -}}
