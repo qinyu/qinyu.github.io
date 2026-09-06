@@ -20,6 +20,7 @@
       /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
       try {
         var root = document.documentElement;
+        root.classList.add("js");
         var handoff = sessionStorage.getItem("site-bg-handoff") === "1";
         if (handoff) {
           root.classList.add("is-nav-carry");
@@ -65,9 +66,18 @@
     </script>
     <div class="site-bg" aria-hidden="true">
       <div class="site-bg__frame">
-        <div class="site-bg__poster"></div>
+        <div class="site-bg__poster loading"></div>
       </div>
     </div>
+    <noscript>
+      <style>
+        .bookshelf__cover.loading img,
+        .series-grid__cover.loading img,
+        .site-bg__poster.loading {
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
     <div class="site-bg__veil" aria-hidden="true"></div>
     <div class="wrapper">
       <aside

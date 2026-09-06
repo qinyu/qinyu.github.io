@@ -1,8 +1,18 @@
 <div class="bookshelf">
   {{ range hugo.Data.books }}
+    {{- $size := partial "image-size.html" .cover -}}
+    {{- $w := cond (gt $size.w 0) $size.w 3 -}}
+    {{- $h := cond (gt $size.h 0) $size.h 4 -}}
     <a class="bookshelf__item" href="{{ .url }}" rel="noopener noreferrer" target="_blank" draggable="false">
-      <span class="bookshelf__cover">
-        <img src="{{ .cover }}" alt="{{ .title }}" draggable="false" />
+      <span class="bookshelf__cover loading" style="--cover-ratio: {{ $w }} / {{ $h }}">
+        <img
+          src="{{ .cover }}"
+          alt="{{ .title }}"
+          width="{{ $w }}"
+          height="{{ $h }}"
+          draggable="false"
+          decoding="async"
+        />
       </span>
       <span class="bookshelf__title{{ if .compact }} bookshelf__title--tight{{ end }}">{{ .title }}</span>
       <span class="bookshelf__meta">{{ .role }} · {{ .year }}</span>

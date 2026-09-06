@@ -20,6 +20,7 @@
         clean.setAttribute("draggable", "false");
         img.parentNode.replaceChild(clean, img);
       });
+      document.dispatchEvent(new Event("cover-imgs-reset"));
       document.addEventListener(
         "dragstart",
         function (event) {
