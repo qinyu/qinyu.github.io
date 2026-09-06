@@ -1459,10 +1459,8 @@ html.is-nav-carry .animated {
 
   html.js .bookshelf__cover.loading img,
   html.js .series-grid__cover.loading img,
-  html.js .bookshelf__cover.loading:not(.is-loaded)::before,
   html.js .site-bg__poster.loading {
     opacity: 1;
-    visibility: visible;
     transition: none;
   }
 
