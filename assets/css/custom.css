@@ -259,13 +259,23 @@ html,
     box-shadow: none;
   }
 
-  /* Card shelves (出版著作 / 翻译作品) fill leftover width.
-     Prose pages stay on the 800px measure above. */
+  /*
+    Wide-desktop column scale (sidebar stays 330px; Mars unchanged):
+
+      viewport     prose main    cards main              cards right gutter
+      ≥961         800           min(1120, leftover−72)  72
+      ≥1440        960           min(1200, leftover−88)  88
+      ≥1800 / 1921 1000          min(1280, leftover−104) 104
+
+    Cards stay wider than prose (less right void) but never full-bleed.
+    1921 re-asserts so Anatole’s widescreen centering does not win.
+  */
   .wrapper__main:has(.post--cards) {
     width: auto;
-    max-width: none;
+    max-width: 1120px;
     flex: 1 1 auto;
     min-width: 0;
+    margin-right: 72px;
   }
 
   .sidebar,
@@ -349,6 +359,38 @@ html,
   }
 }
 
+@media screen and (min-width: 1440px) {
+  .wrapper__main {
+    width: 960px;
+    max-width: 960px;
+    flex: 0 0 960px;
+  }
+
+  .wrapper__main:has(.post--cards) {
+    width: auto;
+    max-width: 1200px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-right: 88px;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .wrapper__main {
+    width: 1000px;
+    max-width: 1000px;
+    flex: 0 0 1000px;
+  }
+
+  .wrapper__main:has(.post--cards) {
+    width: auto;
+    max-width: 1280px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-right: 104px;
+  }
+}
+
 @media screen and (min-width: 1921px) {
   .wrapper {
     justify-content: flex-start;
@@ -360,13 +402,17 @@ html,
   }
 
   .wrapper__main {
-    width: 800px;
-    max-width: 800px;
+    width: 1000px;
+    max-width: 1000px;
+    flex: 0 0 1000px;
   }
 
   .wrapper__main:has(.post--cards) {
     width: auto;
-    max-width: none;
+    max-width: 1280px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-right: 104px;
   }
 }
 
@@ -969,24 +1015,21 @@ html.theme--dark a.sidebar__tag:hover {
   row-gap: 3.6rem;
 }
 
-/* Wide desktop: more columns. Tablet / iPad landscape stay 4 / 3. */
-@media screen and (min-width: 1440px) {
+/*
+  Wide desktop: 5 books is the primary large layout.
+  ≥1280 catches 13" Mac / HD laptop; iPad 11" landscape (1194) stays 4.
+  Drop the 1800 6-col — covers looked tiny once the card column is capped.
+  翻译作品 steps later and only once (3 → 4 at 1600); do not match books.
+*/
+@media screen and (min-width: 1280px) {
   .bookshelf {
     grid-template-columns: repeat(5, 1fr);
-  }
-
-  .series-grid {
-    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media screen and (min-width: 1800px) {
-  .bookshelf {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
+@media screen and (min-width: 1600px) {
   .series-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
