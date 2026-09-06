@@ -1,6 +1,9 @@
 (() => {
   const root = document.documentElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const plateQuery = window.matchMedia(
+    "(orientation: portrait), (max-aspect-ratio: 1 / 1)",
+  );
   // Cover + overflow only. peakScale is computed, not 1.024:
   //   max_scale ≤ 1 + (rest_overflow_frac − bounce_reserve − safety)
   // rest_overflow_frac = per-side extra / viewport, from the poster's
@@ -24,7 +27,8 @@
   let target = 0;
   let currentScale = baseScale;
   let targetScale = baseScale;
-  let running = false;
+  let rafPending = false;
+  let lerpUntilSettled = false;
   let touchStartY = 0;
   let touchPull = 0;
   let touching = false;
@@ -35,6 +39,12 @@
   let userTookScroll = false;
   let navScrollY = 0;
 
+  // Layout cache — resize / load only. Scroll must not measure.
+  let poster = null;
+  let layoutVh = 1;
+  let maxScrollPx = 1;
+  let posterAxisX = "-50%";
+
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
   const restFromCss = () => {
@@ -44,16 +54,14 @@
   };
 
   const measureOverflowFrac = () => {
-    const el = document.querySelector(".site-bg__poster");
     // Layout viewport only — not visualViewport.height (pinch / URL bar).
-    const vh = root.clientHeight || window.innerHeight || 1;
-    if (!el || el.offsetHeight < 1) {
+    if (!poster || poster.offsetHeight < 1) {
       return restFromCss();
     }
     // Layout px, before translate/scale. Bounce travels on Y, so
     // rest_overflow_frac is the per-side height leftover (4:3 iPad
     // is the tight height case). X is cover-only; we do not pan.
-    return Math.max(0, (el.offsetHeight - vh) / 2 / vh);
+    return Math.max(0, (poster.offsetHeight - layoutVh) / 2 / layoutVh);
   };
 
   const syncPeakScale = () => {
@@ -62,14 +70,17 @@
     bouncePeak = baseScale + (peakScale - baseScale) / 2;
   };
 
-  const readScrollY = () => {
-    const y = window.scrollY || root.scrollTop || 0;
-    const vv = window.visualViewport;
-    if (y <= 0 && vv && vv.offsetTop) {
-      return y + vv.offsetTop;
-    }
-    return y;
+  const cacheMetrics = () => {
+    poster = document.querySelector(".site-bg__poster");
+    layoutVh = root.clientHeight || window.innerHeight || 1;
+    maxScrollPx = Math.max(1, root.scrollHeight - layoutVh);
+    posterAxisX = plateQuery.matches ? "0" : "-50%";
+    syncPeakScale();
   };
+
+  // Layout scrollY only. Do not add visualViewport.offsetTop — on iPad
+  // that tracks the URL bar and jitters scale while the finger is still.
+  const readScrollY = () => window.scrollY || root.scrollTop || 0;
 
   const scaleFromProgress = (progress) => {
     // Zoom-in from rest (top = base) toward center; never returns to 1.00
@@ -140,7 +151,7 @@
 
   if (arriving) {
     root.classList.add("is-nav-carry");
-    const maxScroll = Math.max(0, root.scrollHeight - (window.innerHeight || 0));
+    const maxScroll = Math.max(0, root.scrollHeight - (root.clientHeight || window.innerHeight || 0));
     if (maxScroll > 0) {
       navScrollY = clamp(navScrollY, 0, maxScroll);
     }
@@ -152,10 +163,8 @@
   }
 
   const pageProgress = () => {
-    const y = readScrollY();
-    const vh = window.innerHeight || 1;
-    const maxScroll = Math.max(1, root.scrollHeight - vh);
-    return clamp(y / maxScroll, 0, 1);
+    const y = Math.max(0, readScrollY());
+    return clamp(y / maxScrollPx, 0, 1);
   };
 
   const computeTarget = () => {
@@ -163,8 +172,7 @@
       return 0;
     }
     const y = readScrollY();
-    const vh = window.innerHeight || 1;
-    const maxPx = vh * maxTravel;
+    const maxPx = layoutVh * maxTravel;
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
     if (pull > 0) {
       return clamp(pull * 0.22, 0, maxPx);
@@ -178,22 +186,27 @@
       return baseScale;
     }
     const y = readScrollY();
-    const vh = window.innerHeight || 1;
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
     if (pull > 0) {
-      const t = clamp(pull / (vh * 0.2), 0, 1);
+      const t = clamp(pull / (layoutVh * 0.2), 0, 1);
       return baseScale + (bouncePeak - baseScale) * t;
     }
     return scaleFromProgress(pageProgress());
   };
 
   const apply = () => {
-    const maxPx = (window.innerHeight || 1) * maxTravel;
+    const maxPx = layoutVh * maxTravel;
     current = clamp(current, -maxPx, maxPx);
     currentScale = clamp(currentScale, baseScale, Math.max(peakScale, bouncePeak));
-    root.style.setProperty("--bg-parallax", `${current.toFixed(2)}px`);
-    root.style.setProperty("--bg-scale", currentScale.toFixed(4));
-    persistParallax();
+    if (poster) {
+      // Transform-only on the plate. Do not write --bg-* on :root
+      // during scroll — that invalidates the whole document.
+      poster.style.transform =
+        `translate3d(${posterAxisX}, calc(-50% + ${current}px), 0) scale(${currentScale})`;
+    } else {
+      root.style.setProperty("--bg-parallax", `${current}px`);
+      root.style.setProperty("--bg-scale", String(currentScale));
+    }
   };
 
   const finishArrive = () => {
@@ -216,14 +229,20 @@
     currentScale = baseScale;
     targetScale = baseScale;
     holdFirstFrame = false;
+    lerpUntilSettled = false;
     navScrollY = 0;
-    apply();
+    if (poster) {
+      poster.style.transform = "";
+    }
+    root.style.setProperty("--bg-parallax", "0px");
+    root.style.setProperty("--bg-scale", "1");
     applyScrollCarry();
-    running = false;
+    rafPending = false;
     finishArrive();
   };
 
   const tick = () => {
+    rafPending = false;
     if (reduce.matches) {
       snapRest();
       return;
@@ -231,11 +250,25 @@
     if (holdFirstFrame) {
       holdFirstFrame = false;
       apply();
-      running = true;
-      window.requestAnimationFrame(tick);
+      lerpUntilSettled = true;
+      requestTick(true);
       return;
     }
+
+    syncPortraitNav();
     target = computeTarget();
+    targetScale = computeScale();
+
+    // Live scroll: 1:1 with the latest scrollY this frame. Lerp only
+    // for in-site arrive and bounce release — chasing a discrete
+    // target on iPad is what made the zoom 一卡一卡.
+    if (!arriving && !lerpUntilSettled) {
+      current = target;
+      currentScale = targetScale;
+      apply();
+      return;
+    }
+
     const step = arriving ? arriveEase : ease;
     if (arriving && !userTookScroll && arriveScroll > 0.5) {
       arriveScroll += (0 - arriveScroll) * step;
@@ -245,39 +278,42 @@
       navScrollY = arriveScroll;
       applyScrollCarry();
     }
-    targetScale = computeScale();
     const delta = target - current;
     const deltaScale = targetScale - currentScale;
     if (Math.abs(delta) < 0.08 && Math.abs(deltaScale) < 0.0008 && (!arriving || arriveScroll < 0.5 || userTookScroll)) {
       current = target;
       currentScale = targetScale;
       apply();
-      running = false;
+      lerpUntilSettled = false;
       finishArrive();
       return;
     }
     current += delta * step;
     currentScale += deltaScale * step;
     apply();
-    running = true;
-    window.requestAnimationFrame(tick);
+    requestTick(true);
   };
 
-  const kick = () => {
+  const requestTick = (lerp) => {
     if (reduce.matches) {
       snapRest();
       return;
     }
-    if (!running) {
-      running = true;
-      window.requestAnimationFrame(tick);
+    if (lerp) {
+      lerpUntilSettled = true;
     }
+    if (rafPending) {
+      return;
+    }
+    rafPending = true;
+    window.requestAnimationFrame(tick);
   };
 
   const cancelScrollSettle = () => {
     userTookScroll = true;
     arriveScroll = 0;
     navScrollY = 0;
+    lerpUntilSettled = false;
     applyScrollCarry();
     root.classList.remove("is-nav-carry");
   };
@@ -354,6 +390,11 @@
       persistScroll(y);
     }
   });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      persistParallax();
+    }
+  });
 
   window.addEventListener(
     "touchstart",
@@ -379,7 +420,7 @@
       const dy = touch.clientY - touchStartY;
       if (readScrollY() <= 0 && dy > 0) {
         touchPull = dy;
-        kick();
+        requestTick(false);
       } else {
         touchPull = 0;
       }
@@ -390,7 +431,7 @@
   const endTouch = () => {
     touching = false;
     touchPull = 0;
-    kick();
+    requestTick(true);
   };
   window.addEventListener("touchend", endTouch, { passive: true });
   window.addEventListener("touchcancel", endTouch, { passive: true });
@@ -398,8 +439,10 @@
   window.addEventListener(
     "scroll",
     () => {
-      syncPortraitNav();
-      kick();
+      if (!arriving) {
+        lerpUntilSettled = false;
+      }
+      requestTick(arriving);
     },
     { passive: true },
   );
@@ -409,7 +452,7 @@
       if (arriving) {
         cancelScrollSettle();
       }
-      kick();
+      requestTick(false);
     },
     { passive: true },
   );
@@ -429,16 +472,15 @@
       ) {
         cancelScrollSettle();
       }
-      kick();
+      requestTick(false);
     },
     true,
   );
   window.addEventListener(
     "resize",
     () => {
-      syncPeakScale();
-      syncPortraitNav();
-      kick();
+      cacheMetrics();
+      requestTick(false);
     },
     { passive: true },
   );
@@ -448,26 +490,40 @@
       holdFirstFrame = false;
       arriveScroll = 0;
       navScrollY = 0;
+      lerpUntilSettled = false;
       applyScrollCarry();
       root.classList.remove("is-nav-carry");
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "auto";
       }
     }
-    syncPortraitNav();
-    kick();
+    cacheMetrics();
+    requestTick(false);
   });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("scroll", kick, { passive: true });
-    window.visualViewport.addEventListener("resize", kick, { passive: true });
-  }
+  // visualViewport scroll/resize tracks the iPad URL bar and pinch;
+  // do not kick the plate from those, and never recache peakScale.
+  window.addEventListener("load", () => {
+    cacheMetrics();
+    requestTick(false);
+  });
   if (typeof reduce.addEventListener === "function") {
-    reduce.addEventListener("change", kick);
+    reduce.addEventListener("change", () => requestTick(false));
   } else if (typeof reduce.addListener === "function") {
-    reduce.addListener(kick);
+    reduce.addListener(() => requestTick(false));
+  }
+  if (typeof plateQuery.addEventListener === "function") {
+    plateQuery.addEventListener("change", () => {
+      cacheMetrics();
+      requestTick(false);
+    });
+  } else if (typeof plateQuery.addListener === "function") {
+    plateQuery.addListener(() => {
+      cacheMetrics();
+      requestTick(false);
+    });
   }
 
-  syncPeakScale();
+  cacheMetrics();
 
   if (reduce.matches) {
     snapRest();
@@ -475,7 +531,7 @@
     // Paint the carried frame first, then ease to this page's Y. Never snap.
     holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - baseScale) > 0.0008;
     apply();
-    kick();
+    requestTick(arriving || holdFirstFrame);
   }
   if (typeof portraitNav.addEventListener === "function") {
     portraitNav.addEventListener("change", syncPortraitNav);
