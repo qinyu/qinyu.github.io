@@ -14,15 +14,25 @@
   {{- if and .IsPage (eq .Section "post") -}}
     {{- $docTitle = printf "%s｜%s" .Site.Params.author .Title -}}
   {{- end -}}
-  {{- $head | replaceRE `(?s)<title>.*?</title>` (printf "<title>%s</title>" ($docTitle | htmlEscape)) | safeHTML -}}
+  {{- $marsLandscape := "images/bg/mars-half-landscape.jpg" | relURL -}}
+  {{- $marsPortrait := "images/bg/mars-half-portrait.jpg" | relURL -}}
+  {{- $preload := printf "  <script>try{if(sessionStorage.getItem(\"site-bg-handoff\")===\"1\"&&\"scrollRestoration\"in history){history.scrollRestoration=\"manual\"}}catch(e){}</script>\n  <link rel=\"preload\" as=\"image\" href=%q media=\"(orientation: landscape) and (min-aspect-ratio: 1 / 1)\" />\n  <link rel=\"preload\" as=\"image\" href=%q media=\"(orientation: portrait), (max-aspect-ratio: 1 / 1)\" />\n</head>" $marsLandscape $marsPortrait -}}
+  {{- $head = $head | replaceRE `(?s)<title>.*?</title>` (printf "<title>%s</title>" ($docTitle | htmlEscape)) -}}
+  {{- $head = $head | replaceRE `</head>` $preload -}}
+  {{- $head | safeHTML -}}
   <body class="body">
     <script>
-      /* Keys must match assets/js/parallax.js. Runs before .site-bg paints. */
+      /* Keys must match assets/js/parallax.js. Runs before .site-bg paints.
+         Carry parallax/scale only — never a main-column scroll translate. */
       try {
         var root = document.documentElement;
         var handoff = sessionStorage.getItem("site-bg-handoff") === "1";
         if (handoff) {
           root.classList.add("is-nav-carry");
+          if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+          }
+          window.scrollTo(0, 0);
         }
         if (
           (window.scrollY || 0) > 8 &&
@@ -33,7 +43,6 @@
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           root.style.setProperty("--bg-parallax", "0px");
           root.style.setProperty("--bg-scale", "1");
-          root.style.setProperty("--nav-scroll-y", "0px");
         } else {
           var siteParallax = sessionStorage.getItem("site-bg-parallax");
           if (siteParallax != null) {
@@ -47,15 +56,6 @@
             var parsedScale = parseFloat(siteScale);
             if (!isNaN(parsedScale) && parsedScale > 0) {
               root.style.setProperty("--bg-scale", parsedScale.toFixed(4));
-            }
-          }
-          if (handoff) {
-            var siteScroll = sessionStorage.getItem("site-bg-scroll");
-            if (siteScroll != null) {
-              root.style.setProperty(
-                "--nav-scroll-y",
-                (parseFloat(siteScroll) || 0).toFixed(2) + "px",
-              );
             }
           }
         }
@@ -92,6 +92,17 @@
     </div>
 
     {{- partial "footer.html" (dict "context" . "footerClassModifier" "base") -}}
+
+    {{- /* End of body so .site-bg__poster exists before handoff is consumed. */ -}}
+    {{- $parallax := resources.Get "js/parallax.js" -}}
+    {{- if $parallax -}}
+      {{- $secureParallax := $parallax | resources.Minify | resources.Fingerprint -}}
+      <script
+        src="{{ $secureParallax.RelPermalink }}"
+        integrity="{{ $secureParallax.Data.Integrity }}"
+        crossorigin="anonymous"
+      ></script>
+    {{- end -}}
 
     {{- if (eq .Site.Params.simpleAnalytics.enable true) -}}
       {{- partial "analytics/simpleanalytics.html" . -}}

@@ -10,7 +10,6 @@ profilePicture: images/profile.jpg
 customCss:
   - css/custom.css
 customJs:
-  - js/parallax.js
   - js/shelf-interact.js
 googleAnalytics: false
 displayMode: dark
