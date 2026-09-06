@@ -32,9 +32,14 @@
     has no vertical cosmos). Portrait: same cover fill; ~20% more
     right-hand cosmos is position inside this still-covering plate
     (--bg-pos left), not a layer smaller than the viewport.
-    Rest layer is of a viewport-sized .site-bg (inset:0).
+    Rest layer is a 100svh .site-bg__frame (same crop as inset:0).
+    .site-bg is the CLIP only — 100lvh, so iPad Chrome URL-bar /
+    toolbar collapse cannot open a void band. Do not size the
+    poster from this clip (#32/#34 % + lvh bleed exploded).
+    --bg-cover-h expands only (JS); never shrinks; never retunes rest.
   */
   --bg-rest: 120%;
+  --bg-cover-h: 100lvh;
   --bg-image: url("/images/bg/mars-half-landscape.jpg");
   --bg-size: cover;
   --bg-pos: left center;
@@ -69,12 +74,13 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
-  /* Overscroll gutter: cover the layout viewport plus --bg-rest,
-     never a 16:9-by-width slice that letterboxes 4:3 iPad. */
-  background-size: max(120vw, calc(120vh * 16 / 9)) auto;
+  /* Overscroll + Chrome-collapse gutter: large viewport, not dvh
+     (dvh grows after the URL bar hides and flashes --void). */
+  background-size: max(120vw, calc(120lvh * 16 / 9)) auto;
   background-position: left top;
   min-height: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: 100lvh;
   max-width: 100%;
   overflow-x: hidden;
   transform: none;
@@ -91,14 +97,37 @@ html,
 
 .site-bg {
   position: fixed;
-  /* Pre-#32 rest box: viewport-sized in both orientations.
-     #32/#34 lvh bleed (−16 / −50 / −70) made min-height:100%
-     + aspect-ratio explode or shift the plate. Chrome bleed
-     belongs on the veil (portrait template), not this box. */
-  inset: 0;
+  /* CLIP = large viewport, centered on the visual viewport.
+     iPad Chrome collapse grows the visible area; this box is
+     already 100lvh so the new band is inside the clip.
+     Rest crop lives on .site-bg__frame (100svh), not here.
+     #32/#34 lvh bleed on the rest box made min-height:100%
+     + aspect-ratio explode — do not put --bg-rest on this box. */
+  left: 0;
+  right: 0;
+  width: 100%;
+  top: calc(50% - var(--bg-cover-h, 100lvh) / 2);
+  height: var(--bg-cover-h, 100lvh);
+  min-height: 100lvh;
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
+  transform: none;
+}
+
+.site-bg__frame {
+  /* Rest containing block: small viewport, stable. Poster %
+     (115% / --bg-rest 120%) is against this, so #38 framing
+     stays when the clip grows for Chrome collapse. */
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100svh;
+  top: 50%;
+  margin-top: -50svh;
+  pointer-events: none;
+  overflow: visible;
   transform: none;
 }
 
@@ -144,7 +173,7 @@ html,
 
   html,
   .html {
-    background-size: max(120vw, calc(120vh * 9 / 16)) auto;
+    background-size: max(120vw, calc(120lvh * 9 / 16)) auto;
     background-position: left top;
   }
 

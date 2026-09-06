@@ -41,9 +41,12 @@
 
   // Layout cache — resize / load only. Scroll must not measure.
   let poster = null;
+  let frame = null;
   let layoutVh = 1;
+  let restVh = 1;
   let maxScrollPx = 1;
   let posterAxisX = "-50%";
+  let coverH = 0;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -54,14 +57,16 @@
   };
 
   const measureOverflowFrac = () => {
-    // Layout viewport only — not visualViewport.height (pinch / URL bar).
-    if (!poster || poster.offsetHeight < 1) {
+    // Rest box only (.site-bg__frame / svh) — not visualViewport
+    // and not the lvh clip. Chrome collapse must not retune peakScale.
+    const box = restVh || layoutVh;
+    if (!poster || poster.offsetHeight < 1 || box < 1) {
       return restFromCss();
     }
     // Layout px, before translate/scale. Bounce travels on Y, so
     // rest_overflow_frac is the per-side height leftover (4:3 iPad
     // is the tight height case). X is cover-only; we do not pan.
-    return Math.max(0, (poster.offsetHeight - layoutVh) / 2 / layoutVh);
+    return Math.max(0, (poster.offsetHeight - box) / 2 / box);
   };
 
   const syncPeakScale = () => {
@@ -72,10 +77,42 @@
 
   const cacheMetrics = () => {
     poster = document.querySelector(".site-bg__poster");
+    frame = document.querySelector(".site-bg__frame");
     layoutVh = root.clientHeight || window.innerHeight || 1;
+    restVh = (frame && frame.offsetHeight > 1) ? frame.offsetHeight : layoutVh;
     maxScrollPx = Math.max(1, root.scrollHeight - layoutVh);
     posterAxisX = plateQuery.matches ? "0" : "-50%";
     syncPeakScale();
+    syncChromeCover();
+  };
+
+  // Expand-only cover for iPad Chrome URL-bar / toolbar collapse.
+  // Grows --bg-cover-h to max(layout, visual, last). Never shrinks.
+  // Never calls syncPeakScale.
+  const syncChromeCover = () => {
+    const vv = window.visualViewport;
+    const visual = vv && vv.height > 1 ? vv.height : layoutVh;
+    const next = Math.max(layoutVh, restVh, visual, coverH);
+    if (next > coverH + 0.5) {
+      coverH = next;
+      root.style.setProperty("--bg-cover-h", `${coverH}px`);
+    }
+  };
+
+  const visualHeight = () => {
+    const vv = window.visualViewport;
+    return vv && vv.height > 1 ? vv.height : layoutVh;
+  };
+
+  // When Chrome collapse grows the visible area and the plate has
+  // already translated up, shift back down just enough to keep the
+  // new bottom band covered. 0 when chrome is showing (rest intact).
+  const coverBiasY = () => {
+    const grow = Math.max(0, visualHeight() - restVh);
+    if (grow < 1 || current >= 0) {
+      return 0;
+    }
+    return Math.min(-current, grow);
   };
 
   // Layout scrollY only. Do not add visualViewport.offsetTop — on iPad
@@ -172,7 +209,7 @@
       return 0;
     }
     const y = readScrollY();
-    const maxPx = layoutVh * maxTravel;
+    const maxPx = restVh * maxTravel;
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
     if (pull > 0) {
       return clamp(pull * 0.22, 0, maxPx);
@@ -188,21 +225,22 @@
     const y = readScrollY();
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
     if (pull > 0) {
-      const t = clamp(pull / (layoutVh * 0.2), 0, 1);
+      const t = clamp(pull / (restVh * 0.2), 0, 1);
       return baseScale + (bouncePeak - baseScale) * t;
     }
     return scaleFromProgress(pageProgress());
   };
 
   const apply = () => {
-    const maxPx = layoutVh * maxTravel;
+    const maxPx = restVh * maxTravel;
     current = clamp(current, -maxPx, maxPx);
     currentScale = clamp(currentScale, baseScale, Math.max(peakScale, bouncePeak));
     if (poster) {
       // Transform-only on the plate. Do not write --bg-* on :root
       // during scroll — that invalidates the whole document.
+      const y = current + coverBiasY();
       poster.style.transform =
-        `translate3d(${posterAxisX}, calc(-50% + ${current}px), 0) scale(${currentScale})`;
+        `translate3d(${posterAxisX}, calc(-50% + ${y}px), 0) scale(${currentScale})`;
     } else {
       root.style.setProperty("--bg-parallax", `${current}px`);
       root.style.setProperty("--bg-scale", String(currentScale));
@@ -500,8 +538,18 @@
     cacheMetrics();
     requestTick(false);
   });
-  // visualViewport scroll/resize tracks the iPad URL bar and pinch;
-  // do not kick the plate from those, and never recache peakScale.
+  // Chrome collapse: expand the clip only. Do not recache peakScale
+  // or rest framing — that is the Air 3 jank path.
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener(
+      "resize",
+      () => {
+        syncChromeCover();
+        requestTick(false);
+      },
+      { passive: true },
+    );
+  }
   window.addEventListener("load", () => {
     cacheMetrics();
     requestTick(false);
