@@ -1,9 +1,9 @@
 (() => {
-  /* Reserve-then-reveal for shelf covers and the Mars poster.
+  /* Reserve-then-reveal for shelf covers only.
+     The Mars poster is the same file as html's plate and is preloaded
+     across in-site nav — do not opacity-fade or re-decode it here.
      Use load/complete, not decode() — decode can hang and leave opacity 0.
-     Do not resize .site-bg__poster; parallax.js owns rest framing. */
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-
+     Glow stays off until the img has pixels (naturalWidth > 0). */
   const markLoaded = (el) => {
     if (el) {
       el.classList.add("is-loaded");
@@ -12,15 +12,22 @@
 
   const whenReady = (img, done) => {
     if (!img) {
+      return;
+    }
+    /* complete + naturalWidth 0 is a broken/aborted slot — keep glow off. */
+    if (img.complete && img.naturalWidth > 0) {
       done();
       return;
     }
-    if (img.complete) {
-      done();
-      return;
-    }
-    img.addEventListener("load", done, { once: true });
-    img.addEventListener("error", done, { once: true });
+    img.addEventListener(
+      "load",
+      () => {
+        if (img.naturalWidth > 0) {
+          done();
+        }
+      },
+      { once: true },
+    );
   };
 
   const scanCovers = () => {
@@ -32,34 +39,8 @@
     });
   };
 
-  const posterUrl = () => {
-    const raw = getComputedStyle(document.documentElement).getPropertyValue("--bg-image").trim();
-    const match = raw.match(/url\(\s*(['"]?)(.*?)\1\s*\)/);
-    return match ? match[2] : "";
-  };
-
-  /* Start Mars fetch as soon as this head bundle runs. */
-  const mars = new Image();
-  const marsSrc = posterUrl();
-  if (marsSrc) {
-    mars.src = marsSrc;
-  }
-
-  const revealPoster = () => {
-    const poster = document.querySelector(".site-bg__poster");
-    if (!poster || poster.classList.contains("is-loaded")) {
-      return;
-    }
-    if (reduce.matches || !marsSrc) {
-      markLoaded(poster);
-      return;
-    }
-    whenReady(mars, () => markLoaded(poster));
-  };
-
   const boot = () => {
     scanCovers();
-    revealPoster();
   };
 
   boot();
