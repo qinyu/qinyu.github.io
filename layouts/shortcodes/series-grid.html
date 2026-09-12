@@ -1,5 +1,5 @@
 <div class="series-grid">
-  {{ range hugo.Data.series }}
+  {{ range site.Data.series }}
     {{- $size := partial "image-size.html" .cover -}}
     {{- $w := cond (gt $size.w 0) $size.w 4 -}}
     {{- $h := cond (gt $size.h 0) $size.h 3 -}}
