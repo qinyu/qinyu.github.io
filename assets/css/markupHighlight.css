@@ -1,17 +1,18 @@
 /* Site overlay. Do not edit themes/anatole.
    Regenerated: hugo gen chromastyles --style=gruvbox
+   Integrated with Site Design Tokens (--code-bg, --code-fg, --code-hl, --code-ln).
    Loaded via resources.Get "css/markupHighlight.css" (project wins). */
 
 /* Generated using: hugo gen chromastyles --style=gruvbox */
 
-/* Background */ .chroma .bg { color:#ebdbb2;background-color:#282828; }
-/* PreWrapper */ .chroma { color:#ebdbb2;background-color:#282828;-webkit-text-size-adjust:none; }
+/* Background */ .chroma .bg { color:var(--code-fg, #ebdbb2);background-color:var(--code-bg, #282828); }
+/* PreWrapper */ .chroma { color:var(--code-fg, #ebdbb2);background-color:var(--code-bg, #282828);-webkit-text-size-adjust:none; }
 /* LineLink */ .chroma .lnlinks { outline:none;text-decoration:none;color:inherit }
 /* LineTableTD */ .chroma .lntd { vertical-align:top;padding:0;margin:0;border:0; }
 /* LineTable */ .chroma .lntable { border-spacing:0;padding:0;margin:0;border:0; }
-/* LineHighlight */ .chroma .hl { background-color:#3d3d3d }
-/* LineNumbersTable */ .chroma .lnt { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#756d59 }
-/* LineNumbers */ .chroma .ln { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#756d59 }
+/* LineHighlight */ .chroma .hl { background-color:var(--code-hl, #3d3d3d) }
+/* LineNumbersTable */ .chroma .lnt { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:var(--code-ln, #756d59) }
+/* LineNumbers */ .chroma .ln { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:var(--code-ln, #756d59) }
 /* Line */ .chroma .line { display:flex; }
 /* Keyword */ .chroma .k { color:#fe8019 }
 /* KeywordConstant */ .chroma .kc { color:#fe8019 }
