@@ -1260,16 +1260,20 @@ html.theme--dark .post a.series-grid__item:active {
     rgba(var(--sand-rgb), 0) 80%
   );
   transform: none;
-  opacity: 0.76;
+  /* Default OFF. Glow must not paint an empty reserved slot before the
+     cover img has pixels — that reads as a bare yellow halo. */
+  opacity: 0;
+  visibility: hidden;
   transition: none;
 }
 
-/* Empty reserved slot: no yellow halo until the cover img is visible. */
-html.js .bookshelf__cover.loading:not(.is-loaded)::before {
-  opacity: 0;
-  visibility: hidden;
+/* No-JS: images are visible immediately; show the halo with them. */
+html:not(.js) .bookshelf__cover::before {
+  opacity: 0.76;
+  visibility: visible;
 }
 
+/* JS: halo only after img-reveal marks the cover (naturalWidth > 0). */
 html.js .bookshelf__cover.is-loaded::before {
   opacity: 0.76;
   visibility: visible;
@@ -1869,10 +1873,46 @@ html.is-nav-carry .animated {
 /* 6.3 Phone Portrait Narrow Screen (<=600px) */
 @media screen and (max-width: 600px) and (orientation: portrait) {
   :root {
-    /* Shift Mars background slightly to the left on narrow mobile portrait
-       to show celestial curvature and prevent planet from feeling oversized,
-       while expanding min-width to prevent any cut-off on right, top, or bottom. */
-    --bg-shift-x: 16vw;
+    /*
+      Phone portrait only. Pan left so more right-hand cosmos reads in-frame;
+      the disk then occupies less of the viewport (feels smaller). Landscape
+      and tablet portrait keep the :root defaults (0 shift / 120%).
+      Rest stays near 120% so cover + bounce leftover are unchanged; a small
+      bump to 124% gives SE/9:16 phones headroom for the 22vw pan.
+    */
+    --bg-rest: 124%;
+    --bg-shift-x: 22vw;
+  }
+
+  html,
+  .html {
+    background-size: max(
+        calc(124vw + var(--bg-shift-x, 0px)),
+        calc(124lvh * 9 / 16)
+      )
+      auto;
+  }
+}
+
+/*
+  Very tall phone portrait (≈19.5:9 and taller). Same left-pan goal, but the
+  9:16 plate is much wider than the viewport, so the limb sits farther right —
+  needs a larger shift (and a little more rest so 9:16 devices in the
+  600px band are not the constraint here; those use the 22vw rule above).
+*/
+@media screen and (max-width: 600px) and (orientation: portrait) and (max-aspect-ratio: 10 / 19) {
+  :root {
+    --bg-rest: 130%;
+    --bg-shift-x: 34vw;
+  }
+
+  html,
+  .html {
+    background-size: max(
+        calc(130vw + var(--bg-shift-x, 0px)),
+        calc(130lvh * 9 / 16)
+      )
+      auto;
   }
 }
 
