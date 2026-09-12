@@ -120,6 +120,7 @@
   --bg-size: cover;
   --bg-pos: left center;
   --bg-scale: 1;
+  --bg-shift-x: 0px;
 }
 
 /* ==========================================================================
@@ -335,17 +336,17 @@ html a:focus-visible {
 
   html,
   .html {
-    background-size: max(120vw, calc(120lvh * 9 / 16)) auto;
-    background-position: left top;
+    background-size: max(calc(120vw + var(--bg-shift-x, 0px)), calc(120lvh * 9 / 16)) auto;
+    background-position: calc(-1 * var(--bg-shift-x, 0px)) top;
   }
 
   .site-bg__poster {
     width: auto;
-    min-width: 100%;
+    min-width: calc(100% + var(--bg-shift-x, 0px));
     max-width: none;
     height: var(--bg-rest);
     aspect-ratio: 9 / 16;
-    left: 0;
+    left: calc(-1 * var(--bg-shift-x, 0px));
     top: 50%;
     transform-origin: left center;
     transform: translate3d(0, calc(-50% + var(--bg-parallax, 0px)), 0)
@@ -1866,6 +1867,15 @@ html.is-nav-carry .animated {
 }
 
 /* 6.3 Phone Portrait Narrow Screen (<=600px) */
+@media screen and (max-width: 600px) and (orientation: portrait) {
+  :root {
+    /* Shift Mars background slightly to the left on narrow mobile portrait
+       to show celestial curvature and prevent planet from feeling oversized,
+       while expanding min-width to prevent any cut-off on right, top, or bottom. */
+    --bg-shift-x: 16vw;
+  }
+}
+
 @media screen and (max-width: 600px) and (orientation: portrait) and (hover: none) and (pointer: coarse) {
   .bookshelf {
     grid-template-columns: repeat(2, 1fr);
