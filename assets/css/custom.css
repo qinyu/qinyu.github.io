@@ -79,6 +79,11 @@
   --sand-rgb: var(--color-sand-rgb);
   --muted: var(--color-text-muted);
   --muted-dim: var(--color-text-dim);
+  /*
+    Mid ochre rule: one token for post dividers and the landscape
+    sidebar/content rule. Brighter than #3d2a14 so it reads on both
+    the dark veil and the yellow Mars plate; not full --sand.
+  */
   --line: var(--color-line);
   --ochre-wash: rgba(var(--color-sand-rgb), 0.12);
 
@@ -88,15 +93,26 @@
   --accent-color: var(--color-sand);
   --border-divider: var(--color-line);
 
-  /* ------------------------------------------------------------------------
-     1.4 Mars Background & Viewport Tokens
-     NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
-     Cover + overflow only — never contain / fixed-vh letterbox.
-     Bounce and scroll-zoom are separate (parallax.js, layout vh):
-       bounce translate <= 6%; safety leftover at scale 1 >= 2%
-       --bg-rest 120% => frac 10% => leftover 2% at rest (unchanged)
-       zoomTravel 0.03 => peakScale 1.03 (was ~1.02 leftover math)
-     ------------------------------------------------------------------------ */
+  /*
+    NASA Mars half-disk, limb on the LEFT, lit toward the RIGHT.
+    Cover + overflow only — never contain / fixed-vh letterbox.
+    Bounce and scroll-zoom are separate (parallax.js, layout vh):
+      bounce translate <= 6%; safety leftover at scale 1 >= 2%
+      --bg-rest 120% => frac 10% => leftover 2% at rest (unchanged)
+      zoomTravel 0.03 => peakScale 1.03 (was ~1.02 leftover math)
+    Zoom-in grows the plate, so it does not spend bounce leftover.
+    Tightest cover is still 4:3 iPad height at scale 1.
+    Landscape: 115% width (#36 composition) + --bg-rest min-height
+    so 4:3 iPad does not sit plate edges on the viewport (the file
+    has no vertical cosmos). Portrait: same cover fill; ~20% more
+    right-hand cosmos is position inside this still-covering plate
+    (--bg-pos left), not a layer smaller than the viewport.
+    Rest layer is a 100svh .site-bg__frame (same crop as inset:0).
+    .site-bg is the CLIP only — 100lvh, so iPad Chrome URL-bar /
+    toolbar collapse cannot open a void band. Do not size the
+    poster from this clip (#32/#34 % + lvh bleed exploded).
+    --bg-cover-h expands only (JS); never shrinks; never retunes rest.
+  */
   --bg-rest: 120%;
   --bg-cover-h: 100vh;
   --bg-cover-h: 100lvh;
@@ -117,9 +133,15 @@ html,
   color-scheme: dark;
 }
 
+/*
+  Dedicated layers (not html::before/::after):
+  - .site-bg / .site-bg__poster: full-bleed Mars; only the poster child micro-moves
+  - .site-bg__veil: position:fixed; bleeds past the viewport; never translated
+  iOS Safari treats html/body pseudos as scroll-tied; transforming html::before
+  also made the veil jitter. Keep transform off html/body and off the veil.
+*/
 html,
 .html {
-  /* Overscroll gutter paints this, not a void band. Viewport layers sit on top. */
   background-color: var(--void);
   background-image:
     linear-gradient(
@@ -131,13 +153,17 @@ html,
     ),
     var(--bg-image);
   background-repeat: no-repeat;
+  /* Overscroll + Chrome-collapse gutter: large viewport, not dvh
+     (dvh grows after the URL bar hides and flashes --void). */
   background-size: max(120vw, calc(120lvh * 16 / 9)) auto;
   background-position: left top;
   min-height: 100%;
   min-height: 100vh;
   min-height: 100lvh;
   max-width: 100%;
-  /* clip, not hidden: keeps the glow from sideways bleed without locking scroll */
+  /* clip, not hidden: hidden + overflow-y:visible computes to auto and
+     can lock iPad document scroll (only the first book row reachable).
+     clip keeps the glow from sideways bleed without a scrollport. */
   overflow-x: clip;
   overflow-y: visible;
   transform: none;
@@ -148,6 +174,8 @@ html,
   isolation: isolate;
   transform: none;
   max-width: 100%;
+  /* Hidden x only: overflow:hidden would square-clip the shelf glow
+     and, on iPad, trap vertical pan on this box. */
   overflow-x: clip;
   overflow-y: visible;
   height: auto;
@@ -223,6 +251,12 @@ html a:focus-visible {
 /* 3.1 Fixed Mars Parallax Background Layers */
 .site-bg {
   position: fixed;
+  /* CLIP = large viewport, centered on the visual viewport.
+     iPad Chrome collapse grows the visible area; this box is
+     already 100lvh so the new band is inside the clip.
+     Rest crop lives on .site-bg__frame (100svh), not here.
+     #32/#34 lvh bleed on the rest box made min-height:100%
+     + aspect-ratio explode — do not put --bg-rest on this box. */
   left: 0;
   right: 0;
   width: 100%;
@@ -239,6 +273,9 @@ html a:focus-visible {
 }
 
 .site-bg__frame {
+  /* Rest containing block: small viewport, stable. Poster %
+     (115% / --bg-rest 120%) is against this, so #38 framing
+     stays when the clip grows for Chrome collapse. */
   position: absolute;
   left: 0;
   width: 100%;
@@ -253,6 +290,12 @@ html a:focus-visible {
   transform: none;
 }
 
+/*
+  Landscape rest (pre-#32 / #36 cover): 15% zoom-out by WIDTH
+  (layer ≈ 115vw). Height follows 16:9 then grows to --bg-rest
+  (120%) so 4:3 iPad bounce/zoom never exposes the plate edge.
+  Layer is centered; the image stays left-anchored.
+*/
 .site-bg__poster {
   position: absolute;
   left: 50%;
@@ -263,6 +306,9 @@ html a:focus-visible {
   min-height: var(--bg-rest);
   aspect-ratio: 16 / 9;
   pointer-events: none;
+  /* Transparent until the Mars file decodes so html's fallback plate
+     shows through — opaque --void here is the section-switch black flash.
+     Opacity 0→1 is a reveal only; do not change this box's size. */
   background-color: transparent;
   background-image: var(--bg-image);
   background-repeat: no-repeat;
@@ -275,6 +321,13 @@ html a:focus-visible {
   will-change: transform;
 }
 
+/*
+  Portrait: cover + --bg-rest overflow, pin left. The 9:16 file
+  already has ~19% cosmos on the right; left-anchor keeps the limb
+  and lets that cosmos read in-frame. Do not paint smaller than
+  cover (auto 92% / contain) — that opens a --void gap on a side.
+  Layer min-width 100% so the box itself still spans the viewport.
+*/
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
@@ -303,6 +356,10 @@ html a:focus-visible {
 .site-bg__veil {
   display: block;
   position: fixed;
+  /* Portrait template, used in both orientations: width-relative
+     20vw bleed past top/bottom, min-height 100lvh+40vw. Do not
+     give landscape its own 300lvh / −70lvh scheme — that flashed
+     edges and also blew the rest plate. */
   top: -20vw;
   right: 0;
   bottom: -20vw;
@@ -340,6 +397,13 @@ html a:focus-visible {
     box-shadow: none;
   }
 
+/*
+    One shared main measure for every section page (prose and cards):
+      >=961         800
+      >=1440        960
+      >=1800 / 1921 1000
+    1921 re-asserts vs Anatole widescreen centering.
+  */
   .wrapper__main {
     box-sizing: border-box;
     width: 800px;
@@ -357,6 +421,8 @@ html a:focus-visible {
   html.theme--light .sidebar {
     position: fixed;
     top: 0;
+    /* svh, not dvh/vh: iPad Chrome toolbar show/hide was resizing
+       the sidebar and snapping the avatar on section switch. */
     height: 100%;
     height: 100svh;
     border: none;
@@ -367,7 +433,10 @@ html a:focus-visible {
     transform: none;
   }
 
-  /* One inset ochre rule between sidebar and main */
+  /*
+    One inset ochre rule between sidebar and main — not a full-height
+    frame. Gaps at both ends, same color as post separators.
+  */
   .sidebar::after {
     content: "";
     position: absolute;
@@ -379,6 +448,7 @@ html a:focus-visible {
     pointer-events: none;
   }
 
+  /* Pin the avatar stack; do not re-center when main-column height changes. */
   html .sidebar .sidebar__content,
   .sidebar__content {
     justify-content: flex-start;
@@ -402,6 +472,7 @@ html a:focus-visible {
     box-shadow: none;
   }
 
+  /* Landscape: no opaque bar, no upward void shield. Portrait nav is unchanged. */
   .header::before {
     content: none;
     display: none;
@@ -470,10 +541,17 @@ html a:focus-visible {
 }
 
 html .nav__list-item a,
+html .nav__list-item a:link,
+html .nav__list-item a:visited,
 html.theme--dark .nav__list-item a,
+html.theme--dark .nav__list-item a:link,
+html.theme--dark .nav__list-item a:visited,
 html.theme--light .nav__list-item a,
+html.theme--light .nav__list-item a:link,
+html.theme--light .nav__list-item a:visited,
 html .nav__list-item .optionswitch__label {
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
   font-size: 1.4rem;
 }
 
@@ -486,13 +564,22 @@ html .nav__list-item .optionswitch__label:hover {
 
 html .nav__list-item a:visited,
 html .nav__list-item .optionswitch__label:visited {
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
 }
 
-html .nav__link--active,
 html.theme--dark .nav__link--active,
 html.theme--light .nav__link--active,
+html .nav__link--active,
 html .nav__list-item a.nav__link--active,
+html .nav__list-item a.nav__link--active:link,
+html .nav__list-item a.nav__link--active:visited,
+html.theme--dark .nav__list-item a.nav__link--active,
+html.theme--dark .nav__list-item a.nav__link--active:link,
+html.theme--dark .nav__list-item a.nav__link--active:visited,
+html.theme--light .nav__list-item a.nav__link--active,
+html.theme--light .nav__list-item a.nav__link--active:link,
+html.theme--light .nav__list-item a.nav__link--active:visited,
 a.nav__link--active {
   color: var(--sand);
   border-bottom-color: var(--sand);
@@ -506,6 +593,13 @@ html .nav__list-item a.nav__link--active:visited {
 }
 
 /* 4.2 Sidebar & Profile Presentation */
+/*
+  Pin the avatar stack on every section, including 关于 / 文章全集.
+  Anatole centers .sidebar__content on desktop and only then does
+  our 6.5vh inset apply — on a short main column the stack first
+  paints flush to the top, then jumps down. Own the flex alignment
+  outside the desktop block so first paint already has the inset.
+*/
 .sidebar,
 html .sidebar {
   animation: none;
@@ -517,6 +611,7 @@ html .sidebar .sidebar__content,
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  /* Do not grow with the main column — that re-centers / jumps the avatar. */
   flex-grow: 0;
 }
 
@@ -538,14 +633,22 @@ html .sidebar .sidebar__content,
 }
 
 html .sidebar__introduction-title a,
+html .sidebar__introduction-title a:link,
+html .sidebar__introduction-title a:visited,
 html.theme--dark .sidebar__introduction-title a,
-html.theme--light .sidebar__introduction-title a {
-  color: var(--color-text-white);
+html.theme--dark .sidebar__introduction-title a:link,
+html.theme--dark .sidebar__introduction-title a:visited,
+html.theme--light .sidebar__introduction-title a,
+html.theme--light .sidebar__introduction-title a:link,
+html.theme--light .sidebar__introduction-title a:visited {
+  color: #fff;
+  color: var(--color-text-white, #fff);
   font-size: 2.1rem;
 }
 
 html .sidebar__introduction-title a:visited {
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
 }
 
 .sidebar__introduction-subtitle {
@@ -559,15 +662,23 @@ html .sidebar__introduction-title a:visited {
 
 .sidebar__introduction-description,
 .sidebar__introduction-description p {
-  color: var(--color-text-secondary);
+  color: #e4ded3;
+  color: var(--color-text-secondary, #e4ded3);
   font-size: 1.4rem;
   line-height: 1.7;
 }
 
 html .sidebar__list-item a,
+html .sidebar__list-item a:link,
+html .sidebar__list-item a:visited,
 html.theme--dark .sidebar__list-item a,
-html.theme--light .sidebar__list-item a {
-  color: var(--color-text-subtle);
+html.theme--dark .sidebar__list-item a:link,
+html.theme--dark .sidebar__list-item a:visited,
+html.theme--light .sidebar__list-item a,
+html.theme--light .sidebar__list-item a:link,
+html.theme--light .sidebar__list-item a:visited {
+  color: #ddd8ce;
+  color: var(--color-text-subtle, #ddd8ce);
 }
 
 html .sidebar__introduction-title a:hover,
@@ -589,14 +700,21 @@ html.theme--dark .sidebar__list-item a:hover {
 }
 
 html a.sidebar__tag,
+html a.sidebar__tag:link,
+html a.sidebar__tag:visited,
 html.theme--dark a.sidebar__tag,
-html.theme--light a.sidebar__tag {
+html.theme--dark a.sidebar__tag:link,
+html.theme--dark a.sidebar__tag:visited,
+html.theme--light a.sidebar__tag,
+html.theme--light a.sidebar__tag:link,
+html.theme--light a.sidebar__tag:visited {
   display: inline-block;
   flex: 0 0 auto;
   padding: 0.1rem 0.65rem;
   border: 1px solid rgba(var(--sand-rgb), 0.75);
   border-radius: 999px;
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
   background-color: transparent;
   font-size: 1.2rem;
   line-height: 1.7;
@@ -606,13 +724,15 @@ html.theme--light a.sidebar__tag {
 html a.sidebar__tag:visited,
 html.theme--dark a.sidebar__tag:visited,
 html.theme--light a.sidebar__tag:visited {
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
 }
 
 html a.sidebar__tag:hover,
 html.theme--dark a.sidebar__tag:hover,
 html.theme--light a.sidebar__tag:hover {
-  color: var(--color-contrast-dark);
+  color: #1a1610;
+  color: var(--color-contrast-dark, #1a1610);
   background-color: var(--sand);
   border-color: var(--sand);
 }
@@ -638,7 +758,8 @@ html.theme--light a.sidebar__tag:hover {
 }
 
 .post__content h1 {
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
   font-weight: 700;
   letter-spacing: 0;
 }
@@ -646,7 +767,8 @@ html.theme--light a.sidebar__tag:hover {
 .post__content h2,
 .post__content h3,
 .post__content h4 {
-  color: var(--color-text-heading);
+  color: #f3efe6;
+  color: var(--color-text-heading, #f3efe6);
   letter-spacing: 0;
 }
 
@@ -659,7 +781,8 @@ html.theme--light a.sidebar__tag:hover {
   margin-left: 0;
   padding-left: 1.2em;
   border-left: 3px solid var(--sand);
-  color: var(--color-text-quote);
+  color: #cfc8bc;
+  color: var(--color-text-quote, #cfc8bc);
 }
 
 .post__content ul li::marker,
@@ -707,7 +830,10 @@ html.theme--light a.sidebar__tag:hover {
   overflow-x: auto;
 }
 
-/* Gruvbox dark background for code blocks, overriding Anatole defaults */
+/*
+  Beat Anatole `.theme--dark .post__content .chroma` primary-lighter
+  (#464646) so Chroma gruvbox's own #282828 panel shows.
+*/
 html .post__content pre,
 html .post__content .chroma,
 html .post__content .chroma .bg,
@@ -735,6 +861,19 @@ html.theme--light a:visited {
 }
 
 html a:hover,
+html a:active,
+html.theme--dark a:hover,
+html.theme--dark a:active,
+html.theme--light a:hover,
+html.theme--light a:active {
+  color: var(--sand-bright);
+}
+
+/*
+  Kill Anatole $info blue (#6086b4) and UA visited/focus blues.
+  Theme leftover: `.theme--dark a:hover { color: #6086b4 }`.
+*/
+html a:hover,
 html a:focus,
 html a:focus-visible,
 html a:active,
@@ -752,22 +891,59 @@ html.theme--light a:visited:hover {
   color: var(--sand-bright);
 }
 
-/* Post list titles & Archive titles */
+html a:visited,
+html.theme--dark a:visited,
+html.theme--light a:visited {
+  color: #c4945a;
+  color: var(--sand);
+}
+
+/* Home / list titles: sand. Beats Anatole `.theme--dark a:hover { #6086b4 }`. */
 html .post a,
+html .post a:link,
+html .post a:visited,
 html .post-entry a,
+html .post-entry a:link,
+html .post-entry a:visited,
 html .post__content h3 a,
+html .post__content h3 a:link,
+html .post__content h3 a:visited,
 html .archive a,
+html .archive a:link,
+html .archive a:visited,
 html .archive__list-title,
+html .archive__list-title:link,
+html .archive__list-title:visited,
 html.theme--dark .post a,
+html.theme--dark .post a:link,
+html.theme--dark .post a:visited,
 html.theme--dark .post-entry a,
+html.theme--dark .post-entry a:link,
+html.theme--dark .post-entry a:visited,
 html.theme--dark .post__content h3 a,
+html.theme--dark .post__content h3 a:link,
+html.theme--dark .post__content h3 a:visited,
 html.theme--dark .archive a,
+html.theme--dark .archive a:link,
+html.theme--dark .archive a:visited,
 html.theme--dark .archive__list-title,
+html.theme--dark .archive__list-title:link,
+html.theme--dark .archive__list-title:visited,
 html.theme--light .post a,
+html.theme--light .post a:link,
+html.theme--light .post a:visited,
 html.theme--light .post-entry a,
+html.theme--light .post-entry a:link,
+html.theme--light .post-entry a:visited,
 html.theme--light .post__content h3 a,
+html.theme--light .post__content h3 a:link,
+html.theme--light .post__content h3 a:visited,
 html.theme--light .archive a,
-html.theme--light .archive__list-title {
+html.theme--light .archive a:link,
+html.theme--light .archive a:visited,
+html.theme--light .archive__list-title,
+html.theme--light .archive__list-title:link,
+html.theme--light .archive__list-title:visited {
   color: #c4945a;
   color: var(--sand);
 }
@@ -781,27 +957,78 @@ html.theme--dark .archive__list-title {
 }
 
 html .post a:hover,
+html .post a:focus,
+html .post a:focus-visible,
+html .post a:active,
 html .post-entry a:hover,
+html .post-entry a:focus,
+html .post-entry a:focus-visible,
+html .post-entry a:active,
 html .post__content h3 a:hover,
+html .post__content h3 a:focus,
+html .post__content h3 a:focus-visible,
+html .post__content h3 a:active,
 html .archive a:hover,
+html .archive a:focus,
+html .archive a:focus-visible,
+html .archive a:active,
 html .archive__list-title:hover,
+html .archive__list-title:focus,
+html .archive__list-title:focus-visible,
+html .archive__list-title:active,
 html.theme--dark .post a:hover,
+html.theme--dark .post a:focus,
+html.theme--dark .post a:focus-visible,
 html.theme--dark .post-entry a:hover,
+html.theme--dark .post-entry a:focus,
 html.theme--dark .post__content h3 a:hover,
+html.theme--dark .post__content h3 a:focus,
 html.theme--dark .archive a:hover,
 html.theme--dark .archive__list-title:hover,
 html.theme--light .post a:hover,
 html.theme--light .post-entry a:hover,
 html.theme--light .post__content h3 a:hover,
+html.theme--light .archive__list-title:hover,
+html.theme--dark .post a:active,
+html.theme--dark .post-entry a:focus-visible,
+html.theme--dark .post-entry a:active,
+html.theme--dark .post__content h3 a:focus-visible,
+html.theme--dark .post__content h3 a:active,
+html.theme--dark .archive a:focus,
+html.theme--dark .archive a:focus-visible,
+html.theme--dark .archive a:active,
+html.theme--dark .archive__list-title:focus,
+html.theme--dark .archive__list-title:focus-visible,
+html.theme--dark .archive__list-title:active,
+html.theme--light .post a:focus,
+html.theme--light .post a:focus-visible,
+html.theme--light .post a:active,
+html.theme--light .post-entry a:focus,
+html.theme--light .post-entry a:focus-visible,
+html.theme--light .post-entry a:active,
+html.theme--light .post__content h3 a:focus,
+html.theme--light .post__content h3 a:focus-visible,
+html.theme--light .post__content h3 a:active,
 html.theme--light .archive a:hover,
-html.theme--light .archive__list-title:hover {
+html.theme--light .archive a:focus,
+html.theme--light .archive a:focus-visible,
+html.theme--light .archive a:active,
+html.theme--light .archive__list-title:focus,
+html.theme--light .archive__list-title:focus-visible,
+html.theme--light .archive__list-title:active {
   color: var(--sand-bright);
 }
 
-/* Post content inner links & In-page references */
+/* Anatole `.post__content a { color: $info }` and TOC `$info` are #6086b4. */
 html .post__content a,
+html .post__content a:link,
+html .post__content a:visited,
 html.theme--dark .post__content a,
+html.theme--dark .post__content a:link,
+html.theme--dark .post__content a:visited,
 html.theme--light .post__content a,
+html.theme--light .post__content a:link,
+html.theme--light .post__content a:visited,
 #TableOfContents a,
 #TableOfContents li a,
 html .post__content .chroma a,
@@ -827,7 +1054,7 @@ html .post__content sup a:hover {
   color: var(--sand-bright);
 }
 
-/* 4.6 Cards System: Bookshelf & Series Grid */
+/* #18 isolates .body; keep that stack, but do not clip the shelf glow. */
 .post--cards,
 .post__content--cards,
 .bookshelf,
@@ -846,6 +1073,7 @@ html .post__content sup a:hover {
   max-width: 100%;
   min-width: 0;
   margin: 0;
+  /* Fill the shared .post box — no extra side inset on top of 1.8rem. */
   padding: 0 0 0.4rem;
   overflow: visible;
 }
@@ -862,6 +1090,10 @@ html .post__content sup a:hover {
   row-gap: 3.6rem;
 }
 
+/*
+  Equal 1fr columns inside the shared .wrapper__main measure.
+  Books: 4, then 5 when the column grows to 960. Translations: 3 -> 4 later.
+*/
 @media screen and (min-width: 1440px) {
   .bookshelf {
     grid-template-columns: repeat(5, 1fr);
@@ -907,9 +1139,29 @@ html .post__content sup a:hover {
 }
 
 html .post a.bookshelf__item,
+html .post a.bookshelf__item:link,
+html .post a.bookshelf__item:visited,
+html .post a.bookshelf__item:hover,
+html .post a.bookshelf__item:focus,
+html .post a.bookshelf__item:focus-visible,
+html .post a.bookshelf__item:focus-within,
+html .post a.bookshelf__item:active,
 html .post a.series-grid__item,
+html .post a.series-grid__item:link,
+html .post a.series-grid__item:visited,
+html .post a.series-grid__item:hover,
+html .post a.series-grid__item:focus,
+html .post a.series-grid__item:focus-visible,
+html .post a.series-grid__item:focus-within,
+html .post a.series-grid__item:active,
 html.theme--dark .post a.bookshelf__item,
-html.theme--dark .post a.series-grid__item {
+html.theme--dark .post a.bookshelf__item:hover,
+html.theme--dark .post a.bookshelf__item:focus,
+html.theme--dark .post a.bookshelf__item:active,
+html.theme--dark .post a.series-grid__item,
+html.theme--dark .post a.series-grid__item:hover,
+html.theme--dark .post a.series-grid__item:focus,
+html.theme--dark .post a.series-grid__item:active {
   background: none !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -970,6 +1222,8 @@ html.theme--dark .post a.series-grid__item {
   isolation: auto;
   contain: none;
   z-index: 0;
+  /* Follow the PNG (≈3:4). Do not put aspect-ratio on this glow host —
+     that box clipped ::before bloom. Reserve on the img instead. */
   aspect-ratio: auto;
   padding: 0;
   overflow: visible;
@@ -977,11 +1231,18 @@ html.theme--dark .post a.series-grid__item {
   max-width: 100%;
 }
 
-/* Glow on the cover silhouette */
+/*
+  Glow on the cover silhouette, not the title+meta card. Extra vertical
+  inset so closest-side can fade out before any parent edge.
+  Inset only; no transform/filter (those get isolation-clipped).
+*/
 .bookshelf__cover::before {
   content: "";
   position: absolute;
   z-index: 0;
+  /* ~93% of pre-#32 bloom (−70/−58/−55/−55, ellipse 48% 44%),
+     redistributed 靠左下: more left+bottom than right+top.
+     Focal slightly left and down of center — not the 3D-spine 54% 47%. */
   left: -68%;
   right: -51%;
   top: -48%;
@@ -1002,6 +1263,7 @@ html.theme--dark .post a.series-grid__item {
   transition: none;
 }
 
+/* Empty reserved slot: no yellow halo until the cover img is visible. */
 html.js .bookshelf__cover.loading:not(.is-loaded)::before {
   opacity: 0;
   visibility: hidden;
@@ -1038,6 +1300,8 @@ html.js .bookshelf__cover.is-loaded::before {
   will-change: auto;
 }
 
+/* HTML width/height + this ratio reserve the slot before decode.
+   Glow stays on the overflow:visible parent, not this box. */
 .post__content .bookshelf__cover img {
   aspect-ratio: var(--cover-ratio, 3 / 4);
 }
@@ -1052,6 +1316,8 @@ html.js .series-grid__cover.is-loaded img {
   opacity: 1;
 }
 
+/* Poster is already the same Mars file as html's plate and is
+   preloaded / cached across in-site nav. Never opacity 0->1. */
 html.js .site-bg__poster,
 html.js .site-bg__poster.loading,
 html.js .site-bg__poster.is-loaded {
@@ -1059,6 +1325,7 @@ html.js .site-bg__poster.is-loaded {
   transition: none;
 }
 
+/* Theme medium-zoom stamps this class on every post img (transform ghost). */
 .post__content .bookshelf .medium-zoom-image,
 .post__content .series-grid .medium-zoom-image {
   cursor: default;
@@ -1075,6 +1342,13 @@ html.js .site-bg__poster.is-loaded {
   transition: opacity 0.35s ease;
 }
 
+/*
+  Unified shelf motion (books + series):
+  hover / long-press hold scale; click = short bounce.
+  Series scales the whole card; books scale the cover image only
+  so the rear halo (::before) stays put. No ::before flash or
+  yellow plate.
+*/
 .series-grid__item {
   transform-origin: center center;
   transition: transform 0.22s ease;
@@ -1150,8 +1424,14 @@ html.js .site-bg__poster.is-loaded {
   line-height: 1.25;
 }
 
+/*
+  Book cards: title + meta stay one line in every orientation.
+  Slightly tighter type on the 4-col narrow grid; ellipsis only if
+  a title still overflows after that shrink (e.g. 云原生安全与DevOps保障).
+*/
 .bookshelf__title--tight,
 .post__content .bookshelf__title--tight {
+  font-size: 1.15rem;
   font-size: 1.1rem;
 }
 
@@ -1195,14 +1475,21 @@ html.js .site-bg__poster.is-loaded {
 
 html .post__content a.post__tag-chip,
 html.theme--dark .post__content a.post__tag-chip,
-html.theme--light .post__content a.post__tag-chip {
+html.theme--light .post__content a.post__tag-chip,
+html .post__content a.post__tag-chip:link,
+html .post__content a.post__tag-chip:visited,
+html.theme--dark .post__content a.post__tag-chip:link,
+html.theme--dark .post__content a.post__tag-chip:visited,
+html.theme--light .post__content a.post__tag-chip:link,
+html.theme--light .post__content a.post__tag-chip:visited {
   display: inline-block;
   margin: 0;
   padding: 0.12rem 0.75rem;
   border: 1px solid rgba(var(--sand-rgb), 0.75);
   border-radius: 999px;
   background-color: transparent;
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
   font-size: 1.2rem;
   line-height: 1.7;
   letter-spacing: 0;
@@ -1210,15 +1497,25 @@ html.theme--light .post__content a.post__tag-chip {
 }
 
 html .post__content a.post__tag-chip:visited {
-  color: var(--color-text-white);
+  color: #fff;
+  color: var(--color-text-white, #fff);
 }
 
 html .post__content a.post__tag-chip:hover,
 html.theme--dark .post__content a.post__tag-chip:hover,
 html.theme--light .post__content a.post__tag-chip:hover {
-  color: var(--color-contrast-dark);
+  color: #1a1610;
+  color: var(--color-contrast-dark, #1a1610);
   background-color: var(--sand);
   border-color: var(--sand);
+}
+
+html .post__content a.post__tag-chip:hover,
+html.theme--dark .post__content a.post__tag-chip:hover,
+html a.sidebar__tag:hover,
+html.theme--dark a.sidebar__tag:hover {
+  color: #1a1610;
+  color: var(--color-contrast-dark, #1a1610);
 }
 
 html .notice,
@@ -1229,7 +1526,8 @@ html.theme--dark .notice {
 html .notice__title,
 html.theme--dark .notice__title {
   background-color: var(--sand);
-  color: var(--color-contrast-dark);
+  color: #1a1610;
+  color: var(--color-contrast-dark, #1a1610);
 }
 
 /* 4.8 Footer & Pagination */
@@ -1242,13 +1540,20 @@ html .footer__item,
 html .sidebar .footer,
 html .sidebar .footer__item,
 html .footer.footer__sidebar,
-html .footer.footer__base {
+html .footer.footer__base,
+html .footer.footer__sidebar .footer__item,
+html .footer.footer__base .footer__item,
+html .sidebar .footer a,
+html .footer.footer__sidebar a,
+html .footer.footer__base a {
   color: var(--ink) !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 html .footer a:visited,
-html .sidebar .footer a:visited {
+html .sidebar .footer a:visited,
+html .footer.footer__sidebar a:visited,
+html .footer.footer__base a:visited {
   color: var(--ink) !important;
 }
 
@@ -1269,11 +1574,17 @@ html .sidebar .footer a:visited {
   display: none !important;
 }
 
+/* In-site section switch: keep the outgoing parallax/scale frame only.
+   Do not translate .wrapper__main — the sticky/fixed header lives inside
+   it, and a carried Y eases the chrome off the page (f70a5f4). */
 html.is-nav-carry .animated {
   animation: none !important;
   transition: none !important;
 }
 
+/* Kill Anatole fadeInDown on every section surface. Handoff must not
+   be the only guard — a missed carry still must not drop content from above.
+   fadeInDown's translateY also creates a containing block that square-clips glow. */
 .animated.fadeInDown,
 .post.animated,
 .post-entry.animated,
@@ -1329,6 +1640,8 @@ html.is-nav-carry .animated {
    ========================================================================== */
 /* 6.1 Tablet & Narrow Screen Adaptations (<=960px) */
 @media screen and (max-width: 960px) {
+  /* Document stays the scroller. A 100dvh / overflow lock here is
+     what left iPad portrait on the first book row. */
   html,
   .html,
   .body,
@@ -1340,6 +1653,7 @@ html.is-nav-carry .animated {
     overflow-y: visible;
   }
 
+  /* Narrow screens keep cover + left limb; do not revert to 100% auto. */
   .site-bg__poster {
     background-size: var(--bg-size);
     background-position: var(--bg-pos);
@@ -1352,6 +1666,7 @@ html.is-nav-carry .animated {
       var(--bg-image);
   }
 
+  /* Same veil box as landscape; even wash only. */
   .site-bg__veil {
     background: rgba(0, 0, 0, 0.46);
   }
@@ -1362,6 +1677,7 @@ html.is-nav-carry .animated {
     background-color: transparent !important;
   }
 
+  /* Hide without layout jump: only visible at scroll top. */
   .header {
     position: fixed;
     top: 0;
@@ -1398,6 +1714,7 @@ html.is-nav-carry .animated {
     max-width: 100%;
   }
 
+  /* Inline the same five desktop items; do not use the Anatole hamburger. */
   .nav {
     display: flex;
     justify-content: center;
@@ -1442,6 +1759,7 @@ html.is-nav-carry .animated {
     border-bottom: 1px solid var(--sand);
   }
 
+  /* Room under the fixed five-item nav; avatar must not sit flush. */
   .wrapper__sidebar {
     padding-top: 8rem;
   }
@@ -1463,6 +1781,7 @@ html.is-nav-carry .animated {
     padding: 2.6rem 0.8rem;
   }
 
+  /* Portrait .post already uses 0.8rem sides. */
   .bookshelf,
   .series-grid {
     padding: 0 0 0.4rem;
@@ -1485,6 +1804,7 @@ html.is-nav-carry .animated {
     padding: 0.2rem 0.2rem 0.7rem;
   }
 
+  /* 4-col landscape / tablet: shrink title so long names stay one line. */
   .bookshelf__title,
   .post__content .bookshelf__title {
     font-size: 1.15rem;
@@ -1512,6 +1832,28 @@ html.is-nav-carry .animated {
   }
 }
 
+/*
+  Phone portrait only — not iPad / tablet.
+
+  #46 used (max-width: 960px) and (orientation: portrait). That also
+  matches iPad portrait (CSS width is typically 768–834, still <=960)
+  and forced books 2-col / translations 1-col, and the denser 2-col
+  cards plus overflow-x:hidden locked vertical scroll.
+
+  Detection is width + input, not a single magic px and not UA:
+    max-width: 600px  — phones (~390) hit this; iPad portrait does not
+    orientation: portrait
+    hover: none + pointer: coarse — phones; a narrow desktop window
+      with a mouse keeps the dense 4 / 3 from the 960 block
+
+  Example viewports:
+    iPhone 14/15 portrait     ~390×844   -> 2 / 1
+    iPhone landscape          ~844×390   -> 4 / 3 (960 block, not this)
+    iPad Mini/Air/Pro port.   ~768–834   -> 4 / 3 (960 block)
+    iPad landscape            ~1024–1194 -> 4 / 3 (desktop >=961)
+    desktop 1280              4 / 3
+    desktop 1440 / 1600       5 / 3 then 5 / 4
+*/
 /* 6.2 iPad / Tablet Portrait Specifics (601px - 960px) */
 @media screen and (min-width: 601px) and (max-width: 960px) and (orientation: portrait) {
   .bookshelf {
@@ -1537,6 +1879,7 @@ html.is-nav-carry .animated {
     row-gap: 2.2rem;
   }
 
+  /* 2-col is wider than 4-col landscape — restore a bit of title size. */
   .bookshelf__title,
   .post__content .bookshelf__title {
     font-size: 1.2rem;
@@ -1548,6 +1891,11 @@ html.is-nav-carry .animated {
   }
 }
 
+/*
+  Landscape nav: Mars shows through. Beats theme accent and the
+  max-width 960 scrim (that block is width-based, so it also hits
+  phone landscape). Portrait rules above stay as-is.
+*/
 /* 6.4 Landscape Navigation Adjustments */
 @media (orientation: landscape) {
   .header,
