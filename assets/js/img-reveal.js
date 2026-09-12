@@ -5,9 +5,14 @@
      Use load/complete, not decode() — decode can hang and leave opacity 0.
      Glow stays off until the img has pixels (naturalWidth > 0). */
   const markLoaded = (el) => {
-    if (el) {
-      el.classList.add("is-loaded");
+    if (!el || el.classList.contains("is-loaded")) {
+      return;
     }
+    /* Reveal img + glow together on the next frame so the halo does not
+       paint a frame before the cover bitmap is composited. */
+    requestAnimationFrame(() => {
+      el.classList.add("is-loaded");
+    });
   };
 
   const whenReady = (img, done) => {
@@ -28,6 +33,9 @@
       },
       { once: true },
     );
+    img.addEventListener("error", () => {
+      /* Broken cover: leave glow off; slot stays reserved empty. */
+    }, { once: true });
   };
 
   const scanCovers = () => {

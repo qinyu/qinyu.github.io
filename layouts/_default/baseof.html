@@ -122,6 +122,11 @@
       html.js .site-bg__poster {
         opacity: 1;
       }
+      /* Critical: hide book halo before custom.css arrives, until is-loaded. */
+      html.js .bookshelf__cover.loading:not(.is-loaded)::before {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
     </style>
     <div class="wrapper">
       <aside
