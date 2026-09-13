@@ -12,8 +12,9 @@
   //           Anchored at breathCenter (not 1.0) so scroll continues
   //           from the idle breath value — no snap back to 1.0.
   //   breath: idle sine around breathCenter ± breathAmp.
-  //           Tier A (1.003±0.003) was below perception on Mars grain;
-  //           raised to 1.012±0.012 (period 10s) so the pulse reads.
+  //           1.02±0.02 (period 10s) — stronger than 1.012±0.012 after
+  //           that still read weak on Mars grain. Crest may exceed
+  //           scroll peak 1.03; apply() clamp allows breathCenter+amp.
   //           Fades out over breathFadePx of scrollY; fully paused
   //           while pull-to-bounce is active. Clock is Date.now()-based
   //           and persisted in sessionStorage so in-site nav keeps
@@ -23,9 +24,9 @@
   const bounceReserve = maxTravel;
   const safetyMargin = 0.02;
   const zoomTravel = 0.03;
-  // Idle breath — perceptible pulse, still under scroll peak 1.03.
-  const breathCenter = 1.012;
-  const breathAmp = 0.012;
+  // Idle breath — stronger pulse; phone rest margin still covers crest.
+  const breathCenter = 1.02;
+  const breathAmp = 0.02;
   const breathPeriodMs = 10000;
   const breathFadePx = 80;
   const scrollYSlop = 2;
@@ -307,7 +308,12 @@
   const apply = () => {
     const maxPx = restVh * maxTravel;
     current = clamp(current, -maxPx, maxPx);
-    currentScale = clamp(currentScale, baseScale, Math.max(peakScale, bouncePeak));
+    // Allow idle breath crest above scroll peakScale (1.03).
+    currentScale = clamp(
+      currentScale,
+      baseScale,
+      Math.max(peakScale, bouncePeak, breathCenter + breathAmp),
+    );
     if (poster) {
       // Transform-only on the plate. Do not write --bg-* on :root
       // during scroll — that invalidates the whole document.
