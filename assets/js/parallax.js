@@ -14,6 +14,8 @@
   //   breath: idle sine around breathCenter ± breathAmp (tier A:
   //           1.003 ± 0.003, period 10s). Fades out over breathFadePx
   //           of scrollY; fully paused while pull-to-bounce is active.
+  //           Clock is Date.now()-based and persisted in sessionStorage
+  //           so in-site nav keeps the same phase — no trough restart.
   // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
@@ -30,6 +32,7 @@
   const storageKey = "site-bg-parallax";
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
+  const breathKey = "site-bg-breath-origin";
   const baseScale = 1;
   let peakScale = baseScale;
   let bouncePeak = baseScale;
@@ -57,8 +60,8 @@
   let maxScrollPx = 1;
   let posterAxisX = "-50%";
   let coverH = 0;
-  // Breath clock: start at trough (sin=-1 ⇒ scale=center-amp=1.000)
-  // so the first idle frame matches CSS --bg-scale: 1.
+  // Breath clock (wall time). Origin persists across in-site nav.
+  // First visit: origin = now ⇒ trough (sin=-1 ⇒ scale=1.000).
   let breathOriginMs = 0;
   let breathPauseMs = 0;
   let breathHiddenAt = 0;
@@ -144,18 +147,46 @@
     return breathCenter + (peakScale - breathCenter) * progress;
   };
 
+  // Wall clock so the phase survives full page loads (performance.now resets).
   const breathNowMs = () => {
-    const wall = performance.now();
+    const wall = Date.now();
     if (breathHiddenAt > 0) {
       return breathHiddenAt - breathPauseMs;
     }
     return wall - breathPauseMs;
   };
 
-  const breathSine = () => {
-    if (!breathOriginMs) {
-      breathOriginMs = breathNowMs();
+  const ensureBreathOrigin = () => {
+    if (breathOriginMs) {
+      return;
     }
+    // First paint in this session: trough matches CSS --bg-scale: 1.
+    breathOriginMs = breathNowMs();
+    try {
+      sessionStorage.setItem(breathKey, String(breathOriginMs));
+    } catch (_) {
+      /* private mode */
+    }
+  };
+
+  const restoreBreathOrigin = () => {
+    try {
+      const saved = sessionStorage.getItem(breathKey);
+      if (saved != null) {
+        const parsed = parseFloat(saved);
+        if (!Number.isNaN(parsed) && parsed > 0) {
+          breathOriginMs = parsed;
+          return;
+        }
+      }
+    } catch (_) {
+      /* private mode */
+    }
+    ensureBreathOrigin();
+  };
+
+  const breathSine = () => {
+    ensureBreathOrigin();
     // -π/2 ⇒ sin = -1 at t=0 ⇒ scale = breathCenter - breathAmp = 1.000
     const t = (breathNowMs() - breathOriginMs) / breathPeriodMs;
     return Math.sin(t * Math.PI * 2 - Math.PI / 2);
@@ -191,6 +222,12 @@
     try {
       sessionStorage.setItem(storageKey, String(current));
       sessionStorage.setItem(scaleKey, String(currentScale));
+      // Remap origin onto a bare Date.now() timeline (pauseMs = 0 on the
+      // next document) so in-site nav keeps the exact sine phase.
+      if (breathOriginMs) {
+        const elapsed = breathNowMs() - breathOriginMs;
+        sessionStorage.setItem(breathKey, String(Date.now() - elapsed));
+      }
     } catch (_) {
       /* private mode */
     }
@@ -452,13 +489,13 @@
   });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") {
-      breathHiddenAt = performance.now();
+      breathHiddenAt = Date.now();
       persistParallax();
       return;
     }
     // Resume breath clock without jumping the sine phase.
     if (breathHiddenAt > 0) {
-      breathPauseMs += performance.now() - breathHiddenAt;
+      breathPauseMs += Date.now() - breathHiddenAt;
       breathHiddenAt = 0;
     }
     requestTick(false);
@@ -631,7 +668,8 @@
     consumeHandoff();
     cacheMetrics();
     booted = true;
-    breathOriginMs = breathNowMs();
+    // Reuse the session breath origin so栏目切换 does not restart the sine.
+    restoreBreathOrigin();
 
     if (reduce.matches) {
       snapRest();
