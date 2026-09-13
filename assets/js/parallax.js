@@ -11,19 +11,21 @@
   //   zoom:   rest→end scale delta is zoomTravel (0.03 ⇒ peak 1.03).
   //           Anchored at breathCenter (not 1.0) so scroll continues
   //           from the idle breath value — no snap back to 1.0.
-  //   breath: idle sine around breathCenter ± breathAmp (tier A:
-  //           1.003 ± 0.003, period 10s). Fades out over breathFadePx
-  //           of scrollY; fully paused while pull-to-bounce is active.
-  //           Clock is Date.now()-based and persisted in sessionStorage
-  //           so in-site nav keeps the same phase — no trough restart.
+  //   breath: idle sine around breathCenter ± breathAmp.
+  //           Tier A (1.003±0.003) was below perception on Mars grain;
+  //           raised to 1.012±0.012 (period 10s) so the pulse reads.
+  //           Fades out over breathFadePx of scrollY; fully paused
+  //           while pull-to-bounce is active. Clock is Date.now()-based
+  //           and persisted in sessionStorage so in-site nav keeps
+  //           the same phase — no trough restart.
   // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
   const safetyMargin = 0.02;
   const zoomTravel = 0.03;
-  // Idle breath (user-confirmed tier A).
-  const breathCenter = 1.003;
-  const breathAmp = 0.003;
+  // Idle breath — perceptible pulse, still under scroll peak 1.03.
+  const breathCenter = 1.012;
+  const breathAmp = 0.012;
   const breathPeriodMs = 10000;
   const breathFadePx = 80;
   const scrollYSlop = 2;
@@ -309,9 +311,14 @@
     if (poster) {
       // Transform-only on the plate. Do not write --bg-* on :root
       // during scroll — that invalidates the whole document.
+      // Portrait must keep CSS --bg-anchor-y (disk centroid), not -50%,
+      // or the inline transform undoes the vertical re-center.
       const y = current + coverBiasY();
+      const ty = plateQuery.matches
+        ? `calc(-1 * var(--bg-anchor-y, 50%) + ${y}px)`
+        : `calc(-50% + ${y}px)`;
       poster.style.transform =
-        `translate3d(${posterAxisX}, calc(-50% + ${y}px), 0) scale(${currentScale})`;
+        `translate3d(${posterAxisX}, ${ty}, 0) scale(${currentScale})`;
     } else {
       root.style.setProperty("--bg-parallax", `${current}px`);
       root.style.setProperty("--bg-scale", String(currentScale));
