@@ -468,6 +468,25 @@ html a:focus-visible {
     padding-top: 6.5svh;
   }
 
+  /*
+    Keep © at the bottom of the fixed sidebar column, not flush under
+    the tag cloud. Theme already sets .sidebar to column flex on
+    desktop; margin-top:auto on the sidebar footer spends the leftover.
+  */
+  html .sidebar,
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  html .sidebar .footer,
+  html .footer.footer__sidebar,
+  .sidebar .footer,
+  .footer.footer__sidebar {
+    margin-top: auto;
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  }
+
   .header,
   html .header,
   html.theme--dark .header,
