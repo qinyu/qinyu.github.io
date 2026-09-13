@@ -500,6 +500,14 @@ html a:focus-visible {
     border: none;
     border-bottom: none;
     box-shadow: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  /* Same scroll-away fade as portrait: hide when past top, show at rest. */
+  html.is-portrait-nav-away .header {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   /* Landscape: no opaque bar, no upward void shield. Portrait nav is unchanged. */

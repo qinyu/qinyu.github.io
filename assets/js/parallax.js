@@ -371,7 +371,7 @@
       return;
     }
 
-    syncPortraitNav();
+    syncNavAway();
     target = computeTarget();
     targetScale = computeScale();
 
@@ -432,16 +432,13 @@
     lerpUntilSettled = false;
     finishArrive();
   };
-  const portraitNav = window.matchMedia("(max-width: 960px)");
-  const portraitNavSlop = 8;
+  // Fade the top nav after leaving scroll top — portrait and landscape.
+  // Class name is historical; behavior is viewport-wide.
+  const navAwaySlop = 8;
 
-  const syncPortraitNav = () => {
-    if (!portraitNav.matches) {
-      root.classList.remove("is-portrait-nav-away");
-      return;
-    }
+  const syncNavAway = () => {
     const y = window.scrollY || root.scrollTop || 0;
-    if (y > portraitNavSlop) {
+    if (y > navAwaySlop) {
       root.classList.add("is-portrait-nav-away");
     } else {
       root.classList.remove("is-portrait-nav-away");
@@ -692,12 +689,7 @@
       // Always schedule a tick so idle breath starts even with no scroll.
       requestTick(arriving || holdFirstFrame);
     }
-    if (typeof portraitNav.addEventListener === "function") {
-      portraitNav.addEventListener("change", syncPortraitNav);
-    } else if (typeof portraitNav.addListener === "function") {
-      portraitNav.addListener(syncPortraitNav);
-    }
-    syncPortraitNav();
+    syncNavAway();
   };
 
   boot();
