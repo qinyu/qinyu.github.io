@@ -8,25 +8,24 @@
   //   bounce: translate ≤ 6% of layout vh. At scale 1, leftover
   //           overflow must stay ≥ safety 2%. --bg-rest 120% ⇒
   //           10% per-side ⇒ leftover 2% at rest. Unchanged.
-  //   zoom:   rest→end scale delta is zoomTravel (0.03 ⇒ peak 1.03).
-  //           Anchored at breathCenter (not 1.0) so scroll continues
-  //           from the idle breath value — no snap back to 1.0.
+  //   zoom:   rest→end scale delta is zoomTravel (0.08 ⇒ peak 1.08).
+  //           Matches breath crest so scroll keeps zooming in from the
+  //           idle center — no snap back / zoom-out. Anchored at
+  //           breathCenter (not 1.0).
   //   breath: idle sine around breathCenter ± breathAmp.
-  //           1.02±0.02 (period 10s) — stronger than 1.012±0.012 after
-  //           that still read weak on Mars grain. Crest may exceed
-  //           scroll peak 1.03; apply() clamp allows breathCenter+amp.
-  //           Fades out over breathFadePx of scrollY; fully paused
-  //           while pull-to-bounce is active. Clock is Date.now()-based
-  //           and persisted in sessionStorage so in-site nav keeps
-  //           the same phase — no trough restart.
+  //           Doubled again to 1.04±0.04 (period 10s). apply() clamp
+  //           allows breathCenter+amp. Fades out over breathFadePx of
+  //           scrollY; fully paused while pull-to-bounce is active.
+  //           Clock is Date.now()-based and persisted in sessionStorage
+  //           so in-site nav keeps the same phase — no trough restart.
   // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
   const safetyMargin = 0.02;
-  const zoomTravel = 0.03;
-  // Idle breath — stronger pulse; phone rest margin still covers crest.
-  const breathCenter = 1.02;
-  const breathAmp = 0.02;
+  const zoomTravel = 0.08;
+  // Idle breath — doubled from 1.02±0.02; crest pairs with peak 1.08.
+  const breathCenter = 1.04;
+  const breathAmp = 0.04;
   const breathPeriodMs = 10000;
   const breathFadePx = 80;
   const scrollYSlop = 2;
@@ -308,7 +307,7 @@
   const apply = () => {
     const maxPx = restVh * maxTravel;
     current = clamp(current, -maxPx, maxPx);
-    // Allow idle breath crest above scroll peakScale (1.03).
+    // Allow idle breath crest (and matching scroll peak 1.08).
     currentScale = clamp(
       currentScale,
       baseScale,
