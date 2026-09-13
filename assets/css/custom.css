@@ -470,8 +470,9 @@ html a:focus-visible {
 
   /*
     Keep © at the bottom of the fixed sidebar column, not flush under
-    the tag cloud. Theme already sets .sidebar to column flex on
-    desktop; margin-top:auto on the sidebar footer spends the leftover.
+    the tag cloud. Theme sets .footer__sidebar to inline-block, which
+    made margin-top:auto unreliable here — pin with absolute bottom
+    inside the already-fixed .sidebar instead.
   */
   html .sidebar,
   .sidebar {
@@ -483,7 +484,13 @@ html a:focus-visible {
   html .footer.footer__sidebar,
   .sidebar .footer,
   .footer.footer__sidebar {
-    margin-top: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    margin-top: 0;
+    display: block;
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
   }
 
