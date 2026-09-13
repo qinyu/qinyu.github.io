@@ -4,23 +4,35 @@
   const plateQuery = window.matchMedia(
     "(orientation: portrait), (max-aspect-ratio: 1 / 1)",
   );
-  // Cover + overflow only. Bounce and scroll-zoom are separate:
+  // Cover + overflow only. Bounce, scroll-zoom, and idle breath:
   //   bounce: translate ≤ 6% of layout vh. At scale 1, leftover
   //           overflow must stay ≥ safety 2%. --bg-rest 120% ⇒
   //           10% per-side ⇒ leftover 2% at rest. Unchanged.
   //   zoom:   rest→end scale delta is zoomTravel (0.03 ⇒ peak 1.03).
-  //           Was ~0.02 from leftover math (peak 1.02). Zoom-in
-  //           grows the plate, so it does not spend bounce leftover.
+  //           Anchored at breathCenter (not 1.0) so scroll continues
+  //           from the idle breath value — no snap back to 1.0.
+  //   breath: idle sine around breathCenter ± breathAmp (tier A:
+  //           1.003 ± 0.003, period 10s). Fades out over breathFadePx
+  //           of scrollY; fully paused while pull-to-bounce is active.
+  //           Clock is Date.now()-based and persisted in sessionStorage
+  //           so in-site nav keeps the same phase — no trough restart.
   // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
   const safetyMargin = 0.02;
   const zoomTravel = 0.03;
+  // Idle breath (user-confirmed tier A).
+  const breathCenter = 1.003;
+  const breathAmp = 0.003;
+  const breathPeriodMs = 10000;
+  const breathFadePx = 80;
+  const scrollYSlop = 2;
   const ease = 0.16;
   const arriveEase = 0.08;
   const storageKey = "site-bg-parallax";
   const scaleKey = "site-bg-scale";
   const handoffKey = "site-bg-handoff";
+  const breathKey = "site-bg-breath-origin";
   const baseScale = 1;
   let peakScale = baseScale;
   let bouncePeak = baseScale;
@@ -48,6 +60,11 @@
   let maxScrollPx = 1;
   let posterAxisX = "-50%";
   let coverH = 0;
+  // Breath clock (wall time). Origin persists across in-site nav.
+  // First visit: origin = now ⇒ trough (sin=-1 ⇒ scale=1.000).
+  let breathOriginMs = 0;
+  let breathPauseMs = 0;
+  let breathHiddenAt = 0;
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -124,15 +141,93 @@
   const readScrollY = () => window.scrollY || root.scrollTop || 0;
 
   const scaleFromProgress = (progress) => {
-    // Zoom-in from rest (top = base) toward center; never returns to 1.00
-    // at the page bottom the way the old dune ±5% V-curve did.
-    return baseScale + (peakScale - baseScale) * progress;
+    // Zoom-in from breathCenter (idle rest) toward peakScale; never
+    // returns to 1.00 at the page bottom the way the old dune ±5% V-curve did.
+    // Anchoring at breathCenter keeps scroll continuous with idle breath.
+    return breathCenter + (peakScale - breathCenter) * progress;
+  };
+
+  // Wall clock so the phase survives full page loads (performance.now resets).
+  const breathNowMs = () => {
+    const wall = Date.now();
+    if (breathHiddenAt > 0) {
+      return breathHiddenAt - breathPauseMs;
+    }
+    return wall - breathPauseMs;
+  };
+
+  const ensureBreathOrigin = () => {
+    if (breathOriginMs) {
+      return;
+    }
+    // First paint in this session: trough matches CSS --bg-scale: 1.
+    breathOriginMs = breathNowMs();
+    try {
+      sessionStorage.setItem(breathKey, String(breathOriginMs));
+    } catch (_) {
+      /* private mode */
+    }
+  };
+
+  const restoreBreathOrigin = () => {
+    try {
+      const saved = sessionStorage.getItem(breathKey);
+      if (saved != null) {
+        const parsed = parseFloat(saved);
+        if (!Number.isNaN(parsed) && parsed > 0) {
+          breathOriginMs = parsed;
+          return;
+        }
+      }
+    } catch (_) {
+      /* private mode */
+    }
+    ensureBreathOrigin();
+  };
+
+  const breathSine = () => {
+    ensureBreathOrigin();
+    // -π/2 ⇒ sin = -1 at t=0 ⇒ scale = breathCenter - breathAmp = 1.000
+    const t = (breathNowMs() - breathOriginMs) / breathPeriodMs;
+    return Math.sin(t * Math.PI * 2 - Math.PI / 2);
+  };
+
+  const breathGate = () => {
+    // 1 at idle top; 0 once scrolled past breathFadePx or while pulling.
+    const y = readScrollY();
+    const pull = Math.max(y < 0 ? -y : 0, touchPull);
+    if (pull > 0) {
+      return 0;
+    }
+    if (y <= scrollYSlop) {
+      return 1;
+    }
+    if (y >= breathFadePx) {
+      return 0;
+    }
+    const u = (y - scrollYSlop) / (breathFadePx - scrollYSlop);
+    // smoothstep fade 1→0
+    const s = u * u * (3 - 2 * u);
+    return 1 - s;
+  };
+
+  const shouldKeepBreathing = () => {
+    if (reduce.matches || document.hidden) {
+      return false;
+    }
+    return breathGate() > 0.01;
   };
 
   const persistParallax = () => {
     try {
       sessionStorage.setItem(storageKey, String(current));
       sessionStorage.setItem(scaleKey, String(currentScale));
+      // Remap origin onto a bare Date.now() timeline (pauseMs = 0 on the
+      // next document) so in-site nav keeps the exact sine phase.
+      if (breathOriginMs) {
+        const elapsed = breathNowMs() - breathOriginMs;
+        sessionStorage.setItem(breathKey, String(Date.now() - elapsed));
+      }
     } catch (_) {
       /* private mode */
     }
@@ -193,11 +288,18 @@
     }
     const y = readScrollY();
     const pull = Math.max(y < 0 ? -y : 0, touchPull);
+    // Pull-to-bounce: pause breath entirely (user-confirmed).
     if (pull > 0) {
       const t = clamp(pull / (restVh * 0.2), 0, 1);
       return baseScale + (bouncePeak - baseScale) * t;
     }
-    return scaleFromProgress(pageProgress());
+    const scrollBase = scaleFromProgress(pageProgress());
+    const gate = breathGate();
+    if (gate <= 0) {
+      return scrollBase;
+    }
+    // Clamp to baseScale so float trough (center-amp) never dips below 1.
+    return Math.max(baseScale, scrollBase + breathAmp * gate * breathSine());
   };
 
   const apply = () => {
@@ -268,6 +370,10 @@
       current = target;
       currentScale = targetScale;
       apply();
+      // Idle breath needs a standing rAF; scroll events alone do not fire at rest.
+      if (shouldKeepBreathing()) {
+        requestTick(false);
+      }
       return;
     }
 
@@ -280,6 +386,9 @@
       apply();
       lerpUntilSettled = false;
       finishArrive();
+      if (shouldKeepBreathing()) {
+        requestTick(false);
+      }
       return;
     }
     current += delta * step;
@@ -380,8 +489,16 @@
   });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") {
+      breathHiddenAt = Date.now();
       persistParallax();
+      return;
     }
+    // Resume breath clock without jumping the sine phase.
+    if (breathHiddenAt > 0) {
+      breathPauseMs += Date.now() - breathHiddenAt;
+      breathHiddenAt = 0;
+    }
+    requestTick(false);
   });
 
   window.addEventListener(
@@ -551,6 +668,8 @@
     consumeHandoff();
     cacheMetrics();
     booted = true;
+    // Reuse the session breath origin so栏目切换 does not restart the sine.
+    restoreBreathOrigin();
 
     if (reduce.matches) {
       snapRest();
@@ -558,6 +677,7 @@
       // Paint the carried parallax/scale first, then ease. Never snap.
       holdFirstFrame = arriving || Math.abs(current) > 0.08 || Math.abs(currentScale - baseScale) > 0.0008;
       apply();
+      // Always schedule a tick so idle breath starts even with no scroll.
       requestTick(arriving || holdFirstFrame);
     }
     if (typeof portraitNav.addEventListener === "function") {
