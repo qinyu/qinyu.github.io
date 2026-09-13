@@ -35,10 +35,7 @@
           }
           window.scrollTo(0, 0);
         }
-        if (
-          (window.scrollY || 0) > 8 &&
-          window.matchMedia("(max-width: 960px)").matches
-        ) {
+        if ((window.scrollY || 0) > 8) {
           root.classList.add("is-portrait-nav-away");
         }
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
