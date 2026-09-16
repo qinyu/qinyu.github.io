@@ -67,7 +67,7 @@ Eric Evans 于 2003 年出版了精采绝伦的《领域驱动设计：软件核
 
 限界上下文定义了模型中隔离出来的部分可以应用的上下文。这种隔离可以通过解耦技术逻辑，分割代码仓库，分割数据库 Schema 来达成，在团队组织方面也是一样。和往常一样，限界上下文将拆分到何种程度取决于实际情况：我们的需求和可能性。
 
-有趣的是，这不是一个全新的概念。早在 1992 年，Ivar Jacobson 在他的[书](https://www.amazon.com/Object-Oriented-Software-Engineering-Driven-Approach/dp/0201403471)中就有子系统的描述，比 Eric Evans 早了十一年！
+有趣的是，这不是一个全新的概念。早在 1992 年，Ivar Jacobson 在他的[书](https://www.amazon.com/dp/0201403471)中就有子系统的描述，比 Eric Evans 早了十一年！
 
 {{< figure src="fig_7_27_subsystems.jpg" class="medium" >}}
 
@@ -80,11 +80,11 @@ Eric Evans 于 2003 年出版了精采绝伦的《领域驱动设计：软件核
 - *[一个子系统]最好应该只和一个角色耦合，因为变化通常由一个角色引发。*
 - *[...]首先把控制对象放入子系统，然后将强耦合的实体对象和界面对象放到同一个子系统中*
 - *拥有强相关功能耦合的所有对象都将被放入同一个子系统之中[...]*
-  - *一个对象中的变化会导致其它对象中的变化吗？(现在被称作共同封闭原则——一起变化的类应该放在同一个包中——由 Robert C. Martin 在他 1996 年的论文“[Granularity](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx&hl=en)
+  - *一个对象中的变化会导致其它对象中的变化吗？(现在被称作共同封闭原则——一起变化的类应该放在同一个包中——由 Robert C. Martin 在他 1996 年的论文“[Granularity](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
     ”中发布，比 Ivar Jacobson 的书晚了四年)*
   - *它们是和同一个角色通信吗？*
   - *这两个对象都依赖第三个对象吗？例如同一个界面对象或实体对象？*
-  - *这个对象会执行多个其它对象上的操作吗？(现在被称作共同重用原则——一起被使用的类应该放在同一个包中——由 Robert C. Martin 在他 1996 年的论文“[Granularity](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx&hl=en)
+  - *这个对象会执行多个其它对象上的操作吗？(现在被称作共同重用原则——一起被使用的类应该放在同一个包中——由 Robert C. Martin 在他 1996 年的论文“[Granularity](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
     ”中发布，比 Ivar Jacobson 的书晚了四年)*
 - *子系统划分的另一个标准是不同子系统之间的通信应该尽可能少(低耦合)*
 - *对大型项目来做，还有其它一些子系统划分的标准，例如：*
@@ -130,9 +130,9 @@ Eric Evans 于 2003 年出版了精采绝伦的《领域驱动设计：软件核
 
 # 引用来源
 
-1992 – Ivar Jacobson – [Object-Oriented Software Engineering: A use case driven approach](https://www.amazon.com/Object-Oriented-Software-Engineering-Driven-Approach/dp/0201403471)
-1996 – Robert C. Martin – [Granularity](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx&hl=en)
-2003 – Eric Evans – [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.com/dp/0321125215/ref=wl_it_dp_o_pC_nS_ttl?_encoding=UTF8&colid=CG11VVP0H8Y8&coliid=I1X0NXLUHTFGE4)
-2014 – Eric Evans – [Domain-Driven Design Reference](https://www.amazon.com/Domain-Driven-Design-Reference-Definitions-Summaries/dp/1457501198)
+- 1992 – Ivar Jacobson – [Object-Oriented Software Engineering: A use case driven approach](https://www.amazon.com/dp/0201403471)
+- 1996 – Robert C. Martin – [Granularity](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
+- 2003 – Eric Evans – [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.com/dp/0321125215)
+- 2014 – Eric Evans – [Domain-Driven Design Reference](https://www.amazon.com/dp/1457501198)
 
 [原文](https://herbertograca.com/2017/09/07/domain-driven-design/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

@@ -68,7 +68,7 @@ EBI 架构(Entity-Boundary-Interactor，实体-边界-交互器)因为 Robert C.
 
 > […] 所有的系统都会发生变化。因此，只有所有的变化都发生在局部，稳定性才会存在，也就是说，变化最好只能影响系统中的一个对象。—— Ivar Jacobson 1992, pg. 135
 
-通过职责的封装将系统的变化控制在局部，就是 EBI 架构的目标。我们仔细思考一下，Jacobson 只是没有直接说出十年之后由 Robert C. Martin 在他的 “**[Agile Software Development, Principles, Patterns, and Practices](https://www.amazon.com/dp/0135974445/ref=wl_it_dp_o_pC_nS_ttl?_encoding=UTF8&colid=CG11VVP0H8Y8&coliid=I1P9T8D1QRUFMM)**”一书中提出的**[单一职责原则](https://docs.google.com/open?id=0ByOwmqah_nuGNHEtcU5OekdDMkk)**罢了。
+通过职责的封装将系统的变化控制在局部，就是 EBI 架构的目标。我们仔细思考一下，Jacobson 只是没有直接说出十年之后由 Robert C. Martin 在他的 “**[Agile Software Development, Principles, Patterns, and Practices](https://www.amazon.com/dp/0135974445)**”一书中提出的**[单一职责原则](https://drive.google.com/uc?export=download&id=0ByOwmqah_nuGNHEtcU5OekdDMkk)**罢了。
 
 # 总结
 
@@ -78,13 +78,13 @@ EBI 模式关注后端而 MVC 更关注前端。它们不能互相取代，它�
 
 # 引用来源
 
-1992 – Ivar Jacobson – [Object-Oriented Software Engineering: A use case driven approach](https://www.amazon.com/Object-Oriented-Software-Engineering-Driven-Approach/dp/0201403471)
-2002 – Robert C. Martin – [Agile Software Development, Principles, Patterns, and Practices](https://www.amazon.com/dp/0135974445/ref=wl_it_dp_o_pC_nS_ttl?_encoding=UTF8&colid=CG11VVP0H8Y8&coliid=I1P9T8D1QRUFMM)
-2002 – Robert C. Martin – [Single Responsibility Principle](https://docs.google.com/open?id=0ByOwmqah_nuGNHEtcU5OekdDMkk)
-Eclipse Process Framework – [Entity-Control-Boundary Pattern](http://epf.eclipse.org/wikis/openuppt/openup_basic/guidances/concepts/entity_control_boundary_pattern,_uF-QYEAhEdq_UJTvM1DM2Q.html)
-Jon Pearce – [Implementing Use Cases](http://www.cs.sjsu.edu/~pearce/modules/patterns/enterprise/ecb/ecb.htm)
-2012 – Robert C. Martin – [Clean Architecture (NDC 2012)](https://youtu.be/Nltqi7ODZTM)
-2014 – Adam Bien – [How to tackle JEE](https://www.youtube.com/watch?v=JWcoiXNoKxk&feature=youtu.be&t=15m14s)
-2014 – Ali Parvini – [Model View Controller vs Boundary Control Entity](http://stackoverflow.com/questions/26910974/model-view-controller-vs-boundary-control-entity)
+- 1992 – Ivar Jacobson – [Object-Oriented Software Engineering: A use case driven approach](https://www.amazon.com/dp/0201403471)
+- 2002 – Robert C. Martin – [Agile Software Development, Principles, Patterns, and Practices](https://www.amazon.com/dp/0135974445)
+- 2002 – Robert C. Martin – [Single Responsibility Principle](https://drive.google.com/uc?export=download&id=0ByOwmqah_nuGNHEtcU5OekdDMkk)
+- Eclipse Process Framework – [Entity-Control-Boundary Pattern](https://web.archive.org/web/20071204071407/http://epf.eclipse.org:80/wikis/openuppt/openup_basic/guidances/concepts/entity_control_boundary_pattern,_uF-QYEAhEdq_UJTvM1DM2Q.html)
+- Jon Pearce – [Implementing Use Cases](https://web.archive.org/web/20251216231607/http://www.cs.sjsu.edu/~pearce/modules/patterns/enterprise/ecb/ecb.htm)
+- 2012 – Robert C. Martin – [Clean Architecture (NDC 2012)](https://youtu.be/Nltqi7ODZTM)
+- 2014 – Adam Bien – [How to tackle JEE](https://www.youtube.com/watch?v=JWcoiXNoKxk&feature=youtu.be&t=15m14s)
+- 2014 – Ali Parvini – [Model View Controller vs Boundary Control Entity](https://stackoverflow.com/questions/26910974/model-view-controller-vs-boundary-control-entity)
 
 [原文](https://herbertograca.com/2017/08/24/ebi-architecture/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

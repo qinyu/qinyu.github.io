@@ -60,11 +60,11 @@ draft: false
 
 # 引用来源
 
-1997 – Brian Foote, Joseph Yoder – [Big Ball of Mud](http://www.laputan.org/pub/foote/mud.pdf)
-2012 – Len Bass, Paul Clements, Rick Kazman –[Software Architecture in Practice](https://www.amazon.com/Software-Architecture-Practice-SEI-Engineering-ebook/dp/B009GMUL84)
-2017 – Herberto Graça – [Microservices architecture: What the gurus say about it](https://herbertograca.com/2017/01/26/microservices-architecture/)
-2017 – Herberto Graca –[Software Architecture Premises](https://herbertograca.com/2017/07/05/software-architecture-premises/)
-2017* – Wikipedia –[Modular programming](https://en.wikipedia.org/wiki/Modular_programming)
-2017* – Wikipedia –[Component-based software engineering](https://en.wikipedia.org/wiki/Component-based_software_engineering)
+- 1997 – Brian Foote, Joseph Yoder – [Big Ball of Mud](https://web.archive.org/web/20180424095400/http://www.laputan.org/pub/foote/mud.pdf)
+- 2012 – Len Bass, Paul Clements, Rick Kazman – [Software Architecture in Practice](https://www.amazon.com/dp/B009GMUL84)
+- 2017 – Herberto Graça – [Microservices architecture: What the gurus say about it](https://herbertograca.com/2017/01/26/microservices-architecture/)
+- 2017 – Herberto Graca – [Software Architecture Premises](https://herbertograca.com/2017/07/05/software-architecture-premises/)
+- 2017* – Wikipedia – [Modular programming](https://en.wikipedia.org/wiki/Modular_programming)
+- 2017* – Wikipedia – [Component-based software engineering](https://en.wikipedia.org/wiki/Component-based_software_engineering)
 
 [原文](https://herbertograca.com/2017/07/31/monolithic-architecture/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

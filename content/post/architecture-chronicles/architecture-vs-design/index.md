@@ -72,10 +72,10 @@ draft: false
 
 # 引用来源
 
-2004 – Microsoft – [Understanding Service-Oriented Architecture](https://msdn.microsoft.com/en-us/library/aa480021.aspx)
-2009 – Microsoft – [Microsoft Application Architecture Guide](https://msdn.microsoft.com/en-us/library/ee658117.aspx)
-2010 – Stack Overflow – [What’s the difference between Arch. Patterns and Arch. Styles?](http://stackoverflow.com/questions/3958316/whats-the-difference-between-architectural-patterns-and-architectural-styles)
-2014 – George Fairbanks – [Architecture Patterns vs. Architectural Styles](http://georgefairbanks.com/blog/architecture-patterns-vs-architectural-styles/)
-2017 – Wikipedia – [List of software architecture styles and patterns](https://en.wikipedia.org/wiki/List_of_software_architecture_styles_and_patterns)
+- 2004 – Microsoft – [Understanding Service-Oriented Architecture](https://msdn.microsoft.com/en-us/library/aa480021.aspx)
+- 2009 – Microsoft – [Microsoft Application Architecture Guide](https://msdn.microsoft.com/en-us/library/ee658117.aspx)
+- 2010 – Stack Overflow – [What’s the difference between Arch. Patterns and Arch. Styles?](https://stackoverflow.com/questions/3958316/whats-the-difference-between-architectural-patterns-and-architectural-styles)
+- 2014 – George Fairbanks – [Architecture Patterns vs. Architectural Styles](http://georgefairbanks.com/blog/architecture-patterns-vs-architectural-styles/)
+- 2017 – Wikipedia – [List of software architecture styles and patterns](https://en.wikipedia.org/wiki/List_of_software_architecture_styles_and_patterns)
 
 [原文](https://herbertograca.com/2017/07/28/architectural-styles-vs-architectural-patterns-vs-design-patterns/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

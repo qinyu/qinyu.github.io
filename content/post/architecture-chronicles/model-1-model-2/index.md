@@ -61,7 +61,7 @@ JSP 是这样一种技术，它是可以与 PHP、ASP 或是 Python 比肩的脚
 
 当谈到 “Model 1” 时，我希望每个人都清楚地看到被混在一起的关注点：我们会把模板逻辑和用例逻辑混在一起。
 
-关于 “Model 2”，我发现 View 和 Controller 都属于展现层，可是Govind Seshadri 却说得很清楚：“*[Model 2 架构应该导致所有的处理逻辑都集中在控制器 Servlet 之中](https://www.javaworld.com/article/2076557/java-web-development/understanding-javaserver-pages-model-2-architecture.html?page=2)*”，尽管领域逻辑确实是放在外部的 Java 对象和 EJB 之中。
+关于 “Model 2”，我发现 View 和 Controller 都属于展现层，可是Govind Seshadri 却说得很清楚：“*[Model 2 架构应该导致所有的处理逻辑都集中在控制器 Servlet 之中](https://web.archive.org/web/20180730234511/https://www.javaworld.com/article/2076557/java-web-development/understanding-javaserver-pages-model-2-architecture.html)*”，尽管领域逻辑确实是放在外部的 Java 对象和 EJB 之中。
 
 这意味着 “Model 2” 控制器包含了用例逻辑，它应该属于应用层而不是展现层。
 
@@ -69,10 +69,9 @@ JSP 是这样一种技术，它是可以与 PHP、ASP 或是 Python 比肩的脚
 
 # 引用来源
 
-1998 – Sun Microsystems – [JavaServerTM PagesTM – Specification 0.92](http://www.kirkdorffer.com/jspspecs/jsp092.html)
-1999 – Govind Seshadri – [Understanding JavaServer Pages Model 2 architecture:](https://www.javaworld.com/article/2076557/java-web-development/understanding-javaserver-pages-model-2-architecture.html)
-[Exploring the MVC design pattern](https://www.javaworld.com/article/2076557/java-web-development/understanding-javaserver-pages-model-2-architecture.html)
-2018 – Paul M. Jones – [Model View Controller and “Model 2”](https://github.com/pmjones/adr/blob/master/MVC-MODEL-2.md)
-2018* – Wikipedia – [JSP model 2 architecture](https://en.wikipedia.org/wiki/JSP_model_2_architecture)
+- 1998 – Sun Microsystems – [JavaServerTM PagesTM – Specification 0.92](https://web.archive.org/web/20180424095400/http://www.kirkdorffer.com/jspspecs/jsp092.html)
+- 1999 – Govind Seshadri – [Understanding JavaServer Pages Model 2 architecture: Exploring the MVC design pattern](https://web.archive.org/web/20180730234511/https://www.javaworld.com/article/2076557/java-web-development/understanding-javaserver-pages-model-2-architecture.html)
+- 2018 – Paul M. Jones – [Model View Controller and “Model 2”](https://github.com/pmjones/adr/blob/master/MVC-MODEL-2.md)
+- 2018* – Wikipedia – [JSP model 2 architecture](https://en.wikipedia.org/wiki/JSP_model_2_architecture)
 
 [原文](https://herbertograca.com/2018/08/29/model-1-model-2/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

@@ -47,13 +47,13 @@ Meier 为这样一条原则辩护，**我们不应该使用既能修改数据也
 
 一个更有意思的例子是使用表单来修改一个客户的数据。假设我们可以使用表单来修改客户的名字、地址和电话号码，以及设置他是否是优先客户。我们还假设客户只有支付了账单才可以成为优先客户。在一个 CRUD 应用中，我们在收到数据之后，可以检查客户是否支付了账单，还可以接受或是拒绝数据修改请求。然而，这却是两个不同的业务流程：即便是客户没有支付账单，他也能成功地修改名字、地址和电话号码。使用命令模式之后，我们就能在代码中清晰地区别它们，创建两个代表不同业务流程的命令：一个用来改变客户数据，而另一个用来升级用户的优先状态，两个流程都由同一个 UI 界面触发。
 
-> 在修改数据时为我们提供正确的粒度和意图。这就是命令的全部。—— Udi Dahan 2009, [Clarified CQRS](http://udidahan.com/2009/12/09/clarified-cqrs/)
+> 在修改数据时为我们提供正确的粒度和意图。这就是命令的全部。—— Udi Dahan 2009, [Clarified CQRS](https://udidahan.com/2009/12/09/clarified-cqrs/)
 
 可是，还是有一点要记得，并不是说不能有“CreateUser”这样的简单命令。CRUD 的用例可以和带着意图的代表着复杂业务流程的用例完美共存，重要的是别误用。
 
-技术上来说，如[Head First Design Patterns](https://www.amazon.com/Head-First-Design-Patterns-Brain-Friendly/dp/0596007124) 所述，命令模式会将执行一个动作或者一系列动作所需的所有信息都封装起来。当我们需要在同一个地方以同样的方式执行一些不同的业务流程(命令)时这特别有用，因此它们需要同样的接口。例如，所有命令都有同样的`execute()`方法，这样在某个时刻，任何命令都可以被触发，不管到底是哪个命令。这也能让任何业务流程(命令)可以被放到队列中在合适的时候执行，同步或异步都行。
+技术上来说，如[Head First Design Patterns](https://www.amazon.com/dp/0596007124) 所述，命令模式会将执行一个动作或者一系列动作所需的所有信息都封装起来。当我们需要在同一个地方以同样的方式执行一些不同的业务流程(命令)时这特别有用，因此它们需要同样的接口。例如，所有命令都有同样的`execute()`方法，这样在某个时刻，任何命令都可以被触发，不管到底是哪个命令。这也能让任何业务流程(命令)可以被放到队列中在合适的时候执行，同步或异步都行。
 
-[Head First Design Patterns](https://www.amazon.com/Head-First-Design-Patterns-Brain-Friendly/dp/0596007124) 一书给出的例子是屋子里的灯的遥控器。接下来我也会使用同样的例子，尽管我会指出它的不足之处。
+[Head First Design Patterns](https://www.amazon.com/dp/0596007124) 一书给出的例子是屋子里的灯的遥控器。接下来我也会使用同样的例子，尽管我会指出它的不足之处。
 
 那么，假设我们有一个控制屋子里的灯的遥控器，上面有一个按钮可以打开厨房里的灯，还有一个按钮关掉它们。每个按钮都代表着一个我们可以发给房屋灯光系统的命令。
 
@@ -131,7 +131,7 @@ Meier 为这样一条原则辩护，**我们不应该使用既能修改数据也
 
 实体间“一对多”和“多对多”的关系会严重影响 ORM 的性能。好消息是我们在处理命令时很少会需要这些关系，它们大多数时候只会在查询中用到，而我们已经把查询从命令的处理中移走了，所以我们可以移除这些实体关系。这里我所说的并不是关系型数据库管理系统中表之间的关系，这些外键约束依然应该存在于写库中，我指的是在 ORM 级别配置的实体间的连接。
 
-> 我们真的需要在客户实体中保留订单集合吗？我们需要在哪条命令中浏览这个集合？实际上，到底有什么样的命令会需要一对多关系？如果一对多关系是这种情况，那么多对多关系绝对也是一样的。我的意思是，大多数命令都只包含一两个 ID。—— Udi Dahan 2009, [Clarified CQRS](http://udidahan.com/2009/12/09/clarified-cqrs/)
+> 我们真的需要在客户实体中保留订单集合吗？我们需要在哪条命令中浏览这个集合？实际上，到底有什么样的命令会需要一对多关系？如果一对多关系是这种情况，那么多对多关系绝对也是一样的。我的意思是，大多数命令都只包含一两个 ID。—— Udi Dahan 2009, [Clarified CQRS](https://udidahan.com/2009/12/09/clarified-cqrs/)
 
 按照和查询端的一样的思路，如果复杂查询用不上写入端，我们能用序列化实体的文档或键值存储来代替关系型数据库管理系统吗？也许可行，也许不行，我只是觉得如果应用在写入端出现性能问题的话这值得考虑。
 
@@ -151,20 +151,20 @@ Meier 为这样一条原则辩护，**我们不应该使用既能修改数据也
 
 (我认为最有价值的条目都**加粗**了。)
 
-1994 – Gamma, Helm, Johnson, Vlissides – [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented-ebook/dp/B000SEIBB8)
-1999 – Bala Paranj – [Java Tip 68: Learn how to implement the Command pattern in Java](http://www.javaworld.com/article/2077569/core-java/java-tip-68--learn-how-to-implement-the-command-pattern-in-java.html)
-2004 – Eric Freeman, Elisabeth Robson – [Head First Design Patterns](https://www.amazon.com/Head-First-Design-Patterns-Brain-Friendly/dp/0596007124)
-2005 – Martin Fowler – [Command Query Separation](https://martinfowler.com/bliki/CommandQuerySeparation.html)
-**2009 – Udi Dahan – [Clarified CQRS](http://udidahan.com/2009/12/09/clarified-cqrs/)**
-2010 – Greg Young – [CQRS, Task Based UIs, Event Sourcing agh!](http://codebetter.com/gregyoung/2010/02/16/cqrs-task-based-uis-event-sourcing-agh/)
-2010 – Greg Young – [CQRS Documents](https://cqrs.files.wordpress.com/2010/11/cqrs_documents.pdf)
-2010 – Udi Dahan – [Race Conditions Don’t Exist](http://udidahan.com/2010/08/31/race-conditions-dont-exist/)
-2011 – Martin Fowler – [CQRS](https://martinfowler.com/bliki/CQRS.html)
-2011 – Udi Dahan – [When to avoid CQRS](http://udidahan.com/2011/04/22/when-to-avoid-cqrs/)
-**2014 – Greg Young – [CQRS and Event Sourcing – Code on the Beach 2014](https://www.youtube.com/watch?v=JHGkaShoyNs)**
-2015 – Matthias Noback – [Responsibilities of the command bus](https://php-and-symfony.matthiasnoback.nl/2015/01/responsibilities-of-the-command-bus/)
-2017 – Martin Fowler – [What do you mean by “Event-Driven”?](https://martinfowler.com/articles/201701-event-driven.html)
-2017* – Doug Gale – [Command Pattern](http://wiki.c2.com/?CommandPattern)
-2017* – Wikipedia – [Command Pattern](https://en.wikipedia.org/wiki/Command_pattern)
+- 1994 – Gamma, Helm, Johnson, Vlissides – [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented-ebook/dp/B000SEIBB8)
+- 1999 – Bala Paranj – [Java Tip 68: Learn how to implement the Command pattern in Java](https://web.archive.org/web/20140302205528/http://www.javaworld.com:80/article/2077569/core-java/java-tip-68--learn-how-to-implement-the-command-pattern-in-java.html)
+- 2004 – Eric Freeman, Elisabeth Robson – [Head First Design Patterns](https://www.amazon.com/dp/0596007124)
+- 2005 – Martin Fowler – [Command Query Separation](https://martinfowler.com/bliki/CommandQuerySeparation.html)
+- **2009 – Udi Dahan – [Clarified CQRS](https://udidahan.com/2009/12/09/clarified-cqrs/)**
+- 2010 – Greg Young – [CQRS, Task Based UIs, Event Sourcing agh!](https://web.archive.org/web/20211124134459/http://codebetter.com/gregyoung/2010/02/16/cqrs-task-based-uis-event-sourcing-agh/)
+- 2010 – Greg Young – [CQRS Documents](https://cqrs.wordpress.com/wp-content/uploads/2010/11/cqrs_documents.pdf)
+- 2010 – Udi Dahan – [Race Conditions Don’t Exist](https://udidahan.com/2010/08/31/race-conditions-dont-exist/)
+- 2011 – Martin Fowler – [CQRS](https://martinfowler.com/bliki/CQRS.html)
+- 2011 – Udi Dahan – [When to avoid CQRS](https://udidahan.com/2011/04/22/when-to-avoid-cqrs/)
+- **2014 – Greg Young – [CQRS and Event Sourcing – Code on the Beach 2014](https://www.youtube.com/watch?v=JHGkaShoyNs)**
+- 2015 – Matthias Noback – [Responsibilities of the command bus](https://matthiasnoback.nl/2015/01/responsibilities-of-the-command-bus/)
+- 2017 – Martin Fowler – [What do you mean by “Event-Driven”?](https://martinfowler.com/articles/201701-event-driven.html)
+- 2017* – Doug Gale – [Command Pattern](https://web.archive.org/web/20180424095400/http://wiki.c2.com/?CommandPattern)
+- 2017* – Wikipedia – [Command Pattern](https://en.wikipedia.org/wiki/Command_pattern)
 
 [原文](https://herbertograca.com/2017/10/19/from-cqs-to-cqrs/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

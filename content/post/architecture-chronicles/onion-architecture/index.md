@@ -18,7 +18,7 @@ draft: false
 
 *这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
-[2008 年 Jeffrey Palermo 提出了洋葱架构](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/)。在我看来，它在端口和适配器架构的基础上贯彻了将领域放在应用中心，将传达机制(UI)和系统使用的基础设施(ORM、搜索引擎、第三方 API...)放在外围的思路。但是它前进了一步，在其中加入了内部层次。
+[2008 年 Jeffrey Palermo 提出了洋葱架构](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)。在我看来，它在端口和适配器架构的基础上贯彻了将领域放在应用中心，将传达机制(UI)和系统使用的基础设施(ORM、搜索引擎、第三方 API...)放在外围的思路。但是它前进了一步，在其中加入了内部层次。
 　
 我们从通常拥有四个层次(展现层、应用层、领域层、持久化层)的分层架构发展到了端口和适配器架构，它只是含蓄地提到了两个同心圆层次：
 
@@ -47,11 +47,11 @@ draft: false
 > - 依赖的方向指向圆心
 > - 所有的应用代码可以独立于基础设施编译和运行
 >
-> —— Jeffrey Palermo 2008, [The Onion Architecture: part 3](http://jeffreypalermo.com/blog/the-onion-architecture-part-3/)
+> —— Jeffrey Palermo 2008, [The Onion Architecture: part 3](https://jeffreypalermo.com/2008/08/the-onion-architecture-part-3/)
 
 还有，任何一个外部层次都可以直接调用任何一个内部层次，这样既不会破坏耦合的方向，也避免了仅仅为了追求分层模式而创建一些没有任何业务逻辑的代理方法甚至代理类。这和 Martin Flowler 表达的偏好一致。
 
-> […] 上层可以使用它们下面的任意层次，而不仅仅是它们直接的下层。——Jeffrey Palermo 2008, [The Onion Architecture: part 3](http://jeffreypalermo.com/blog/the-onion-architecture-part-3/)
+> […] 上层可以使用它们下面的任意层次，而不仅仅是它们直接的下层。——Jeffrey Palermo 2008, [The Onion Architecture: part 3](https://jeffreypalermo.com/2008/08/the-onion-architecture-part-3/)
 
 # 总结
 
@@ -61,14 +61,10 @@ draft: false
 
 # 引用来源
 
-2002 – Martin Fowler – [Patterns of Enterprise Application Architecture](https://www.amazon.com/dp/0321127420/ref=wl_it_dp_o_pC_nS_ttl?_encoding=UTF8&colid=CG11VVP0H8Y8&coliid=I1QPWUPW6G7YF5)
-
-2008 – Jeffrey Palermo – [The Onion Architecture: part 1](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/)
-
-2008 – Jeffrey Palermo – [The Onion Architecture: part 2](http://jeffreypalermo.com/blog/the-onion-architecture-part-2/)
-
-2008 – Jeffrey Palermo – [The Onion Architecture: part 3](http://jeffreypalermo.com/blog/the-onion-architecture-part-3/)
-
-2013 – Jeffrey Palermo – [The Onion Architecture: part 4 – After Four Years](http://jeffreypalermo.com/blog/onion-architecture-part-4-after-four-years/)
+- 2002 – Martin Fowler – [Patterns of Enterprise Application Architecture](https://www.amazon.com/dp/0321127420)
+- 2008 – Jeffrey Palermo – [The Onion Architecture: part 1](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)
+- 2008 – Jeffrey Palermo – [The Onion Architecture: part 2](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-2/)
+- 2008 – Jeffrey Palermo – [The Onion Architecture: part 3](https://jeffreypalermo.com/2008/08/the-onion-architecture-part-3/)
+- 2013 – Jeffrey Palermo – [The Onion Architecture: part 4 – After Four Years](https://jeffreypalermo.com/2013/08/onion-architecture-part-4-after-four-years/)
 
 [原文](https://herbertograca.com/2017/09/21/onion-architecture/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

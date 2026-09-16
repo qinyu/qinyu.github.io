@@ -36,7 +36,7 @@ MVC 诞生于 1979 年，它诞生于使用 CLI 用户界面的桌面应用上�
 
 ```
 <?php
-// taken from http://www.peej.co.uk/articles/rmr-architecture.html
+// taken from https://web.archive.org/web/20180903051318/http://www.peej.co.uk/articles/rmr-architecture.html
 class Resource {
     private resourceData = [];
     method constructor(request, dataSource) {
@@ -85,7 +85,7 @@ MVC 模式是一种展现模式，以一种将模型、领域与用户界面分�
 
 # 引用来源
 
-2008 – Paul James – [Introducing the RMR Web Architecture](http://www.peej.co.uk/articles/rmr-architecture.html)
-2014 – Anthony Ferrara – [Alternatives To MVC](https://blog.ircmaxell.com/2014/11/alternatives-to-mvc.html)
+- 2008 – Paul James – [Introducing the RMR Web Architecture](https://web.archive.org/web/20180903051318/http://www.peej.co.uk/articles/rmr-architecture.html)
+- 2014 – Anthony Ferrara – [Alternatives To MVC](https://blog.ircmaxell.com/2014/11/alternatives-to-mvc.html)
 
 [原文](https://herbertograca.com/2018/08/31/resource-method-representation/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

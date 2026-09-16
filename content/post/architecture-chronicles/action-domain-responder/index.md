@@ -93,14 +93,14 @@ HTTP 请求方法（期望对资源进行的操作）被明确地连接到接收
 
 # 引用来源
 
-2014 – Paul M. Jones – [Action Domain Responder](https://github.com/pmjones/adr)
-2014 – Paul M. Jones – [Action-Domain-Responder](https://vimeo.com/106771285) (Vimeo)
-2014 – Paul M. Jones – [The Template Is Not The View: A Brief Introduction to ADR](https://www.youtube.com/watch?v=rlrTyN0aqSk)(Youtube)
-2014 – Paul M. Jones – [Action-Domain-Responder: A Refinement of MVC](https://www.slideshare.net/pmjones88/actiondomainresponder-a-refinement-of-mvc) (slides)
-2014 – Anthony Ferrara – [Alternatives To MVC](https://blog.ircmaxell.com/2014/11/alternatives-to-mvc.html)
-2018 – Paul M. Jones – [Model View Controller and “Model 2”](https://github.com/pmjones/adr/blob/master/MVC-MODEL-2.md)
-2018 – Paul M. Jones – [Comparing “Model 2” MVC to ADR](https://github.com/pmjones/adr/blob/master/ADR.md)
-2018 – Paul M. Jones – [Tradeoffs in ADR](https://github.com/pmjones/adr/blob/master/TRADEOFFS.md)
-2018 – Paul M. Jones – [Objections to ADR](https://github.com/pmjones/adr/blob/master/OBJECTIONS.md)
+- 2014 – Paul M. Jones – [Action Domain Responder](https://github.com/pmjones/adr)
+- 2014 – Paul M. Jones – [Action-Domain-Responder](https://vimeo.com/106771285) (Vimeo)
+- 2014 – Paul M. Jones – [The Template Is Not The View: A Brief Introduction to ADR](https://www.youtube.com/watch?v=rlrTyN0aqSk)(Youtube)
+- 2014 – Paul M. Jones – [Action-Domain-Responder: A Refinement of MVC](https://www.slideshare.net/pmjones88/actiondomainresponder-a-refinement-of-mvc) (slides)
+- 2014 – Anthony Ferrara – [Alternatives To MVC](https://blog.ircmaxell.com/2014/11/alternatives-to-mvc.html)
+- 2018 – Paul M. Jones – [Model View Controller and “Model 2”](https://github.com/pmjones/adr/blob/master/MVC-MODEL-2.md)
+- 2018 – Paul M. Jones – [Comparing “Model 2” MVC to ADR](https://github.com/pmjones/adr/blob/master/ADR.md)
+- 2018 – Paul M. Jones – [Tradeoffs in ADR](https://github.com/pmjones/adr/blob/master/TRADEOFFS.md)
+- 2018 – Paul M. Jones – [Objections to ADR](https://github.com/pmjones/adr/blob/master/OBJECTIONS.md)
 
 [原文](https://herbertograca.com/2018/09/03/action-domain-responder/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

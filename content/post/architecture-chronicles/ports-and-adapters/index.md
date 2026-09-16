@@ -18,9 +18,9 @@ draft: false
 
 *这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
-2005年，Alistair Cockburn构思了[端口和适配器架构](http://alistair.cockburn.us/Hexagonal+architecture) (又称[六边形架构](http://alistair.cockburn.us/Hexagonal+architecture))并记录在他的博客中。下面这句话就是他对该架构的目标的定义：
+2005年，Alistair Cockburn构思了[端口和适配器架构](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal%2Barchitecture) (又称[六边形架构](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal%2Barchitecture))并记录在他的博客中。下面这句话就是他对该架构的目标的定义：
 
-> 让用户、程序、自动化测试和批处理脚本可以平等地驱动应用，让应用的开发和测试可以独立于其最终运行的设备和数据库。——Alistair Cockburn 2005，[端口和适配器](http://alistair.cockburn.us/Hexagonal+architecture)
+> 让用户、程序、自动化测试和批处理脚本可以平等地驱动应用，让应用的开发和测试可以独立于其最终运行的设备和数据库。——Alistair Cockburn 2005，[端口和适配器](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal%2Barchitecture)
 
 有许多文章在谈及端口和适配器架构时会花很多篇幅在分层上。然而， 我并没有在 Alistair Cockburn 的原文中找到关于分层的只言片语。
 
@@ -64,7 +64,7 @@ draft: false
 
 {{< figure src="hexagonal-arch-3-hexagon2.png" class="medium" >}}
 
-[端口和适配器架构](http://alistair.cockburn.us/Hexagonal+architecture)使用了实现为端口和适配器的抽象层次，解决了传统架构方式带来的问题。
+[端口和适配器架构](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal%2Barchitecture)使用了实现为端口和适配器的抽象层次，解决了传统架构方式带来的问题。
 
 ## 什么是端口？
 
@@ -148,14 +148,14 @@ draft: false
 
 # 引用来源
 
-1992 – Ivar Jacobson – [Object-Oriented Software Engineering: A use case driven approach](https://www.amazon.com/Object-Oriented-Software-Engineering-Driven-Approach/dp/0201403471)
-200? – Alistair Cockburn – [Hexagonal Architecture](http://wiki.c2.com/?HexagonalArchitecture)
-2005 – Alistair Cockburn – [Ports and Adapters](http://alistair.cockburn.us/Hexagonal+architecture)
-2012 – Benjamin Eberlei – [OOP Business Applications: Entity, Boundary, Interactor](https://beberlei.de/2012/08/13/oop_business_applications_entity_boundary_interactor.html)
-2014 – Fideloper – [Hexagonal Architecture](http://fideloper.com/hexagonal-architecture)
-2014 – Philip Brown – [What is Hexagonal Architecture?](https://www.culttt.com/2014/12/31/hexagonal-architecture/)
-2014 – Jan Stenberg – [Exploring the Hexagonal Architecture](https://www.infoq.com/news/2014/10/exploring-hexagonal-architecture)
-2017 – Grzegorz Ziemoński – [Hexagonal Architecture Is Powerful](https://dzone.com/articles/hexagonal-architecture-is-powerful)
-2017 – Shamik Mitra – [Hello, Hexagonal Architecture](https://dzone.com/articles/hello-hexagonal-architecture-1)
+- 1992 – Ivar Jacobson – [Object-Oriented Software Engineering: A use case driven approach](https://www.amazon.com/dp/0201403471)
+- 200? – Alistair Cockburn – [Hexagonal Architecture](https://web.archive.org/web/20180424095400/http://wiki.c2.com/?HexagonalArchitecture)
+- 2005 – Alistair Cockburn – [Ports and Adapters](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal%2Barchitecture)
+- 2012 – Benjamin Eberlei – [OOP Business Applications: Entity, Boundary, Interactor](https://beberlei.de/2012/08/13/oop_business_applications_entity_boundary_interactor.html)
+- 2014 – Fideloper – [Hexagonal Architecture](http://fideloper.com/hexagonal-architecture)
+- 2014 – Philip Brown – [What is Hexagonal Architecture?](https://www.culttt.com/2014/12/31/hexagonal-architecture/)
+- 2014 – Jan Stenberg – [Exploring the Hexagonal Architecture](https://www.infoq.com/news/2014/10/exploring-hexagonal-architecture)
+- 2017 – Grzegorz Ziemoński – [Hexagonal Architecture Is Powerful](https://dzone.com/articles/hexagonal-architecture-is-powerful)
+- 2017 – Shamik Mitra – [Hello, Hexagonal Architecture](https://dzone.com/articles/hello-hexagonal-architecture-1)
 
 [原文](https://herbertograca.com/2017/09/14/ports-adapters-architecture/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

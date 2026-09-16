@@ -57,7 +57,7 @@ Simula ~1965, Smalltalk-71 ~1971, C++ ~1980, Erlang ~1986, Perl ~1987,
 
 Python ~1991, Ruby ~1993, Delphi, Java, Javascript, PHP ~1995
 
-[OOP的思想和理论早在20世纪60年代就开始萌芽了](http://gagne.homedns.org/~tgagne/contrib/EarlyHistoryST.html)而且[在那个年代第一次被Simula 实现了](https://en.wikipedia.org/wiki/Simula)。
+[OOP的思想和理论早在20世纪60年代就开始萌芽了](https://web.archive.org/web/20230203074019/http://gagne.homedns.org/~tgagne/contrib/EarlyHistoryST.html)而且[在那个年代第一次被Simula 实现了](https://en.wikipedia.org/wiki/Simula)。
 
 然而，现在这种编程范式的使用方法却是在20世纪80年代形成的：拥有可见性级别、方法(消息)、对象、类以及包的面向对象编程。同时***封装**和**模块化***也被越来越多地提及。
 
@@ -87,12 +87,12 @@ Python ~1991, Ruby ~1993, Delphi, Java, Javascript, PHP ~1995
 
 # 引用来源
 
-1979 – Trygve Reenskaug – [MVC](http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)
-1993 – Alan C. Kay – [The Early History of Smalltalk](http://gagne.homedns.org/~tgagne/contrib/EarlyHistoryST.html)
-1993 – William Harrison, Harold Ossher – [Subject-Oriented Programming: A Critique of Pure Objects](https://pdfs.semanticscholar.org/bdb2/ed51f2d471c730aea28b3692f63d5c478e0b.pdf)
-1997 – Gregor Kiczales, John Lamping, Anurag Mendhekar, Chris Maeda, Cristina Videira Lopes, Jean-Marc Loingtier, John Irwin – [Aspect Oriented Programming](http://www.cs.ubc.ca/~gregor/papers/kiczales-ECOOP1997-AOP.pdf)
-2005 – David R. Tribble – [Go To Statement Considered Harmful: A Retrospective](http://david.tribble.com/text/goto.html)
-2017* – Wikipedia – [Programming Paradigm](https://en.wikipedia.org/wiki/Programming_paradigm)
-2018* – Wikipedia – [Simula](https://en.wikipedia.org/wiki/Simula)
+- 1979 – Trygve Reenskaug – [MVC](https://web.archive.org/web/20181223062837/http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)
+- 1993 – Alan C. Kay – [The Early History of Smalltalk](https://web.archive.org/web/20230203074019/http://gagne.homedns.org/~tgagne/contrib/EarlyHistoryST.html)
+- 1993 – William Harrison, Harold Ossher – [Subject-Oriented Programming: A Critique of Pure Objects](https://www.semanticscholar.org/paper/Subject-oriented-programming%3A-a-critique-of-pure-Harrison-Ossher/bdb2ed51f2d471c730aea28b3692f63d5c478e0b)
+- 1997 – Gregor Kiczales, John Lamping, Anurag Mendhekar, Chris Maeda, Cristina Videira Lopes, Jean-Marc Loingtier, John Irwin – [Aspect Oriented Programming](https://web.archive.org/web/20180424095400/http://www.cs.ubc.ca/~gregor/papers/kiczales-ECOOP1997-AOP.pdf)
+- 2005 – David R. Tribble – [Go To Statement Considered Harmful: A Retrospective](https://web.archive.org/web/20180424095400/http://david.tribble.com/text/goto.html)
+- 2017* – Wikipedia – [Programming Paradigm](https://en.wikipedia.org/wiki/Programming_paradigm)
+- 2018* – Wikipedia – [Simula](https://en.wikipedia.org/wiki/Simula)
 
 [原文](https://herbertograca.com/2017/07/10/programming-language-evolution/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

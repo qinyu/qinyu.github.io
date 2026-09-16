@@ -30,7 +30,7 @@ MVC 因此应运而生，它提出前端和后端之间的“关注点分离”�
 
 {{< figure src="mvc.jpg" class="small" >}}
 
-为了解决上述问题，[Trygve Reenskaug 于1979 年提出了 MVC 模式](http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)来分离关注点，将 UI 和业务逻辑隔离。该模式当时被应用于[1973 就已经出现的桌面图形界面](https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface#Xerox_PARC)的开发。
+为了解决上述问题，[Trygve Reenskaug 于1979 年提出了 MVC 模式](https://web.archive.org/web/20181223062837/http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)来分离关注点，将 UI 和业务逻辑隔离。该模式当时被应用于[1973 就已经出现的桌面图形界面](https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface#Xerox_PARC)的开发。
 
 MVC 模式将代码拆分成了三个概念单元：
 
@@ -40,7 +40,7 @@ MVC 模式将代码拆分成了三个概念单元：
   - 它决定显示哪些视图以及哪些数据；
   - 它将用户操作(例如点击按钮)转换成业务逻辑。
 
-> 模型可以是单个对象(相当无趣)，也可以是对象组成的某种结构。——Trygve Reenskaug 1979, [MVC](http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)
+> 模型可以是单个对象(相当无趣)，也可以是对象组成的某种结构。——Trygve Reenskaug 1979, [MVC](https://web.archive.org/web/20181223062837/http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)
 
 最初的 MVC 模式还有其它一些需要了解的重要概念：
 
@@ -81,19 +81,19 @@ MVC 模式给当时的编程范式注入了一剂强心针。然而，随着应�
 
 这更接近我所见到的现在的请求/响应范式：**数据流始终要经过 Controller/Presenter**。不过，Presenter 仍然不会主动更新视图，它始终需要执行一次新的请求才能让变化可见。
 
-MVP 中的 Presenter 又被称为 [Supervisor Controller](https://martinfowler.com/eaaDev/SupervisingPresenter.html)。
+MVP 中的 Presenter 又被称为 [Supervising Controller](https://martinfowler.com/eaaDev/SupervisingPresenter.html)。
 
 # 2005 – Model-View-ViewModel
 
 {{< figure src="mvvm.jpg" class="small" >}}
 
-由于应用程序的复杂性还在增加，2005 年微软的 WPF 和 Silverlight 架构师 [John Gossman 又提出了 MVVM 模式](https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)，目标是进一步将 UI 设计从代码中分离出来，并提供 View 到数据模型的数据绑定机制。
+由于应用程序的复杂性还在增加，2005 年微软的 WPF 和 Silverlight 架构师 [John Gossman 又提出了 MVVM 模式](https://web.archive.org/web/20180907204907/https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)，目标是进一步将 UI 设计从代码中分离出来，并提供 View 到数据模型的数据绑定机制。
 
-> [MVVM] 是 [MVC] 的变种，专为现代 UI 开发平台设计。现代 UI 开发中，View 是由设计师负责而不是由传统意义上的开发者负责。[…] 开发应用程序 UI 使用的工具、语言以及使用它们的人都和业务逻辑以及数据后端有着天壤之别。——John Gossman 2005, [Introduction to Model/View/ViewModel pattern](https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)
+> [MVVM] 是 [MVC] 的变种，专为现代 UI 开发平台设计。现代 UI 开发中，View 是由设计师负责而不是由传统意义上的开发者负责。[…] 开发应用程序 UI 使用的工具、语言以及使用它们的人都和业务逻辑以及数据后端有着天壤之别。——John Gossman 2005, [Introduction to Model/View/ViewModel pattern](https://web.archive.org/web/20180907204907/https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)
 
 Controller 被 ViewModel “取代”：
 
-> [View] 对键盘快捷键进行编码，而且控件自行管理与输入设备的交互，这本该是 MVC 中的 Controller 的职责(现代 GUI 开发中 Controller 的变化说来话长...我认为它只是淡出了开发者的实现。它始终都存在着，而我们不需要像1979年那样去思考它)。——John Gossman 2005, [Introduction to Model/View/ViewModel pattern](https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)
+> [View] 对键盘快捷键进行编码，而且控件自行管理与输入设备的交互，这本该是 MVC 中的 Controller 的职责(现代 GUI 开发中 Controller 的变化说来话长...我认为它只是淡出了开发者的实现。它始终都存在着，而我们不需要像1979年那样去思考它)。——John Gossman 2005, [Introduction to Model/View/ViewModel pattern](https://web.archive.org/web/20180907204907/https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)
 
 MVVM 背后的思想是:
 
@@ -252,24 +252,24 @@ final class DetailsViewModel implements TemplateViewModelInterface
 
 # 引用来源
 
-1979 – Trygve Reenskaug – [MVC XEROX PARC 1978-79](http://heim.ifi.uio.no/~trygver/themes/mvc/mvc-index.html)
-**1979 – Trygve Reenskaug – [MVC](http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)**
-**1987 – Joelle Coutaz – [PAC, an Object Oriented Model for Dialog Design](https://www.lri.fr/~mbl/ENS/FONDIHM/2013/papers/Coutaz-Interact87.pdf)**
-**1996 – Mike Potel – [MVP: Model-View-Presenter: The Taligent Programming Model for C++ and Java](http://www.wildcrest.com/Potel/Portfolio/mvp.pdf)**
-2000 – Jason Cai, Ranjit Kapila, Gaurav Pal – [HMVC: The layered pattern for developing strong client tiers](http://www.javaworld.com/article/2076128/design-patterns/hmvc--the-layered-pattern-for-developing-strong-client-tiers.html)
-2003 -Trygve Reenskaug – [The Model-View-Controller (MVC): Its Past and Present](http://heim.ifi.uio.no/~trygver/2003/javazone-jaoo/MVC_pattern.pdf)
-**2004 -Martin Fowler – [Presentation Model](https://martinfowler.com/eaaDev/PresentationModel.html)**
-**2005 – John Gossman – [Introduction to Model/View/ViewModel pattern for building WPF apps](https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)**
-2006 – Martin Fowler – [Supervising Controller](https://martinfowler.com/eaaDev/SupervisingPresenter.html)
-**2006 – Martin Fowler – [GUI Architectures](https://martinfowler.com/eaaDev/uiArchs.html)**
-2011 – Mārtiņš Tereško – [Architecture more suitable for web apps than MVC?](http://stackoverflow.com/questions/7621832/architecture-more-suitable-for-web-apps-than-mvc/7622038#7622038)
-2017* – Tracy-Gregory J. Gilmore – [Never the twain shall meet. The tale of MV*](https://gilmoretj.wordpress.com/musings-on-all-things-ria/never-the-twain-shall-meet-the-tale-of-mv/)
-2017* – Tech notes – [MVVM vs MVP vs MVC: The differences explained](http://dodgenotes.blogspot.nl/2013/12/mvvm-vs-mvp-vs-mvc-differences-explained.html)
-2017* – Wikipedia – [Model–view–controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
-2017* – Wikipedia – [Presentation–abstraction–control](https://en.m.wikipedia.org/wiki/Presentation%E2%80%93abstraction%E2%80%93control)
-2017* – Wikipedia – [Model-view-presenter](https://en.m.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)
-2017* – Wikipedia – [Hierarchical model–view–controller](https://en.m.wikipedia.org/wiki/Hierarchical_model%E2%80%93view%E2%80%93controller)
-2017* – Wikipedia – [Model–view–viewmodel](https://en.m.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)
-2018* – Wikipedia – [History of the graphical user interface](https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface#Xerox_PARC)
+- 1979 – Trygve Reenskaug – [MVC XEROX PARC 1978-79](https://web.archive.org/web/20180424075143/http://heim.ifi.uio.no/~trygver/themes/mvc/mvc-index.html)
+- **1979 – Trygve Reenskaug – [MVC](https://web.archive.org/web/20181223062837/http://heim.ifi.uio.no/~trygver/1979/mvc-2/1979-12-MVC.pdf)**
+- **1987 – Joelle Coutaz – [PAC, an Object Oriented Model for Dialog Design](https://www.lri.fr/~mbl/ENS/FONDIHM/2013/papers/Coutaz-Interact87.pdf)**
+- **1996 – Mike Potel – [MVP: Model-View-Presenter: The Taligent Programming Model for C++ and Java](https://web.archive.org/web/20181105001712/http://www.wildcrest.com/Potel/Portfolio/mvp.pdf)**
+- 2000 – Jason Cai, Ranjit Kapila, Gaurav Pal – [HMVC: The layered pattern for developing strong client tiers](https://web.archive.org/web/20180921095704/https://www.javaworld.com/article/2076128/design-patterns/hmvc--the-layered-pattern-for-developing-strong-client-tiers.html)
+- 2003 – Trygve Reenskaug – [The Model-View-Controller (MVC): Its Past and Present](https://web.archive.org/web/20180424075148/http://heim.ifi.uio.no/~trygver/2003/javazone-jaoo/MVC_pattern.pdf)
+- **2004 – Martin Fowler – [Presentation Model](https://martinfowler.com/eaaDev/PresentationModel.html)**
+- **2005 – John Gossman – [Introduction to Model/View/ViewModel pattern for building WPF apps](https://web.archive.org/web/20180907204907/https://blogs.msdn.microsoft.com/johngossman/2005/10/08/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps/)**
+- 2006 – Martin Fowler – [Supervising Controller](https://martinfowler.com/eaaDev/SupervisingPresenter.html)
+- **2006 – Martin Fowler – [GUI Architectures](https://martinfowler.com/eaaDev/uiArchs.html)**
+- 2011 – Mārtiņš Tereško – [Architecture more suitable for web apps than MVC?](https://stackoverflow.com/questions/7621832/architecture-more-suitable-for-web-apps-than-mvc/7622038#7622038)
+- 2017* – Tracy-Gregory J. Gilmore – [Never the twain shall meet. The tale of MV*](https://web.archive.org/web/20190722140122/https://gilmoretj.wordpress.com/musings-on-all-things-ria/never-the-twain-shall-meet-the-tale-of-mv/)
+- 2017* – Tech notes – [MVVM vs MVP vs MVC: The differences explained](https://web.archive.org/web/20180424095400/http://dodgenotes.blogspot.com/2013/12/mvvm-vs-mvp-vs-mvc-differences-explained.html)
+- 2017* – Wikipedia – [Model–view–controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+- 2017* – Wikipedia – [Presentation–abstraction–control](https://en.wikipedia.org/wiki/Presentation%E2%80%93abstraction%E2%80%93control)
+- 2017* – Wikipedia – [Model–view–presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)
+- 2017* – Wikipedia – [Hierarchical model–view–controller](https://en.wikipedia.org/wiki/Hierarchical_model%E2%80%93view%E2%80%93controller)
+- 2017* – Wikipedia – [Model–view–viewmodel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)
+- 2018* – Wikipedia – [History of the graphical user interface](https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface#Xerox_PARC)
 
 [原文](https://herbertograca.com/2017/08/17/mvc-and-its-variants/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
