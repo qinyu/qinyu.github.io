@@ -156,7 +156,7 @@ draft: false
 
 # 组件
 
-目前为止，我们都是使用层次来划分代码，但这是细粒度的代码隔离。根据 Robert C. Martin 在[尖叫架构](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)中表达的观点，按照子域和[限界上下文](http://ddd.fed.wiki.org/view/welcome-visitors/view/domain-driven-design/view/bounded-context)对代码进行划分这种粗粒度的代码隔离同样重要。这通常被叫做“_按特性分包_”或者“_按组件分包_”，和“_按层次分包_”相呼应。Simon Brown 的文章“[Package by component and architecturally-aligned testing](http://www.codingthearchitecture.com/2015/03/08/package_by_component_and_architecturally_aligned_testing.html)”很好地阐述了这种划分：
+目前为止，我们都是使用层次来划分代码，但这是细粒度的代码隔离。根据 Robert C. Martin 在[尖叫架构](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)中表达的观点，按照子域和[限界上下文](http://ddd.fed.wiki.org/view/welcome-visitors/view/domain-driven-design/view/bounded-context)对代码进行划分这种粗粒度的代码隔离同样重要。这通常被叫做“_按特性分包_”或者“_按组件分包_”，和“_按层次分包_”相呼应。Simon Brown 的文章“[Package by component and architecturally-aligned testing](https://simonbrown.je/modular-monolith)”很好地阐述了这种划分：
 
 | ![按层次分包](20150308-package-by-layer.png) | ![按特性分包](20150308-package-by-feature.png) | ![按组件分包](20150308-package-by-component.png) |
 |:-|:-|:-|
