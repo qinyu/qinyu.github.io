@@ -14,6 +14,9 @@ draft: false
 
 <!--more-->
 
+原文：<https://herbertograca.com/2017/07/05/software-architecture-premises/>
+简书：<https://www.jianshu.com/p/df295f92fb52>
+
 _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。_
 
 在这篇文章中，我将总结一些关于软件架构的最基本的概念，了解它们才能更好地理解后续的文章。

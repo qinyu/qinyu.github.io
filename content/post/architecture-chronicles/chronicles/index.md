@@ -14,6 +14,8 @@ draft: false
 
 <!--more-->
 
+简书：<https://www.jianshu.com/p/b477b2cc6cfa>
+
 _这是[软件架构系列](https://herbertograca.com/category/development/series/software-architecture/)的第一篇文章。我将我对软件架构的学习过程和思考以及我是如何运用这些知识的写成这一系列文章。_
 
 我把这一系列文章称为“软件架构编年史”，并不是因为我觉得自己的文笔不错，而是想用一种有趣的方式旧调重弹！😀

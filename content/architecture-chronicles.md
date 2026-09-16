@@ -6,7 +6,7 @@ author = "覃宇"
 url = "/series/software-architecture-chronicles/"
 +++
 
-这是 [Herberto Graça](https://herbertograca.com/category/development/series/software-architecture/) 的 Software Architecture Chronicles 中译，系列名是「软件架构编年史」。下面按阅读顺序列出已发布的章节。Hugo 的 `series: 软件架构编年史` 分类页也会收录这些文章；日期不是阅读顺序，请以本页目录为准。
+这是 [Herberto Graça](https://herbertograca.com/category/development/series/software-architecture/) 的 Software Architecture Chronicles 中译，系列名是「软件架构编年史」，亦曾在简书以文集[《软件架构编年史(译)》](https://www.jianshu.com/nb/28913609)发布。下面按阅读顺序列出已发布的章节。Hugo 的 `series: 软件架构编年史` 分类页也会收录这些文章；日期不是阅读顺序，请以本页目录为准。
 
 1. [软件架构编年史（译）]({{< ref "post/architecture-chronicles/chronicles" >}})
 2. [软件架构预述（译）]({{< ref "post/architecture-chronicles/premises" >}})
