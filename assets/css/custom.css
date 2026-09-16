@@ -121,8 +121,18 @@
   --bg-pos: left center;
   --bg-scale: 1;
   --bg-shift-x: 0px;
-  /* Vertical transform anchor on the poster (translateY + transform-origin).
-     Portrait overrides to the Mars disk centroid (~46% of the 9:16 file). */
+  /*
+    Mars full-sphere center from the source JPG (right-arc circle fit),
+    as % of the image — and of the poster when cover is 1:1 with the file.
+    Landscape file: ~3.16% 50.02%. After 115% framing the viewport-mapped
+    X is often slightly left of 0 (outside the visible region); that is
+    expected. Scale/breath still use plate center below so idle + scroll
+    breath match the committed envelope (1.04±0.04 → peak 1.08).
+  */
+  --bg-sphere-x: 3.16%;
+  --bg-sphere-y: 50.02%;
+  /* Vertical translate anchor on the poster. Landscape stays at 50%
+     (plate mid); portrait overrides to --bg-sphere-y. */
   --bg-anchor-y: 50%;
 }
 
@@ -319,6 +329,9 @@ html a:focus-visible {
   background-attachment: scroll;
   background-size: var(--bg-size);
   background-position: var(--bg-pos);
+  /* Plate-center origin: keeps landscape idle/scroll breath identical to
+     the committed look. --bg-sphere-* is the true limb center (often
+     outside the viewport after crop); do not point scale at it here. */
   transform-origin: center center;
   transform: translate3d(-50%, calc(-50% + var(--bg-parallax, 0px)), 0)
     scale(var(--bg-scale, 1));
@@ -331,13 +344,16 @@ html a:focus-visible {
   and lets that cosmos read in-frame. Do not paint smaller than
   cover (auto 92% / contain) — that opens a --void gap on a side.
   Layer min-width 100% so the box itself still spans the viewport.
-  --bg-anchor-y tracks the disk centroid (~46%) so the planet sits on
-  the viewport midline instead of the plate's geometric 50%.
+  Scale origin = measured full-sphere center (~6.65% 46.06% of the
+  9:16 file) — nearly the old left/46%, so breath amplitude and
+  scroll-follow stay the same; translate still uses --bg-anchor-y.
 */
 @media (orientation: portrait), (max-aspect-ratio: 1 / 1) {
   :root {
     --bg-image: url("/images/bg/mars-half-portrait.jpg");
-    --bg-anchor-y: 46%;
+    --bg-sphere-x: 6.65%;
+    --bg-sphere-y: 46.06%;
+    --bg-anchor-y: var(--bg-sphere-y);
   }
 
   html,
@@ -354,7 +370,7 @@ html a:focus-visible {
     aspect-ratio: 9 / 16;
     left: calc(-1 * var(--bg-shift-x, 0px));
     top: 50%;
-    transform-origin: left var(--bg-anchor-y);
+    transform-origin: var(--bg-sphere-x) var(--bg-sphere-y);
     transform: translate3d(
         0,
         calc(-1 * var(--bg-anchor-y) + var(--bg-parallax, 0px)),
@@ -1965,7 +1981,7 @@ html.is-nav-carry .animated {
   :root {
     /*
       Phone portrait only. Pan left + raise rest so the disk reads smaller
-      and sits farther left; vertical centering is --bg-anchor-y (portrait).
+      and sits farther left; vertical centering is --bg-anchor-y / sphere Y.
       Landscape and tablet portrait keep the :root defaults (0 shift / 120%).
       132% rest gives SE/9:16 headroom for the 30vw pan at scroll peak 1.03.
     */
