@@ -14,4 +14,4 @@ author = "覃宇"
 
 - [出版著作]({{< ref "books" >}})：译著和写过的书
 - [文章全集]({{< ref "post" >}})：这里的全部文章
-- [翻译系列]({{< ref "translations" >}})：[软件架构编年史]({{< ref "architecture-chronicles" >}}) 与 [Wardley Maps](/series/wardley-maps-book/)
+- [翻译系列]({{< ref "translations" >}})：[软件架构编年史]({{< ref "architecture-chronicles" >}}) 与 [Wardley Maps]({{< ref "wardley-maps" >}})

@@ -1504,6 +1504,52 @@ html.js .site-bg__poster.is-loaded {
   word-break: break-word;
 }
 
+.series-grid__status {
+  display: inline-block;
+  margin-top: 0.45rem;
+  padding: 0.08rem 0.55rem;
+  border: 1px solid rgba(var(--sand-rgb), 0.55);
+  color: var(--sand);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+/* Translation series trail: chapter → series TOC → 翻译作品 */
+.series-trail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 1.1rem;
+  margin: 0 0 1.35rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+html .post__content a.series-trail__link,
+html .post__content a.series-trail__link:link,
+html .post__content a.series-trail__link:visited,
+html.theme--dark .post__content a.series-trail__link,
+html.theme--dark .post__content a.series-trail__link:link,
+html.theme--dark .post__content a.series-trail__link:visited {
+  color: var(--sand);
+  text-decoration: none;
+}
+
+html .post__content a.series-trail__link:hover,
+html.theme--dark .post__content a.series-trail__link:hover {
+  color: var(--sand-bright);
+}
+
+.series-trail__link--secondary {
+  opacity: 0.85;
+}
+
+.series-trail__status {
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+
 .bookshelf__meta,
 .post__content .bookshelf__meta {
   overflow: hidden;

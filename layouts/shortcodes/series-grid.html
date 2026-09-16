@@ -16,6 +16,9 @@
       </span>
       <span class="series-grid__title">{{ .title }}</span>
       <span class="series-grid__meta">{{ .source }}</span>
+      {{- with .status -}}
+        <span class="series-grid__status">{{ . }}</span>
+      {{- end -}}
     </a>
   {{ end }}
 </div>

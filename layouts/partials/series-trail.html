@@ -1,0 +1,35 @@
+{{- /* Two-level translation IA: 翻译作品 → series TOC → chapter.
+       Match landing pages by URL; match chapters by hugo series name. */ -}}
+{{- $trail := false -}}
+{{- $isLanding := false -}}
+{{- $seriesTitle := "" -}}
+{{- $seriesURL := "" -}}
+{{- $status := "" -}}
+{{- $pageURL := .RelPermalink -}}
+{{- range site.Data.series -}}
+  {{- if eq $pageURL .url -}}
+    {{- $trail = true -}}
+    {{- $isLanding = true -}}
+    {{- $seriesTitle = .title -}}
+    {{- $seriesURL = .url -}}
+    {{- $status = .status -}}
+  {{- else if and $.Params.series .hugo_series (in $.Params.series .hugo_series) -}}
+    {{- $trail = true -}}
+    {{- $seriesTitle = .title -}}
+    {{- $seriesURL = .url -}}
+    {{- $status = .status -}}
+  {{- end -}}
+{{- end -}}
+{{- if $trail -}}
+  <nav class="series-trail" aria-label="翻译系列导航">
+    {{- if $isLanding -}}
+      <a class="series-trail__link" href="{{ "/translations/" | relURL }}">← 翻译作品</a>
+      {{- with $status -}}
+        <span class="series-trail__status">{{ . }}</span>
+      {{- end -}}
+    {{- else -}}
+      <a class="series-trail__link" href="{{ $seriesURL | relURL }}">← {{ $seriesTitle }}</a>
+      <a class="series-trail__link series-trail__link--secondary" href="{{ "/translations/" | relURL }}">翻译作品</a>
+    {{- end -}}
+  </nav>
+{{- end -}}
