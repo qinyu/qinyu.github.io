@@ -12,15 +12,16 @@
   //           Matches breath crest so scroll keeps zooming in from the
   //           idle center — no snap back / zoom-out. Anchored at
   //           breathCenter (not 1.0).
-  //   breath: idle sine around breathCenter ± breathAmp.
-  //           Doubled again to 1.04±0.04 (period 10s). apply() clamp
-  //           allows breathCenter+amp. Fades out over breathFadePx of
-  //           scrollY; fully paused while pull-to-bounce is active.
-  //           Clock is Date.now()-based and persisted in sessionStorage
-  //           so in-site nav keeps the same phase — no trough restart.
-  //           Locked: do not retune center/amp/period/fade when wiring
-  //           --bg-sphere-* (CSS origin). Idle + scroll-follow must
-  //           keep this envelope even if the spatial origin is refined.
+  //   breath: continuous sine around the *current* scroll base
+  //           (breathCenter at top → peakScale at page end), ±amp.
+  //           Amp shrinks with headroom so crest never exceeds peakScale.
+  //           At top this is still 1.04±0.04 (period 10s). Scroll does
+  //           not kill breath: parallax continues from the live breath
+  //           scale, and when scroll stops breath continues from the
+  //           parallax scale until back at the top envelope. Only
+  //           pull-to-bounce pauses breath. Clock is Date.now()-based
+  //           and persisted in sessionStorage so in-site nav keeps
+  //           phase — no trough restart.
   // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
@@ -30,8 +31,6 @@
   const breathCenter = 1.04;
   const breathAmp = 0.04;
   const breathPeriodMs = 10000;
-  const breathFadePx = 80;
-  const scrollYSlop = 2;
   const ease = 0.16;
   const arriveEase = 0.08;
   const storageKey = "site-bg-parallax";
@@ -197,30 +196,26 @@
     return Math.sin(t * Math.PI * 2 - Math.PI / 2);
   };
 
-  const breathGate = () => {
-    // 1 at idle top; 0 once scrolled past breathFadePx or while pulling.
+  // Amp at this scroll progress: full ±breathAmp at top; shrinks so
+  // scrollBase ± amp stays within [baseScale, peakScale].
+  const breathAmpAt = (scrollBase) => {
+    const headroom = Math.max(0, peakScale - scrollBase);
+    const floorRoom = Math.max(0, scrollBase - baseScale);
+    return Math.min(breathAmp, headroom, floorRoom);
+  };
+
+  const isPulling = () => {
     const y = readScrollY();
-    const pull = Math.max(y < 0 ? -y : 0, touchPull);
-    if (pull > 0) {
-      return 0;
-    }
-    if (y <= scrollYSlop) {
-      return 1;
-    }
-    if (y >= breathFadePx) {
-      return 0;
-    }
-    const u = (y - scrollYSlop) / (breathFadePx - scrollYSlop);
-    // smoothstep fade 1→0
-    const s = u * u * (3 - 2 * u);
-    return 1 - s;
+    return Math.max(y < 0 ? -y : 0, touchPull) > 0;
   };
 
   const shouldKeepBreathing = () => {
-    if (reduce.matches || document.hidden) {
+    if (reduce.matches || document.hidden || isPulling()) {
       return false;
     }
-    return breathGate() > 0.01;
+    // Keep the rAF alive whenever there is room to breathe (including
+    // mid-page). At the absolute peak with zero headroom, stop.
+    return breathAmpAt(scaleFromProgress(pageProgress())) > 0.001;
   };
 
   const persistParallax = () => {
@@ -291,20 +286,22 @@
     if (reduce.matches) {
       return baseScale;
     }
-    const y = readScrollY();
-    const pull = Math.max(y < 0 ? -y : 0, touchPull);
+    const pull = Math.max(readScrollY() < 0 ? -readScrollY() : 0, touchPull);
     // Pull-to-bounce: pause breath entirely (user-confirmed).
     if (pull > 0) {
       const t = clamp(pull / (restVh * 0.2), 0, 1);
       return baseScale + (bouncePeak - baseScale) * t;
     }
+    // Scroll base + live breath. Same sine clock while scrolling and
+    // while stopped, so handoff either way is continuous; returning
+    // to Y=0 rejoins the original top envelope without a phase jump.
     const scrollBase = scaleFromProgress(pageProgress());
-    const gate = breathGate();
-    if (gate <= 0) {
-      return scrollBase;
-    }
-    // Clamp to baseScale so float trough (center-amp) never dips below 1.
-    return Math.max(baseScale, scrollBase + breathAmp * gate * breathSine());
+    const amp = breathAmpAt(scrollBase);
+    return clamp(
+      scrollBase + amp * breathSine(),
+      baseScale,
+      peakScale,
+    );
   };
 
   const apply = () => {
