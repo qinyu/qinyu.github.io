@@ -48,6 +48,8 @@
 
       {{ partial "taxonomy/tag-chips.html" . }}
 
+      {{- partial "series-trail.html" . -}}
+
       {{- partial "expirationnote.html" . -}}
 
       {{- if (eq .Params.toc true) -}}

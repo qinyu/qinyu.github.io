@@ -32,4 +32,4 @@ url = "/series/software-architecture-chronicles/"
 19. [在代码中展现架构和领域（译）]({{< ref "post/architecture-chronicles/reflecting-architecture-in-code" >}})
 20. [用文档描述架构（译）]({{< ref "post/architecture-chronicles/documenting-architecture" >}})
 
-原文目录里还有三章尚未译出，因此没有站内链接：一个项目的演进：从 MVP 到 P；4 + 1 架构视图模型；架构的质量属性。
+原文目录里还列了三章，但原作者后来没有写完，系列在此烂尾，因此也不再翻译：一个项目的演进：从 MVP 到 P；4 + 1 架构视图模型；架构的质量属性。本译本到第 20 章为止，视为翻译完结。
