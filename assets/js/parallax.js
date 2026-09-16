@@ -18,6 +18,9 @@
   //           scrollY; fully paused while pull-to-bounce is active.
   //           Clock is Date.now()-based and persisted in sessionStorage
   //           so in-site nav keeps the same phase — no trough restart.
+  //           Locked: do not retune center/amp/period/fade when wiring
+  //           --bg-sphere-* (CSS origin). Idle + scroll-follow must
+  //           keep this envelope even if the spatial origin is refined.
   // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
