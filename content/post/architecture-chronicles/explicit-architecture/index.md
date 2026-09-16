@@ -15,6 +15,7 @@ draft: false
 <!--more-->
 
 原文：<https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/>
+简书：<https://www.jianshu.com/p/d3e8b9ac097b>
 
 大学毕业之后我做了一名高中老师，直到几年前我决定成为一名全职软件开发者。
 
