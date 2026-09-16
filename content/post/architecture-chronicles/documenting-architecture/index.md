@@ -127,7 +127,7 @@ draft: false
 
 你可以随意复制[这份文档](https://docs.google.com/document/d/1Xe5erulKsdaha3uwU6tNWsAWxjQK-Rcrr_iJeOCXuSQ/edit?usp=sharing)。
 
-如果你想进一步探讨这个话题，推荐[Joel Parker Henderson 关于 ADR 的 github 仓库](https://github.com/joelparkerhenderson/architecture_decision_record)（译注，也可以参考 Phodal 的两篇文章：[【译文】架构决策记录（Architecture Decision Records）](https://www.phodal.com/blog/documenting-architecture-decisions/)、[使用 adr 轻松创建 “程序员友好” 的轻量级架构决策记录](https://www.phodal.com/blog/use-adrjs-create-documenting-architecture-decisions/?PageSpeed=noscript)）。
+如果你想进一步探讨这个话题，推荐[Joel Parker Henderson 关于 ADR 的 github 仓库](https://github.com/joelparkerhenderson/architecture_decision_record)（译注，也可以参考 Phodal 的两篇文章：[【译文】架构决策记录（Architecture Decision Records）](https://web.archive.org/web/20210617064941/https://www.phodal.com/blog/documenting-architecture-decisions/)、[使用 adr 轻松创建 “程序员友好” 的轻量级架构决策记录](https://web.archive.org/web/20210617064953/https://www.phodal.com/blog/use-adrjs-create-documenting-architecture-decisions/?PageSpeed=noscript)）。
 
 ## C4 模型
 

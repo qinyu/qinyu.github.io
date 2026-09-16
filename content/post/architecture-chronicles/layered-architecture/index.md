@@ -24,7 +24,7 @@ draft: false
 >
 > 当领域相关的代码扩散到这样大规模的其它代码中，要发现和理解这些代码会相当困难。表面上对 UI 的修改实际上也会改变业务逻辑。要修改业务规则就得小心翼翼地追踪 UI 代码、数据库代码，或者其它的编程元素。实现内聚的、模型驱动的对象变得不切实际。自动化测试也变得尴尬。如果每个活动都要卷入所有的技术和逻辑，程序必须非常简单，要不然就完全无法理解。
 >
-> ——Eric Evans 2014, [Domain-Driven Design Reference](https://www.amazon.com/Domain-Driven-Design-Reference-Definitions-Summaries/dp/1457501198)
+> ——Eric Evans 2014, [Domain-Driven Design Reference](https://www.amazon.com/dp/1457501198)
 
 # 分层意味着什么
 
@@ -35,7 +35,7 @@ draft: false
 
 在分层架构中，分层的使用可以严格地限制：分层只知道直接的下层，或者可以宽松一些：分层可以访问它之下的任何分层。Martin Fowler 和我自己的经验都是第二种方式实际中会更好，因为它避免了在中间分层创建代码方法(或者完整的代理类)，也避免了退化成千层面的反模式(下文会详细探讨)。
 
-> 有时分层会这样安排，领域层将数据源完全隐藏不让展现层看到。但是，更多的时候展现层会直接访问数据存储。这不那么纯粹，但实际却工作得更好。——Fowler 2002, [Patterns of Enterprise Application Architecture](https://www.amazon.com/dp/0321127420/ref=wl_it_dp_o_pC_nS_ttl?_encoding=UTF8&colid=CG11VVP0H8Y8&coliid=I1QPWUPW6G7YF5)
+> 有时分层会这样安排，领域层将数据源完全隐藏不让展现层看到。但是，更多的时候展现层会直接访问数据存储。这不那么纯粹，但实际却工作得更好。——Fowler 2002, [Patterns of Enterprise Application Architecture](https://www.amazon.com/dp/0321127420)
 
 它的**优势有**：
 
@@ -135,8 +135,8 @@ draft: false
 
 # 引用来源
 
-2002 – Martin Fowler – [Patterns of Enterprise Application Architecture](https://www.amazon.com/dp/0321127420/ref=wl_it_dp_o_pC_nS_ttl?_encoding=UTF8&colid=CG11VVP0H8Y8&coliid=I1QPWUPW6G7YF5)
-2003 – Eric Evans – [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.com/dp/0321125215/ref=wl_it_dp_o_pC_nS_ttl?_encoding=UTF8&colid=CG11VVP0H8Y8&coliid=I1X0NXLUHTFGE4)
-2011 – Chris Ostrowski – [Understanding Oracle SOA – Part 1 – Architecture](https://www.youtube.com/watch?v=0hyXOuvyq2Q)
+- 2002 – Martin Fowler – [Patterns of Enterprise Application Architecture](https://www.amazon.com/dp/0321127420)
+- 2003 – Eric Evans – [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.com/dp/0321125215)
+- 2011 – Chris Ostrowski – [Understanding Oracle SOA – Part 1 – Architecture](https://www.youtube.com/watch?v=0hyXOuvyq2Q)
 
 [原文](https://herbertograca.com/2017/08/03/layered-architecture/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

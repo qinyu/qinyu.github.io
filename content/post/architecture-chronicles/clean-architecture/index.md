@@ -18,7 +18,7 @@ draft: false
 
 *这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/)([译]({{< ref "post/architecture-chronicles/chronicles" >}}))的一部分，这部编年史由[一系列关于软件架构的文章](https://herbertograca.com/category/development/series/software-architecture/)组成。在这一系列文章中，我将写下我对软件架构的学习和思考，以及我是如何运用这些知识的。如果你阅读了这个系列中之前的文章，本篇文章的内容将更有意义。*
 
-Robert C. Martin(大名鼎鼎的 Uncle Bob)于2012年在[他的一篇博客](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html)中发表了*整洁架构*的观点，并在一些会议上做了关于该架构的演讲。
+Robert C. Martin(大名鼎鼎的 Uncle Bob)于2012年在[他的一篇博客](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)中发表了*整洁架构*的观点，并在一些会议上做了关于该架构的演讲。
 
 整洁架构借助了许多或熟悉或陌生的概念、规则和模式，说明了如何将它们融会贯通产生出一种构建应用的标准套路。
 
@@ -104,11 +104,11 @@ Uncle Bob 关于整洁架构的工作总会让我想起牛顿。引力始终是�
 
 # 引用来源
 
-2012 – Robert C. Martin – [Clean Architecture (NDC 2012)](https://youtu.be/Nltqi7ODZTM)
-2012 – Robert C. Martin – [The Clean Architecture](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-2012 – Benjamin Eberlei – [OOP Business Applications: Entity, Boundary, Interactor](https://beberlei.de/2012/08/13/oop_business_applications_entity_boundary_interactor.html)
-2017 – Lieven Doclo – [A couple of thoughts on Clean Architecture](https://www.insaneprogramming.be/article/2017/02/14/thoughts-on-clean-architecture/)
-2017 – Grzegorz Ziemoński – [Clean Architecture Is Screaming](https://dzone.com/articles/clean-architecture-is-screaming)
+- 2012 – Robert C. Martin – [Clean Architecture (NDC 2012)](https://youtu.be/Nltqi7ODZTM)
+- 2012 – Robert C. Martin – [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- 2012 – Benjamin Eberlei – [OOP Business Applications: Entity, Boundary, Interactor](https://beberlei.de/2012/08/13/oop_business_applications_entity_boundary_interactor.html)
+- 2017 – Lieven Doclo – [A couple of thoughts on Clean Architecture](https://web.archive.org/web/20200806190956/https://www.insaneprogramming.be/article/2017/02/14/thoughts-on-clean-architecture/)
+- 2017 – Grzegorz Ziemoński – [Clean Architecture Is Screaming](https://dzone.com/articles/clean-architecture-is-screaming)
 
 * **我知道牛顿爵士的成就远不止这些，但我只想强调我认为 Robert C. Martin 的观点到底有多重要。**
 

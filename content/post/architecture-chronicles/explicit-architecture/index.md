@@ -274,6 +274,6 @@ draft: false
 
 然而，我们如何将这些全部展现在代码库中呢？这是再下一篇文章的主题，我如何将架构和领域反映在代码之中。
 
-最后，感谢我的同事[Francesco Mastrogiacomo](https://www.linkedin.com/in/francescomastrogiacomo/)，帮助我制作了漂亮的[信息图](https://drive.google.com/open?id=1E_hx5B4czRVFVhGJbrbPDlb_JFxJC8fYB86OMzZuAhg)。
+最后，感谢我的同事[Francesco Mastrogiacomo](https://www.linkedin.com/in/francescomastrogiacomo/)，帮助我制作了漂亮的[信息图](https://drive.google.com/uc?export=download&id=1E_hx5B4czRVFVhGJbrbPDlb_JFxJC8fYB86OMzZuAhg)。
 
 [原文](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

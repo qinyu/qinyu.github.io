@@ -143,12 +143,12 @@ _这篇文章是[软件架构编年史](https://herbertograca.com/2017/07/03/the
 
 [原文](https://herbertograca.com/2017/07/05/software-architecture-premises/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
 
-[^1]: 2000 – Roy Fielding – [Architectural Styles and the Design of Network-based Software Architectures](http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf) 
-[^2]: 2000 – Robert C. Martin – [Design Principles and Design Patterns](http://www.cvc.uab.es/shared/teach/a21291/temes/object_oriented_design/materials_adicionals/principles_and_patterns.pdf) 
+[^1]: 2000 – Roy Fielding – [Architectural Styles and the Design of Network-based Software Architectures](https://web.archive.org/web/20180424095400/http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf) 
+[^2]: 2000 – Robert C. Martin – [Design Principles and Design Patterns](https://web.archive.org/web/20210128200202/http://www.cvc.uab.es/shared/teach/a21291/temes/object_oriented_design/materials_adicionals/principles_and_patterns.pdf) 
 [^3]: 2006 – Booch, in [[5 pg.2]](https://herbertograca.com/2017/07/05/software-architecture-premises/#05) 
 [^4]: 2007 – [IEEE1471](https://en.wikipedia.org/wiki/IEEE_1471) in [[5 pg.2]](https://herbertograca.com/2017/07/05/software-architecture-premises/#05) 
 [^5]: 2010 – James Coplien, Gertrud Bjornvig – [Lean Architecture](https://www.amazon.co.uk/Lean-Architecture-Agile-Software-Development/dp/0470684208) 
 [^6]: 2010 – Paul Clements, Felix Bachmann, Len Bass – [Documenting Software Architectures](https://www.amazon.co.uk/dp/0321552687) 
-[^7]: 2012 – Len Bass, Paul Clements, Rick Kazman – [Software Architecture in Practice](https://www.amazon.com/Software-Architecture-Practice-SEI-Engineering-ebook/dp/B009GMUL84)
-[^8]: 2014 – M. H. Jongerius – [THE SEVEN DESIGN SMELLS OF ROTTING SOFTWARE](http://mhjongerius.tumblr.com/post/61853273412/the-seven-design-smells-of-rotting-software) 
+[^7]: 2012 – Len Bass, Paul Clements, Rick Kazman – [Software Architecture in Practice](https://www.amazon.com/dp/B009GMUL84)
+[^8]: 2014 – M. H. Jongerius – [THE SEVEN DESIGN SMELLS OF ROTTING SOFTWARE](https://web.archive.org/web/20180814182142/http://mhjongerius.tumblr.com:80/post/61853273412/the-seven-design-smells-of-rotting-software) 
 [^9]: 2017* – Wikipedia – Software Architecture

@@ -205,12 +205,12 @@ Martin Fowler 识别出了三种不同类型的事件模式：
 
 # 引用来源
 
-2005 – Martin Fowler – [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)
-2006 – Martin Fowler – [Focusing on Events](https://martinfowler.com/eaaDev/EventNarrative.html)
-2010 – Greg Young – [CQRS Documents](https://cqrs.files.wordpress.com/2010/11/cqrs_documents.pdf)
-2014 – Greg Young – [CQRS and Event Sourcing – Code on the Beach 2014](https://www.youtube.com/watch?v=JHGkaShoyNs)
-2014 – Eric Evans – [Domain-Driven Design Reference](https://www.amazon.com/Domain-Driven-Design-Reference-Definitions-Summaries/dp/1457501198)
-2017 – Martin Fowler – [What do you mean by “Event-Driven”?](https://martinfowler.com/articles/201701-event-driven.html)
-2017 – Martin Fowler – [The Many Meanings of Event-Driven Architecture](https://www.youtube.com/watch?v=STKCRSUsyP0)
+- 2005 – Martin Fowler – [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)
+- 2006 – Martin Fowler – [Focusing on Events](https://martinfowler.com/eaaDev/EventNarrative.html)
+- 2010 – Greg Young – [CQRS Documents](https://cqrs.wordpress.com/wp-content/uploads/2010/11/cqrs_documents.pdf)
+- 2014 – Greg Young – [CQRS and Event Sourcing – Code on the Beach 2014](https://www.youtube.com/watch?v=JHGkaShoyNs)
+- 2014 – Eric Evans – [Domain-Driven Design Reference](https://www.amazon.com/dp/1457501198)
+- 2017 – Martin Fowler – [What do you mean by “Event-Driven”?](https://martinfowler.com/articles/201701-event-driven.html)
+- 2017 – Martin Fowler – [The Many Meanings of Event-Driven Architecture](https://www.youtube.com/watch?v=STKCRSUsyP0)
 
 [原文](https://herbertograca.com/2017/10/05/event-driven-architecture/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。

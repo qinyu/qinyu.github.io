@@ -49,12 +49,12 @@ draft: false
 使用体现架构的代码风格，意味着代码风格（编码规范、类/方法/变量命名约定、代码结构...）某种程度上可以和阅读代码的人交流领域和架构的设计意图。要实现体现架构的代码风格，主要有两种思路。
 
 > “*[…] 体现架构的代码风格能让你给代码的阅读者留下提示，帮助他们正确地推断出设计意图。*”
-> —*[George Fairbanks](https://resources.sei.cmu.edu/asset_files/Presentation/2013_017_001_48651.pdf)*
+> —*[George Fairbanks*（原链接已失效）*]*
 
 第一种思路是通过代码制品的名字（类、变量、模块...）来传达领域和架构的含义。因此，如果一个类是处理收据（Invoice）实体的资源库（Repository），我们就应该将它命名成`InvoiceRepository`，从这个名字我们就可以看出，它处理的是收据领域的概念，而它在架构中被当做一个资源库。这可以帮助我们理解它应该放在哪个地方，何时使用它以及如何使用它。但是，我认为代码仓库中并不是每个代码制品都需要这样做，例如，我觉得不必为每个实体（Entity）都加上后缀`Entity`，这样做就有些画蛇添足，徒增噪音。
 
 > “*[…] 代码应该体现架构。换句话说，我一看到代码，就应该能够清晰地区分出各种组件[…]*”
-> —*[Simon Brown](http://www.codingthearchitecture.com/2014/06/01/an_architecturally_evident_coding_style.html)*
+> —*[Simon Brown](https://web.archive.org/web/20220701204414/http://www.codingthearchitecture.com/2014/06/01/an_architecturally_evident_coding_style.html)*
 
 第二种思路是让代码仓库中的顶级制品明确地区分出各个子域，即领域维度的模块，也就是组件。
 

@@ -74,7 +74,7 @@ draft: false
 
 # 对结构的影响
 
-上述这些原则适用于类，然而，它们一样适用于类的组合。类的组合通常被叫做包，但我们可以分得更细一些，如果分组是出于纯粹功能方面的考虑（如ORM）我们会称之为模块，如果是出于领域方面的考虑（如AccountManagement）则称之为组件。这些定义与 Bass、Clements 和 Kazman 在他们的著作 [Software Architecture in Practice](https://www.amazon.com/Software-Architecture-Practice-SEI-Engineering-ebook/dp/B009GMUL84) 里的描述一致。
+上述这些原则适用于类，然而，它们一样适用于类的组合。类的组合通常被叫做包，但我们可以分得更细一些，如果分组是出于纯粹功能方面的考虑（如ORM）我们会称之为模块，如果是出于领域方面的考虑（如AccountManagement）则称之为组件。这些定义与 Bass、Clements 和 Kazman 在他们的著作 [Software Architecture in Practice](https://www.amazon.com/dp/B009GMUL84) 里的描述一致。
 
 我们能够并且应该让包做到高内聚和低耦合，因为这样我们才能做到：
 
@@ -152,14 +152,14 @@ draft: false
 
 # 延伸阅读
 
-- 2008 – Johannes Brodwall – [Package by feature](http://johannesbrodwall.com/2008/07/29/link-package-by-feature/)
+- 2008 – Johannes Brodwall – [Package by feature](https://web.archive.org/web/20180424095400/http://johannesbrodwall.com/2008/07/29/link-package-by-feature/)
 - 2012 – Johannes Brodwall – [How Changing Java Package Names Transformed my System Architecture](https://dzone.com/articles/how-changing-java-package)
-- 2012 – sivaprasadreddy.k – [Is package by feature approach good?](http://stackoverflow.com/questions/11733267/is-package-by-feature-approach-good)
+- 2012 – sivaprasadreddy.k – [Is package by feature approach good?](https://stackoverflow.com/questions/11733267/is-package-by-feature-approach-good)
 - 2013 – Lahlali Issam – [Lessons to Learn from the Hibernate Core Implementation](https://web.archive.org/web/20161025014654/http://java.sys-con.com/node/2604365)
 - 2013 – Manu Pk – [Package your classes by Feature and not by Layers](https://web.archive.org/web/20221201173450/https://dzone.com/articles/package-your-classes-feature)
 - 2015 – Simon Brown – [Package by component and architecturally-aligned testing](https://simonbrown.je/modular-monolith)
 - 2015 – César Ferreira – [Package by features, not layers](https://medium.com/@cesarmcferreira/package-by-features-not-layers-2d076df1964d)
-- 2017* – javapractices.com – [Package by feature, not layer](http://www.javapractices.com/topic/TopicAction.do?Id=205)
+- 2017* – javapractices.com – [Package by feature, not layer](https://web.archive.org/web/20180424095400/http://www.javapractices.com/topic/TopicAction.do?Id=205)
 
 # 引用来源
 
