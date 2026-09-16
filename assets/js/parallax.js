@@ -14,14 +14,14 @@
   //           breathCenter (not 1.0).
   //   breath: continuous sine around the *current* scroll base
   //           (breathCenter at top → peakScale at page end), ±amp.
-  //           Amp shrinks with headroom so crest never exceeds peakScale.
-  //           At top this is still 1.04±0.04 (period 10s). Scroll does
-  //           not kill breath: parallax continues from the live breath
+  //           Full ±breathAmp at every scroll stop — including the
+  //           page bottom (crest may reach peakScale+amp). At top
+  //           this is still 1.04±0.04 (period 10s). Scroll does not
+  //           kill breath: parallax continues from the live breath
   //           scale, and when scroll stops breath continues from the
-  //           parallax scale until back at the top envelope. Only
-  //           pull-to-bounce pauses breath. Clock is Date.now()-based
-  //           and persisted in sessionStorage so in-site nav keeps
-  //           phase — no trough restart.
+  //           parallax scale. Only pull-to-bounce pauses breath.
+  //           Clock is Date.now()-based and persisted in sessionStorage
+  //           so in-site nav keeps phase — no trough restart.
   // Layout viewport only. Never scale < 1. Never contain.
   const maxTravel = 0.06;
   const bounceReserve = maxTravel;
@@ -196,13 +196,9 @@
     return Math.sin(t * Math.PI * 2 - Math.PI / 2);
   };
 
-  // Amp at this scroll progress: full ±breathAmp at top; shrinks so
-  // scrollBase ± amp stays within [baseScale, peakScale].
-  const breathAmpAt = (scrollBase) => {
-    const headroom = Math.max(0, peakScale - scrollBase);
-    const floorRoom = Math.max(0, scrollBase - baseScale);
-    return Math.min(breathAmp, headroom, floorRoom);
-  };
+  // Full amp everywhere (including page bottom). Trough floored at
+  // baseScale; crest may reach peakScale + breathAmp.
+  const scaleCeil = () => Math.max(peakScale, bouncePeak) + breathAmp;
 
   const isPulling = () => {
     const y = readScrollY();
@@ -213,9 +209,8 @@
     if (reduce.matches || document.hidden || isPulling()) {
       return false;
     }
-    // Keep the rAF alive whenever there is room to breathe (including
-    // mid-page). At the absolute peak with zero headroom, stop.
-    return breathAmpAt(scaleFromProgress(pageProgress())) > 0.001;
+    // Breath runs at every scroll stop, including the page bottom.
+    return peakScale > baseScale || breathAmp > 0;
   };
 
   const persistParallax = () => {
@@ -293,25 +288,24 @@
       return baseScale + (bouncePeak - baseScale) * t;
     }
     // Scroll base + live breath. Same sine clock while scrolling and
-    // while stopped, so handoff either way is continuous; returning
-    // to Y=0 rejoins the original top envelope without a phase jump.
+    // while stopped (including page bottom), so handoff either way is
+    // continuous; returning to Y=0 rejoins the original top envelope.
     const scrollBase = scaleFromProgress(pageProgress());
-    const amp = breathAmpAt(scrollBase);
     return clamp(
-      scrollBase + amp * breathSine(),
+      scrollBase + breathAmp * breathSine(),
       baseScale,
-      peakScale,
+      scaleCeil(),
     );
   };
 
   const apply = () => {
     const maxPx = restVh * maxTravel;
     current = clamp(current, -maxPx, maxPx);
-    // Allow idle breath crest (and matching scroll peak 1.08).
+    // Allow idle breath crest and bottom crest (peakScale + amp).
     currentScale = clamp(
       currentScale,
       baseScale,
-      Math.max(peakScale, bouncePeak, breathCenter + breathAmp),
+      scaleCeil(),
     );
     if (poster) {
       // Transform-only on the plate. Do not write --bg-* on :root
