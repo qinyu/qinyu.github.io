@@ -91,7 +91,7 @@ draft: false
 代码库如果组织得当，特定代码单元只有一处位置可供它存放。我们可能并不知道到具体的位置，但一定只有一条逻辑路径可以让我们顺藤摸瓜找到它。
 
 > **包的定义**
-> 将类划分成包可以让我们在更高的抽象级别来思考设计。其目标是将你的应用中的类按照某种条件进行分片，然后将这些分片分配到包中。这些包之间的关系表达出了应用高级别的组织方式。—— Robert C. Martin 1996, [Granularity](https://drive.google.com/file/d/0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx/view) pp. 3
+> 将类划分成包可以让我们在更高的抽象级别来思考设计。其目标是将你的应用中的类按照某种条件进行分片，然后将这些分片分配到包中。这些包之间的关系表达出了应用高级别的组织方式。—— Robert C. Martin 1996, [Granularity](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx) pp. 3
 
 将概念上相关的代码定义成包，我们需要达成的目标。这些包十分重要，因为它们定义了概念上相关且独立于其它包的代码单元，还有这些包之间的关系。
 
@@ -111,19 +111,19 @@ draft: false
 
 - **包内聚原则**
 
-  - **REP** – [重用发布等价原则](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx&hl=en)
+  - **REP** – [重用发布等价原则](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
     *重用的粒度等价于发布的粒度*
-  - **CCP** – [共同封闭原则](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx&hl=en)
+  - **CCP** – [共同封闭原则](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
     *一起被修改的类应该放在一个包里*
-  - **CRP** – [共同重用原则](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx&hl=en)
+  - **CRP** – [共同重用原则](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
     *一起被重用的类应该放在一个包里*
 - **包耦合原则**
 
-  - **ADP** – [无环依赖原则](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx&hl=en)
+  - **ADP** – [无环依赖原则](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
     *包的依赖图中不能出现循环*
-  - **SDP** – [稳定依赖原则](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgZjI3OTU4ZTAtYmM4Mi00MWMyLTgxN2YtMzk5YTY1NTViNTBh&hl=en)
+  - **SDP** – [稳定依赖原则](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgZjI3OTU4ZTAtYmM4Mi00MWMyLTgxN2YtMzk5YTY1NTViNTBh)
     *依赖应该朝着稳定的方向前进*
-  - **SAP** – [稳定抽象原则](http://docs.google.com/a/cleancoder.com/viewer?a=v&pid=explorer&chrome=true&srcid=0BwhCYaYDn8EgZjI3OTU4ZTAtYmM4Mi00MWMyLTgxN2YtMzk5YTY1NTViNTBh&hl=en)
+  - **SAP** – [稳定抽象原则](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgZjI3OTU4ZTAtYmM4Mi00MWMyLTgxN2YtMzk5YTY1NTViNTBh)
     *抽象的级别越高，稳定性就越高*
 
 **要想合理地运用 SDP**，我们应该定义出代码的概念单元（组件）和组件的分层，这样我们才能搞清楚那些组件应该了解（依赖）其它组件。
@@ -146,26 +146,26 @@ draft: false
 
 尖叫架构是 Robert C. Martin 的想法，它基本上表明了这样一个观点，架构应该清楚地告诉我们系统是做什么的：即它的主要领域。那么源代码文件夹里出现的第一级目录自然就应该和领域概念有关，即最顶层的限界上下文(例如，患者、医生、预约等)。它们应该和系统使用的工具(例如，Doctrine、MySQL、Symfony、Redis 等)无关，和系统的功能块(例如，资源库、制图、控制器等)无关，和传达机制无关(HTTP、控制台等)。
 
-> 你的架构应该呈现给人的应该是系统，而不是系统使用的框架。如果你构建的是一个医疗保健系统，那么新程序员看到源代码仓库后的第一印象应该是：“哦，这是一个医疗保健系统”。—— Robert C. Martin 2011, [Screaming Architecture](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)
+> 你的架构应该呈现给人的应该是系统，而不是系统使用的框架。如果你构建的是一个医疗保健系统，那么新程序员看到源代码仓库后的第一印象应该是：“哦，这是一个医疗保健系统”。—— Robert C. Martin 2011, [Screaming Architecture](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)
 
 这实际上是一种更简单地理解他十五年前发表的包划分原则的方法，这些原则之前我已经阐述过了。这种分包的风格又叫做“按特性分包”。
 
 # 延伸阅读
 
-2008 – Johannes Brodwall – [Package by feature](http://johannesbrodwall.com/2008/07/29/link-package-by-feature/)
-2012 -Johannes Brodwall – [How Changing Java Package Names Transformed my System Architecture](https://dzone.com/articles/how-changing-java-package)
-2012 – sivaprasadreddy.k – [Is package by feature approach good?](http://stackoverflow.com/questions/11733267/is-package-by-feature-approach-good)
-2013 – Lahlali Issam – [Lessons to Learn from the Hibernate Core Implementation](http://java.sys-con.com/node/2604365)
-2013 – Manu Pk – [Package your classes by Feature and not by Layers](https://dzone.com/articles/package-your-classes-feature)
-2015 – Simon Brown – [Package by component and architecturally-aligned testing](http://www.codingthearchitecture.com/2015/03/08/package_by_component_and_architecturally_aligned_testing.html)
-2015 – César Ferreira – [Package by features, not layers](https://medium.com/@cesarmcferreira/package-by-features-not-layers-2d076df1964d)
-2017* – javapractices.com – [Package by feature, not layer](http://www.javapractices.com/topic/TopicAction.do?Id=205)
+- 2008 – Johannes Brodwall – [Package by feature](http://johannesbrodwall.com/2008/07/29/link-package-by-feature/)
+- 2012 – Johannes Brodwall – [How Changing Java Package Names Transformed my System Architecture](https://dzone.com/articles/how-changing-java-package)
+- 2012 – sivaprasadreddy.k – [Is package by feature approach good?](http://stackoverflow.com/questions/11733267/is-package-by-feature-approach-good)
+- 2013 – Lahlali Issam – [Lessons to Learn from the Hibernate Core Implementation](https://web.archive.org/web/20161025014654/http://java.sys-con.com/node/2604365)
+- 2013 – Manu Pk – [Package your classes by Feature and not by Layers](https://web.archive.org/web/20221201173450/https://dzone.com/articles/package-your-classes-feature)
+- 2015 – Simon Brown – [Package by component and architecturally-aligned testing](https://simonbrown.je/modular-monolith)
+- 2015 – César Ferreira – [Package by features, not layers](https://medium.com/@cesarmcferreira/package-by-features-not-layers-2d076df1964d)
+- 2017* – javapractices.com – [Package by feature, not layer](http://www.javapractices.com/topic/TopicAction.do?Id=205)
 
 # 引用来源
 
-1996 – Robert C. Martin – [Granularity](https://drive.google.com/file/d/0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx/view)
-1997 – Robert C. Martin – [Stability](https://drive.google.com/file/d/0BwhCYaYDn8EgZjI3OTU4ZTAtYmM4Mi00MWMyLTgxN2YtMzk5YTY1NTViNTBh/view)
-2009 – 500internalservererror – [What do low coupling and high cohesion mean? What does the principle of encapsulation mean?](https://500internalservererror.wordpress.com/2009/02/23/what-do-low-coupling-and-high-cohesion-mean-what-does-the-principle-of-encapsulation-mean/)
-2011 – Robert C. Martin – [Screaming Architecture](https://8thlight.com/blog/uncle-bob/2011/09/30/Screaming-Architecture.html)
+- 1996 – Robert C. Martin – [Granularity](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx)
+- 1997 – Robert C. Martin – [Stability](https://drive.google.com/uc?export=download&id=0BwhCYaYDn8EgZjI3OTU4ZTAtYmM4Mi00MWMyLTgxN2YtMzk5YTY1NTViNTBh)
+- 2009 – 500internalservererror – [What do low coupling and high cohesion mean? What does the principle of encapsulation mean?](https://500internalservererror.wordpress.com/2009/02/23/what-do-low-coupling-and-high-cohesion-mean-what-does-the-principle-of-encapsulation-mean/)
+- 2011 – Robert C. Martin – [Screaming Architecture](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)
 
 [原文](https://herbertograca.com/2017/08/31/packaging-code/)作者为**Herberto Graça**，本译文作者为**覃宇**，分享需遵循[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)许可。
