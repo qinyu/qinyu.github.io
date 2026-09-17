@@ -30,7 +30,10 @@ hugo --minify
 
 - 规范域名是 `https://www.qinyu.info`。`config/_default/config.yml` 里的 `baseURL` 仍是 `https://qinyu.github.io`，GitHub Pages 会 301 过去。不要「修正」`baseURL`，除非用户明确要求。
 - 推到 `main` 会触发 `.github/workflows/gh-pages.yml`，构建并发布到线上。用户没说 push，就停在本地。
-- 文章写在 `content/post/<kebab-topic>/index.md`，图片和文章放在同一目录。站点级页面在 `content/` 根下（`about.md`、`books.md`、`courses.md`、`wechat.md`）。
+- 文章写在 `content/post/<kebab-topic>/index.md`，图片和文章放在同一目录。
+- 站点级页面在 `content/` 根下：`about.md`、`books.md`、`courses.md`、`wechat.md`、`translations.md`（翻译作品入口）、`wardley-maps.md`、`architecture-chronicles.md`（系列目录）。
+- 翻译作品状态在 `data/series.yaml` 的 `status`（`翻译完结` / `翻译中`）；系列内页返回导航用 `layouts/partials/series-trail.html`。
+- 站点视觉与火星视差：身份与 token 见根目录 [`DESIGN.md`](DESIGN.md)；实现在 `assets/css/custom.css`、`assets/js/parallax.js`（细节以文件注释为准）。改视觉先读 DESIGN.md，再改 CSS，并同步 token。
 - `themes/anatole` 是 git submodule。改内容和 `config/`；用户没要求更新主题，就不要动主题目录，也不要换主题。Anatole 的 RSS 用站点里的 `layouts/_default/rss.xml` 覆盖（Hugo 0.158+ 去掉了 `.Site.Author`）。
 - `content/temp/` 已被 gitignore，也在 `config.yml` 的 `ignoreFiles` 里排除，是抓取/草稿暂存，不是站点内容。
 - 生产构建忽略 `draft: true`。没说「发布」，就保持草稿。Wardley Maps 第 7 章目前是草稿。软件架构编年史已发布。
@@ -43,9 +46,9 @@ hugo --minify
 hugo new post/<kebab-topic>/index.md
 ```
 
-原型文件只有 title/date/draft。补全下面这些字段后再写正文。
+原型只有 `title` / `date` / `draft`。发文前对齐同类近作，补全：`description`、`tags`、`author: 覃宇`、`draft`；系列文再加 `series`。
 
-文章用 YAML frontmatter（`---`）。已有的 about/books/courses 是 TOML（`+++`）：改哪篇就跟哪篇。作者写 `覃宇`。
+文章用 YAML frontmatter（`---`）。已有的 about/books/courses/translations 等站点页是 TOML（`+++`）：改哪篇就跟哪篇。
 
 已有 series，沿用不要自造：
 
@@ -55,7 +58,7 @@ hugo new post/<kebab-topic>/index.md
 
 目录 kebab-case。专有名词 tag 大写（`LangChain`、`Wardley Maps`），普通词小写（`翻译`、`效率`）。
 
-原创帖：第一人称中文；开头「太长不读」摘要；摘要后放 `<!--more-->`。翻译帖：标题带 `（译）`，跟同系列已有章节的中英混排方式。内链用 `{{< ref "post/topic-name" >}}`。配图用 `{{< figure src="file.png" class="medium" >}}`（`small` / `medium` / `large`），不要用会断掉的裸相对路径去站外静态目录。
+原创帖：第一人称中文；开头「太长不读」摘要；摘要后放 `<!--more-->`。翻译帖：标题带 `（译）`，跟同系列已有章节的中英混排方式。内链用 `{{< ref "post/topic-name" >}}`。配图用 `{{< figure src="file.png" class="medium" >}}`（`small` / `medium` / `large` / 微信码用 `tiny`），不要用会断掉的裸相对路径去站外静态目录。
 
 提交说明跟仓库历史走，写清为什么，例如 `add wechat page`、`fix Wardley Maps chapter 7 translation`。用户没要求 commit，就不要 commit。
 
@@ -79,3 +82,4 @@ hugo new post/<kebab-topic>/index.md
 - 系列整批上线时，首页最近更新只发一篇说明文作入口；不要把系列落地页做成首页卡片，也不要把各章铺进最近更新。
 - 归档和列表链接的 `:visited` 颜色写成与 `--sand` 相同的字面 hex，不要只用 `var(--sand)`，否则 Chrome 会回落到默认蓝。
 - 文章页只留顶部标签，删文末/footer 那一组；不要只改底部间距。顶部标签跟侧栏一样：白字、sand 边框。
+- 火星呼吸在滚动中途与页底停下都要继续；用当前滚动基数叠加正弦，不要用滚出门控或页底 headroom=0 把呼吸掐死。改球心/origin 时锁定呼吸包络（`1.04±0.04`），横屏 scale origin 留在板心。
