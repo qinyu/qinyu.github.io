@@ -33,7 +33,7 @@ hugo --minify
 - 文章写在 `content/post/<kebab-topic>/index.md`，图片和文章放在同一目录。
 - 站点级页面在 `content/` 根下：`about.md`、`books.md`、`courses.md`、`wechat.md`、`translations.md`（翻译作品入口）、`wardley-maps.md`、`architecture-chronicles.md`（系列目录）。
 - 翻译作品状态在 `data/series.yaml` 的 `status`（`翻译完结` / `翻译中`）；系列内页返回导航用 `layouts/partials/series-trail.html`。
-- 站点视觉与火星视差：`assets/css/custom.css`、`assets/js/parallax.js`。细节以文件内注释为准。
+- 站点视觉与火星视差：身份与 token 见根目录 [`DESIGN.md`](DESIGN.md)；实现在 `assets/css/custom.css`、`assets/js/parallax.js`（细节以文件注释为准）。改视觉先读 DESIGN.md，再改 CSS，并同步 token。
 - `themes/anatole` 是 git submodule。改内容和 `config/`；用户没要求更新主题，就不要动主题目录，也不要换主题。Anatole 的 RSS 用站点里的 `layouts/_default/rss.xml` 覆盖（Hugo 0.158+ 去掉了 `.Site.Author`）。
 - `content/temp/` 已被 gitignore，也在 `config.yml` 的 `ignoreFiles` 里排除，是抓取/草稿暂存，不是站点内容。
 - 生产构建忽略 `draft: true`。没说「发布」，就保持草稿。Wardley Maps 第 7 章目前是草稿。软件架构编年史已发布。
